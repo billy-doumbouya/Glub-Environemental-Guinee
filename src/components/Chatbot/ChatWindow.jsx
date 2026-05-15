@@ -1,26 +1,38 @@
 // src/components/chatbot/ChatWindow.jsx
-import { useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { X, RotateCcw, Send, Leaf, AlertCircle } from 'lucide-react'
-import { ChatMessage } from './ChatMessage'
-import { TypingIndicator } from './TypingIndicator'
-import { QuickReplies } from './QuickReplies'
+import { useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, RotateCcw, Send, Leaf, AlertCircle } from "lucide-react";
+import { ChatMessage } from "./ChatMessage";
+import { TypingIndicator } from "./TypingIndicator";
+import { QuickReplies } from "./QuickReplies";
 
-export function ChatWindow({ messages, inputValue, isLoading, error, isOpen, onClose, onReset, onInputChange, onSubmit, onKeyDown, onQuickReply }) {
-  const bottomRef = useRef(null)
-  const inputRef = useRef(null)
+export function ChatWindow({
+  messages,
+  inputValue,
+  isLoading,
+  error,
+  isOpen,
+  onClose,
+  onReset,
+  onInputChange,
+  onSubmit,
+  onKeyDown,
+  onQuickReply,
+}) {
+  const bottomRef = useRef(null);
+  const inputRef = useRef(null);
 
   // Auto-scroll to bottom on new message
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages, isLoading])
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isLoading]);
 
   // Focus input when opened
   useEffect(() => {
-    if (isOpen) setTimeout(() => inputRef.current?.focus(), 300)
-  }, [isOpen])
+    if (isOpen) setTimeout(() => inputRef.current?.focus(), 300);
+  }, [isOpen]);
 
-  const showQuickReplies = messages.length === 1 && !isLoading
+  const showQuickReplies = messages.length === 1 && !isLoading;
 
   return (
     <AnimatePresence>
@@ -29,9 +41,9 @@ export function ChatWindow({ messages, inputValue, isLoading, error, isOpen, onC
           initial={{ opacity: 0, scale: 0.92, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.92, y: 20 }}
-          transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+          transition={{ type: "spring", stiffness: 320, damping: 28 }}
           className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 max-h-[70vh] flex flex-col rounded-3xl shadow-2xl overflow-hidden border border-gray-100 bg-[#F8FAFC]"
-          style={{ maxWidth: '400px' }}
+          style={{ maxWidth: "400px" }}
         >
           {/* Header */}
           <div className="bg-gradient-to-r from-green-700 to-green-900 px-5 py-4 flex items-center justify-between shrink-0">
@@ -40,10 +52,14 @@ export function ChatWindow({ messages, inputValue, isLoading, error, isOpen, onC
                 <Leaf className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="font-poppins font-bold text-white text-sm leading-tight">KIRA</p>
+                <p className="font-poppins font-bold text-white text-sm leading-tight">
+                  Doré
+                </p>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 bg-green-300 rounded-full animate-pulse" />
-                  <p className="text-green-200 text-[10px]">Assistante C.E.G · En ligne</p>
+                  <p className="text-green-200 text-[10px]">
+                    Assistante C.E.G · En ligne
+                  </p>
                 </div>
               </div>
             </div>
@@ -97,7 +113,7 @@ export function ChatWindow({ messages, inputValue, isLoading, error, isOpen, onC
           <QuickReplies
             visible={showQuickReplies}
             onSelect={(text) => {
-              onQuickReply(text)
+              onQuickReply(text);
             }}
           />
 
@@ -117,10 +133,11 @@ export function ChatWindow({ messages, inputValue, isLoading, error, isOpen, onC
                 disabled={isLoading}
                 aria-label="Message"
                 className="flex-1 resize-none bg-transparent text-sm text-gray-800 placeholder-gray-400 outline-none py-1.5 max-h-28 scrollbar-hide disabled:opacity-50"
-                style={{ lineHeight: '1.5' }}
+                style={{ lineHeight: "1.5" }}
                 onInput={(e) => {
-                  e.target.style.height = 'auto'
-                  e.target.style.height = Math.min(e.target.scrollHeight, 112) + 'px'
+                  e.target.style.height = "auto";
+                  e.target.style.height =
+                    Math.min(e.target.scrollHeight, 112) + "px";
                 }}
               />
               <button
@@ -133,11 +150,11 @@ export function ChatWindow({ messages, inputValue, isLoading, error, isOpen, onC
               </button>
             </form>
             <p className="text-[9px] text-gray-300 text-center mt-2">
-              KIRA · Assistante virtuelle C.E.G · Propulsé par Gemini
+              Doré · Assistante virtuelle C.E.G ·
             </p>
           </div>
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  );
 }

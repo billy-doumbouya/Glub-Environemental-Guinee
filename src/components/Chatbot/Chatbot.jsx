@@ -8,9 +8,9 @@
 //
 // C'est tout. Le composant gère son propre état via useChatbot.
 
-import { useChatbot } from '../../hooks/useChatbot'
-import { ChatTrigger } from './ChatTrigger'
-import { ChatWindow } from './ChatWindow'
+import { useChatbot } from "../../hooks/useChatbot";
+import { ChatTrigger } from "./ChatTrigger";
+import { ChatWindow } from "./ChatWindow";
 
 export function Chatbot() {
   const {
@@ -26,10 +26,10 @@ export function Chatbot() {
     resetChat,
     toggleOpen,
     close,
-  } = useChatbot()
+  } = useChatbot();
 
-  // Indicateur non-lu : dès qu'il y a une réponse KIRA et que le chat est fermé
-  const hasUnread = !isOpen && messages.length > 1
+  // Indicateur non-lu : dès qu'il y a une réponse dore et que le chat est fermé
+  const hasUnread = !isOpen && messages.length > 1;
 
   return (
     <>
@@ -47,11 +47,7 @@ export function Chatbot() {
         onQuickReply={sendMessage}
       />
 
-      <ChatTrigger
-        isOpen={isOpen}
-        unread={hasUnread}
-        onClick={toggleOpen}
-      />
+      <ChatTrigger isOpen={isOpen} unread={hasUnread} onClick={toggleOpen} />
     </>
-  )
+  );
 }

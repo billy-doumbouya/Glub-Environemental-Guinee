@@ -1,16 +1,16 @@
-import { motion } from 'framer-motion'
-import { ArrowRight, CheckCircle } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { organization } from '../data/organization'
-import { SectionTitle } from '../components/common/SectionTitle'
-import { fadeLeft, fadeRight, viewportConfig } from '../animations/variants'
+import { motion } from "framer-motion";
+import { ArrowRight, CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
+import { organization } from "../data/organization";
+import { SectionTitle } from "../components/common/SectionTitle";
+import { fadeLeft, fadeRight, viewportConfig } from "../animations/variants";
 
 const highlights = [
-  'Agrément officiel du Ministère de l\'Administration',
-  'Partenaire reconnu du GEF, PNUE et SGP',
-  'Interventions dans 8 préfectures guinéennes',
-  'Plus de 12 000 bénéficiaires directs depuis 2016',
-]
+  "Agrément officiel du Ministère de l'Administration",
+  "Partenaire reconnu du GEF, PNUE et SGP",
+  "Interventions dans 8 préfectures guinéennes",
+  "Plus de 12 000 bénéficiaires directs depuis 2016",
+];
 
 export function AboutPreviewSection() {
   return (
@@ -38,7 +38,9 @@ export function AboutPreviewSection() {
                   <div className="mt-6 grid grid-cols-2 gap-4">
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                       <p className="font-bold text-2xl">2016</p>
-                      <p className="text-green-200 text-xs">Année de création</p>
+                      <p className="text-green-200 text-xs">
+                        Année de création
+                      </p>
                     </div>
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                       <p className="font-bold text-2xl">Forécariah</p>
@@ -51,11 +53,13 @@ export function AboutPreviewSection() {
             {/* Floating agrément card */}
             <motion.div
               animate={{ y: [-4, 4, -4] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-xl p-5 border border-green-50"
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute bottom-4 right-4 md:-bottom-6 md:-right-6 bg-white rounded-2xl shadow-xl p-5 border border-green-50"
             >
               <p className="text-xs text-gray-500 mb-1">Agrément officiel</p>
-              <p className="font-bold text-green-700 text-sm">{organization.agreement}</p>
+              <p className="font-bold text-green-700 text-sm">
+                {organization.agreement}
+              </p>
             </motion.div>
           </motion.div>
 
@@ -67,20 +71,20 @@ export function AboutPreviewSection() {
             viewport={viewportConfig}
           >
             <span className="inline-flex items-center gap-2 bg-green-50 text-green-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 border border-green-100">
-              <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-              À propos de C.E.G
+              <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />À propos
+              de C.E.G
             </span>
             <h2 className="font-poppins font-bold text-4xl text-gray-900 mb-6 leading-tight">
-              Une ONG engagée pour{' '}
+              Une ONG engagée pour{" "}
               <span className="text-gradient">l'environnement guinéen</span>
             </h2>
             <p className="text-gray-500 leading-relaxed mb-6">
               {organization.mission}
             </p>
             <p className="text-gray-500 leading-relaxed mb-8">
-              Fondée le {organization.created}, l'ONG C.E.G intervient dans 4 domaines stratégiques
-              pour réconcilier la protection de l'environnement avec le développement humain durable
-              en Guinée.
+              Fondée le {organization.created}, l'ONG C.E.G intervient dans 4
+              domaines stratégiques pour réconcilier la protection de
+              l'environnement avec le développement humain durable en Guinée.
             </p>
             <ul className="space-y-3 mb-8">
               {highlights.map((item) => (
@@ -101,5 +105,5 @@ export function AboutPreviewSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

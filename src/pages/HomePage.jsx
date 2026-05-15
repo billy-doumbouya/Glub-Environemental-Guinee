@@ -19,15 +19,15 @@ export default function HomePage() {
         keywords="ONG environnement Guinée, développement durable Guinée, conservation environnement Guinée, ONG écologique Guinée, CEG Forécariah, reboisement Guinée"
       />
       <MainLayout>
-        {/* <HeroSection /> */}
-        {/* <StatisticsSection /> */}
-        {/* <AboutPreviewSection /> */}
-        {/* <DomainsSection /> */}
-        {/* <ProjectsPreviewSection /> */}
-        {/* <PartnersSection /> */}
-        {/* <TestimonialsSection /> */}
-        {/* <NewsPreviewSection /> */}
-        {/* <CTASection /> */}
+        <HeroSection />
+        <StatisticsSection />
+        <AboutPreviewSection />
+        <DomainsSection />
+        <ProjectsPreviewSection />
+        <PartnersSection />
+        <TestimonialsSection />
+        <NewsPreviewSection />
+        <CTASection />
       </MainLayout>
     </>
   )

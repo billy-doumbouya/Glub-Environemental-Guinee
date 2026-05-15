@@ -4,10 +4,12 @@ import { HelmetProvider } from "react-helmet-async";
 import { router } from "./routes";
 import { ErrorBoundary } from "./fallback/ErrorBoundary";
 import { LoadingFallback } from "./fallback/LoadingFallback";
+import ToastComponent from "./components/ui/Mytoaster";
 
 export default function App() {
   return (
     <>
+    <ToastComponent />
       <HelmetProvider>
         <ErrorBoundary>
           <Suspense fallback={<LoadingFallback />}>
