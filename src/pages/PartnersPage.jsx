@@ -11,7 +11,7 @@ function PartnerFullCard({ partner, index }) {
   const isEven = index % 2 === 0
   return (
     <div id={partner.slug} className={`py-20 ${isEven ? 'bg-white' : 'bg-gray-50'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-w-0">
         <div className={`grid lg:grid-cols-2 gap-16 items-center ${!isEven ? 'lg:grid-flow-col-dense' : ''}`}>
           <motion.div
             variants={fadeLeft}

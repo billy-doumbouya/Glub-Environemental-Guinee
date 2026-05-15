@@ -86,9 +86,7 @@ export async function sendMessageToAssistant(history) {
     });
   } catch (networkError) {
     toast.error("Erreur de connexion", "Vérifiez votre connexion réseau.");
-    throw new Error(
-      "Impossible de joindre OpenRouter. Vérifiez votre connexion réseau.",
-    );
+    throw new Error("Probleme de connexion. Vérifiez votre connexion réseau.");
   }
 
   const data = await response.json();

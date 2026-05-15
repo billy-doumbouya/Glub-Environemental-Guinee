@@ -4,6 +4,7 @@ import { SocialFloatingBar } from "../components/layout/SocialFloatingBar";
 import { useScrollTop } from "../hooks/useScrollTop";
 import { ScrollToTop } from "../utils/ScroolTo";
 import { Chatbot } from "../components/Chatbot/Chatbot";
+import { DonationButton } from "../components/donation/DonationButton";
 export function MainLayout({ children }) {
   useScrollTop();
 
@@ -16,6 +17,7 @@ export function MainLayout({ children }) {
         <Footer />
         <SocialFloatingBar />
         <Chatbot />
+        <DonationButton />
       </div>
     </>
   );

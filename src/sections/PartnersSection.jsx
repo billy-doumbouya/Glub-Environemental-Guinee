@@ -1,8 +1,12 @@
-import { motion } from 'framer-motion'
-import { ExternalLink } from 'lucide-react'
-import { partners } from '../data/partners'
-import { SectionTitle } from '../components/common/SectionTitle'
-import { staggerContainer, fadeUp, viewportConfig } from '../animations/variants'
+import { motion } from "framer-motion";
+import { ExternalLink } from "lucide-react";
+import { partners } from "../data/partners";
+import { SectionTitle } from "../components/common/SectionTitle";
+import {
+  staggerContainer,
+  fadeUp,
+  viewportConfig,
+} from "../animations/variants";
 
 function PartnerCard({ partner }) {
   return (
@@ -13,10 +17,19 @@ function PartnerCard({ partner }) {
       {/* Logo area */}
       <div className="h-20 flex items-center justify-center mb-6">
         <div
-          className="h-16 w-32 rounded-2xl flex items-center justify-center text-3xl font-black font-poppins shadow-inner"
-          style={{ backgroundColor: `${partner.logoColor}15`, color: partner.logoColor }}
+          className="h-16 w-32 overflow-hidden rounded-2xl flex items-center justify-center text-3xl font-black font-poppins shadow-inner"
+          style={{
+            backgroundColor: `${partner.logoColor}15`,
+            color: partner.logoColor,
+          }}
         >
-          {partner.logoText}
+          {partner.logo && (
+            <img
+              src={partner.logo}
+              alt={`${partner.name} logo`}
+              className="w-full max-w-full object-contain"
+            />
+          )}
         </div>
       </div>
 
@@ -28,7 +41,9 @@ function PartnerCard({ partner }) {
         {partner.name}
       </h3>
 
-      <p className="text-gray-500 text-xs text-center mb-4">{partner.fullName}</p>
+      <p className="text-gray-500 text-xs text-center mb-4">
+        {partner.fullName}
+      </p>
 
       <p className="text-gray-500 text-sm leading-relaxed flex-1 mb-6 text-center">
         {partner.description}
@@ -40,7 +55,10 @@ function PartnerCard({ partner }) {
           <span
             key={domain}
             className="text-xs px-3 py-1 rounded-full"
-            style={{ backgroundColor: `${partner.logoColor}10`, color: partner.logoColor }}
+            style={{
+              backgroundColor: `${partner.logoColor}10`,
+              color: partner.logoColor,
+            }}
           >
             {domain}
           </span>
@@ -49,7 +67,8 @@ function PartnerCard({ partner }) {
 
       <div className="flex items-center justify-between pt-4 border-t border-gray-50">
         <span className="text-xs text-gray-400">
-          Partenaire depuis <strong className="text-gray-600">{partner.since}</strong>
+          Partenaire depuis{" "}
+          <strong className="text-gray-600">{partner.since}</strong>
         </span>
         <a
           href={partner.website}
@@ -63,7 +82,7 @@ function PartnerCard({ partner }) {
         </a>
       </div>
     </motion.div>
-  )
+  );
 }
 
 export function PartnersSection() {
@@ -99,7 +118,8 @@ export function PartnersSection() {
             Vous souhaitez devenir partenaire ?
           </p>
           <p className="text-gray-500 mb-6 max-w-xl mx-auto text-sm">
-            Rejoignez notre réseau de partenaires engagés pour la protection de l'environnement et le développement durable en Guinée.
+            Rejoignez notre réseau de partenaires engagés pour la protection de
+            l'environnement et le développement durable en Guinée.
           </p>
           <a
             href="/contact"
@@ -110,5 +130,5 @@ export function PartnersSection() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

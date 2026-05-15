@@ -3,11 +3,15 @@ export const SITE_NAME = "C.E.G — Club Environnemental de Guinée";
 export const SITE_DESCRIPTION =
   "ONG Club Environnemental de Guinée - Préservation de l'environnement, développement durable et amélioration des conditions de vie des populations guinéennes.";
 
-export const EMAILJS_SERVICE_ID = "service_ceg_contact";
-export const EMAILJS_TEMPLATE_ID = "template_ceg_contact";
-export const EMAILJS_PUBLIC_KEY = "YOUR_EMAILJS_PUBLIC_KEY";
+export const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+export const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+export const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-export const GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_MAPS_API_KEY";
+export const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+export const GOOGLE_MAPS_DRIVE_API_KEY = import.meta.env
+  .VITE_GOOGLE_DRIVE_API_KEY;
+export const GOOGLE_MAPS_DRIVE_FOLDER_ID = import.meta.env
+  .VITE_GOOGLE_DRIVE_FOLDER_ID;
 
 export const NAV_LINKS = [
   { label: "Accueil", path: "/" },
