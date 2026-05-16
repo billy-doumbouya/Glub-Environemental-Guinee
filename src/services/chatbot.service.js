@@ -19,8 +19,8 @@ const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
  * google/gemini-2.5-flash
  * deepseek/deepseek-chat-v3-0324
  */
-// const MODEL = "google/gemini-2.5-flash";
-const MODEL = "anthropic/claude-sonnet-4";
+const MODEL = "google/gemini-2.5-flash";
+// const MODEL = "anthropic/claude-sonnet-4";
 
 // const MODEL = "openai/gpt-5.2";
 /**

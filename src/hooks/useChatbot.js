@@ -5,7 +5,7 @@ import { sendMessageToAssistant } from "../services/chatbot.service";
 const WELCOME_MESSAGE = {
   id: "welcome",
   role: "assistant",
-  text: "Bonjour ! Je suis **Doré**, l'assistante virtuelle de l'ONG C.E.G 🌿\n\nJe peux vous renseigner sur nos projets, nos domaines d'intervention, les opportunités de partenariat, ou comment nous contacter.\n\nComment puis-je vous aider ?",
+  text: "Bonjour ! Je suis **Doré**, l'assistant virtuelle de l'ONG C.E.G 🌿\n\nJe peux vous renseigner sur nos projets, nos domaines d'intervention, les opportunités de partenariat, ou comment nous contacter.\n\nComment puis-je vous aider ?",
   timestamp: new Date(),
 };
 
