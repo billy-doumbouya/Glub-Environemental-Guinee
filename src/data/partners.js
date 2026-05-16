@@ -21,11 +21,11 @@ export const partners = [
   },
   {
     id: 2,
-    slug: "pnue",
-    name: "PNUE",
+    slug: "pnud",
+    name: "PNUD",
     fullName: "Programme des Nations Unies pour l'Environnement",
     logo: "/assets/images/partner-logo/penue.jpg",
-    logoText: "PNUE",
+    logoText: "PNUD",
     logoColor: "#009EDB",
     category: "Nations Unies",
     description:
