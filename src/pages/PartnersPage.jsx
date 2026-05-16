@@ -1,54 +1,78 @@
-import { motion } from 'framer-motion'
-import { ExternalLink, Globe, Users, Target } from 'lucide-react'
-import { SEO } from '../seo/SEO'
-import { MainLayout } from '../layouts/MainLayout'
-import { PageHero } from '../components/common/PageHero'
-import { SectionTitle } from '../components/common/SectionTitle'
-import { partners } from '../data/partners'
-import { staggerContainer, fadeUp, fadeLeft, fadeRight, viewportConfig } from '../animations/variants'
+import { motion } from "framer-motion";
+import { ExternalLink, Globe, Users, Target } from "lucide-react";
+import { SEO } from "../seo/SEO";
+import { MainLayout } from "../layouts/MainLayout";
+import { PageHero } from "../components/common/PageHero";
+import { SectionTitle } from "../components/common/SectionTitle";
+import { partners } from "../data/partners";
+import {
+  staggerContainer,
+  fadeUp,
+  fadeLeft,
+  fadeRight,
+  viewportConfig,
+} from "../animations/variants";
 
 function PartnerFullCard({ partner, index }) {
-  const isEven = index % 2 === 0
+  const isEven = index % 2 === 0;
   return (
-    <div id={partner.slug} className={`py-20 ${isEven ? 'bg-white' : 'bg-gray-50'}`}>
+    <div
+      id={partner.slug}
+      className={`py-20 ${isEven ? "bg-white" : "bg-gray-50"}`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-w-0">
-        <div className={`grid lg:grid-cols-2 gap-16 items-center ${!isEven ? 'lg:grid-flow-col-dense' : ''}`}>
+        <div
+          className={`grid lg:grid-cols-2 gap-16 items-center ${!isEven ? "lg:grid-flow-col-dense" : ""}`}
+        >
           <motion.div
             variants={fadeLeft}
             initial="hidden"
             whileInView="visible"
             viewport={viewportConfig}
-            className={!isEven ? 'lg:col-start-2' : ''}
+            className={!isEven ? "lg:col-start-2" : ""}
           >
             <div className="flex items-center gap-5 mb-8">
               <div
                 className="h-20 w-40 rounded-2xl flex items-center justify-center text-4xl font-black font-poppins shadow-lg"
-                style={{ backgroundColor: `${partner.logoColor}15`, color: partner.logoColor }}
+                style={{
+                  backgroundColor: `${partner.logoColor}15`,
+                  color: partner.logoColor,
+                }}
               >
                 {partner.logoText}
               </div>
               <div>
-                <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">{partner.category}</span>
-                <h2 className="font-poppins font-bold text-2xl text-gray-900">{partner.name}</h2>
+                <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">
+                  {partner.category}
+                </span>
+                <h2 className="font-poppins font-bold text-2xl text-gray-900">
+                  {partner.name}
+                </h2>
                 <p className="text-gray-500 text-sm">{partner.fullName}</p>
               </div>
             </div>
 
-            <p className="text-gray-600 leading-relaxed mb-8 text-lg">{partner.description}</p>
+            <p className="text-gray-600 leading-relaxed mb-8 text-lg">
+              {partner.description}
+            </p>
 
             <div className="space-y-4 mb-8">
               <div className="flex items-center gap-3 bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
                 <Users className="w-5 h-5 text-gray-400" />
                 <div>
                   <p className="text-xs text-gray-400">Type de partenariat</p>
-                  <p className="font-semibold text-gray-800 text-sm">{partner.partnership}</p>
+                  <p className="font-semibold text-gray-800 text-sm">
+                    {partner.partnership}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-3 bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
                 <Target className="w-5 h-5 text-gray-400" />
                 <div>
                   <p className="text-xs text-gray-400">Partenaire depuis</p>
-                  <p className="font-semibold text-gray-800 text-sm">{partner.since}</p>
+                  <p className="font-semibold text-gray-800 text-sm">
+                    {partner.since}
+                  </p>
                 </div>
               </div>
             </div>
@@ -58,7 +82,10 @@ function PartnerFullCard({ partner, index }) {
                 <span
                   key={d}
                   className="text-sm px-4 py-1.5 rounded-full font-medium"
-                  style={{ backgroundColor: `${partner.logoColor}12`, color: partner.logoColor }}
+                  style={{
+                    backgroundColor: `${partner.logoColor}12`,
+                    color: partner.logoColor,
+                  }}
                 >
                   {d}
                 </span>
@@ -83,18 +110,32 @@ function PartnerFullCard({ partner, index }) {
             initial="hidden"
             whileInView="visible"
             viewport={viewportConfig}
-            className={!isEven ? 'lg:col-start-1 lg:row-start-1' : ''}
+            className={!isEven ? "lg:col-start-1 lg:row-start-1" : ""}
           >
             <div
               className="rounded-3xl p-12 flex flex-col items-center justify-center h-80 shadow-2xl relative overflow-hidden"
-              style={{ background: `linear-gradient(135deg, ${partner.logoColor}ee, ${partner.logoColor}88)` }}
+              style={{
+                background: `linear-gradient(135deg, ${partner.logoColor}ee, ${partner.logoColor}88)`,
+              }}
             >
-              <div className="absolute inset-0 opacity-10"
-                style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-              <p className="font-black text-8xl text-white/20 font-poppins absolute">{partner.logoText}</p>
+              <div
+                className="absolute inset-0 opacity-10"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle, #fff 1px, transparent 1px)",
+                  backgroundSize: "30px 30px",
+                }}
+              />
+              <p className="font-black text-8xl text-white/20 font-poppins absolute">
+                {partner.logoText}
+              </p>
               <div className="relative text-center text-white">
-                <p className="font-poppins font-black text-5xl mb-3">{partner.logoText}</p>
-                <p className="text-white/80 text-sm font-medium">{partner.fullName}</p>
+                <p className="font-poppins font-black text-5xl mb-3">
+                  {partner.logoText}
+                </p>
+                <p className="text-white/80 text-sm font-medium">
+                  {partner.fullName}
+                </p>
                 <div className="mt-6 bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-3 border border-white/30">
                   <p className="font-bold text-lg">Depuis {partner.since}</p>
                   <p className="text-white/70 text-xs">Partenariat actif</p>
@@ -105,7 +146,7 @@ function PartnerFullCard({ partner, index }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default function PartnersPage() {
@@ -121,7 +162,7 @@ export default function PartnersPage() {
           badge="Partenaires de confiance"
           title="Nos Partenaires"
           subtitle="ONG C.E.G collabore avec des organisations internationales reconnues qui garantissent la qualité, la transparence et l'impact de nos interventions."
-          breadcrumb={['Accueil', 'Partenaires']}
+          breadcrumb={["Accueil", "Partenaires"]}
         />
 
         {/* Overview cards */}
@@ -143,7 +184,10 @@ export default function PartnersPage() {
                 >
                   <div
                     className="h-16 w-32 rounded-xl flex items-center justify-center text-2xl font-black font-poppins mx-auto mb-4 shadow-inner"
-                    style={{ backgroundColor: `${p.logoColor}15`, color: p.logoColor }}
+                    style={{
+                      backgroundColor: `${p.logoColor}15`,
+                      color: p.logoColor,
+                    }}
                   >
                     {p.logoText}
                   </div>
@@ -172,10 +216,12 @@ export default function PartnersPage() {
                 Rejoindre notre réseau
               </span>
               <h2 className="font-poppins font-bold text-4xl text-white mb-6">
-                Devenez partenaire de ONG C.E.G
+                Devenez partenaire de l'ONG C.E.G
               </h2>
               <p className="text-gray-300 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-                Vous êtes une organisation internationale, un bailleur de fonds ou une institution souhaitant soutenir les actions environnementales en Guinée ? Contactez-nous.
+                Vous êtes une organisation internationale, un bailleur de fonds
+                ou une institution souhaitant soutenir les actions
+                environnementales en Guinée ? Contactez-nous.
               </p>
               <a
                 href="/contact"
@@ -188,5 +234,5 @@ export default function PartnersPage() {
         </section>
       </MainLayout>
     </>
-  )
+  );
 }
