@@ -43,7 +43,7 @@ export function Navbar() {
             </div>
             <div className="hidden sm:block">
               <p className="font-bold text-green-800 text-sm leading-tight font-poppins">
-                C.E.G
+               ONG C.E.G
               </p>
               <p className="text-xs text-gray-500 leading-tight">
                 Club Environnemental de Guinée

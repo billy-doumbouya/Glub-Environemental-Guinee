@@ -44,7 +44,7 @@ export function ContactForm() {
           Message envoyé avec succès !
         </h3>
         <p className="text-gray-500 mb-8 max-w-sm mx-auto">
-          Merci pour votre message. L'équipe C.E.G vous contactera dans les meilleurs délais.
+          Merci pour votre message. L'équipe ONG C.E.G vous contactera dans les meilleurs délais.
         </p>
         <button
           onClick={resetStatus}

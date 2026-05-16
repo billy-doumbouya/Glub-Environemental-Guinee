@@ -113,14 +113,14 @@ export default function PartnersPage() {
     <>
       <SEO
         title="Partenaires"
-        description="Les partenaires institutionnels de C.E.G : GEF, PNUE, SGP/FEM. Découvrez nos collaborations internationales pour la protection de l'environnement en Guinée."
+        description="Les partenaires institutionnels de ONG C.E.G : GEF, PNUE, SGP/FEM. Découvrez nos collaborations internationales pour la protection de l'environnement en Guinée."
         keywords="partenaires CEG Guinée, GEF Guinée, PNUE Guinée, SGP FEM Guinée, partenariat ONG environnement"
       />
       <MainLayout>
         <PageHero
           badge="Partenaires de confiance"
           title="Nos Partenaires"
-          subtitle="C.E.G collabore avec des organisations internationales reconnues qui garantissent la qualité, la transparence et l'impact de nos interventions."
+          subtitle="ONG C.E.G collabore avec des organisations internationales reconnues qui garantissent la qualité, la transparence et l'impact de nos interventions."
           breadcrumb={['Accueil', 'Partenaires']}
         />
 
@@ -172,7 +172,7 @@ export default function PartnersPage() {
                 Rejoindre notre réseau
               </span>
               <h2 className="font-poppins font-bold text-4xl text-white mb-6">
-                Devenez partenaire de C.E.G
+                Devenez partenaire de ONG C.E.G
               </h2>
               <p className="text-gray-300 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
                 Vous êtes une organisation internationale, un bailleur de fonds ou une institution souhaitant soutenir les actions environnementales en Guinée ? Contactez-nous.

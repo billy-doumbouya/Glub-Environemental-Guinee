@@ -18,7 +18,7 @@ export function Footer() {
                 <Leaf className="w-6 h-6 text-white" />
               </div>
               <div>
-                <p className="font-bold text-white text-lg font-poppins">C.E.G</p>
+                <p className="font-bold text-white text-lg font-poppins">ONG C.E.G</p>
                 <p className="text-green-400 text-xs">Club Environnemental de Guinée</p>
               </div>
             </div>

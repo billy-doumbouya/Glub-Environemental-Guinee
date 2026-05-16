@@ -219,7 +219,7 @@ export function HeroSection() {
                   <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
                     <Leaf className="w-16 h-16 text-green-300 mb-3" />
 
-                    <p className="text-lg font-semibold text-white">C.E.G</p>
+                    <p className="text-lg font-semibold text-white">ONG C.E.G</p>
 
                     <p className="text-sm text-green-300">
                       Club Environnemental de Guinée

@@ -71,7 +71,7 @@ export function Lightbox({ item, onClose }) {
               {item.category}
             </p>
             <p className="text-xs text-gray-400 mt-1">
-              ONG Club Environnemental de Guinée — C.E.G
+              ONG Club Environnemental de Guinée — ONG C.E.G
             </p>
           </div>
 

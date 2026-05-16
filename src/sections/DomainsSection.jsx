@@ -72,7 +72,7 @@ export function DomainsSection() {
         <SectionTitle
           badge="Nos 4 piliers d'action"
           title="Domaines d'intervention"
-          subtitle="C.E.G agit sur quatre axes stratégiques complémentaires pour un impact durable sur les communautés et l'environnement guinéen."
+          subtitle="ONG C.E.G agit sur quatre axes stratégiques complémentaires pour un impact durable sur les communautés et l'environnement guinéen."
         />
 
         <motion.div

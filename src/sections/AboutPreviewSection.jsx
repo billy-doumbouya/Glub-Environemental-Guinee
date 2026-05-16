@@ -31,7 +31,7 @@ export function AboutPreviewSection() {
                   🌍
                 </div>
                 <div className="relative text-center text-white p-8">
-                  <p className="font-poppins font-bold text-5xl mb-2">C.E.G</p>
+                  <p className="font-poppins font-bold text-5xl mb-2">ONG C.E.G</p>
                   <p className="text-green-200 text-sm uppercase tracking-widest">
                     Club Environnemental de Guinée
                   </p>
@@ -98,7 +98,7 @@ export function AboutPreviewSection() {
               to="/a-propos"
               className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-7 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-green-200"
             >
-              En savoir plus sur C.E.G
+              En savoir plus sur ONG C.E.G
               <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>

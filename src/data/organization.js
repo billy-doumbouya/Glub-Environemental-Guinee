@@ -9,9 +9,9 @@ export const organization = {
   email: 'clubenvironnementaldeguinee@gmail.com',
   coordinates: { lat: 9.4295, lng: -13.0827 },
   vision:
-    "C.E.G vise à centrer la préservation et la conservation de l'environnement, la promotion du développement durable et l'amélioration des conditions de vie des populations tout en respectant les limites agroécologiques à travers la participation des parties prenantes.",
+    "ONG C.E.G vise à centrer la préservation et la conservation de l'environnement, la promotion du développement durable et l'amélioration des conditions de vie des populations tout en respectant les limites agroécologiques à travers la participation des parties prenantes.",
   mission:
-    "C.E.G a pour mission de promouvoir le développement des initiatives de développement durable en réconciliant la protection de l'environnement et l'amélioration des pratiques agricoles résilientes par les actions de mobilisation et de sensibilisation communautaire.",
+    "ONG C.E.G a pour mission de promouvoir le développement des initiatives de développement durable en réconciliant la protection de l'environnement et l'amélioration des pratiques agricoles résilientes par les actions de mobilisation et de sensibilisation communautaire.",
   objective:
     'Participer à la préservation des sites sensibles et stratégiques des écosystèmes.',
   socialLinks: {

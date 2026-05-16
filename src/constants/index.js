@@ -1,7 +1,7 @@
 export const SITE_URL = "https://www.clubenvironnementaldeguinee.org";
-export const SITE_NAME = "C.E.G — Club Environnemental de Guinée";
+export const SITE_NAME = "ONG C.E.G — Club Environnemental de Guinée";
 export const SITE_DESCRIPTION =
-  "ONG Club Environnemental de Guinée - Préservation de l'environnement, développement durable et amélioration des conditions de vie des populations guinéennes.";
+  "ONG C.E.G — Club Environnemental de Guinée - Préservation de l'environnement, développement durable et amélioration des conditions de vie des populations guinéennes.";
 
 export const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
 export const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;

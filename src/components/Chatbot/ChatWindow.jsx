@@ -58,7 +58,7 @@ export function ChatWindow({
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 bg-green-300 rounded-full animate-pulse" />
                   <p className="text-green-200 text-[10px]">
-                    Assistante C.E.G · En ligne
+                    Assistante ONG C.E.G · En ligne
                   </p>
                 </div>
               </div>
@@ -150,7 +150,7 @@ export function ChatWindow({
               </button>
             </form>
             <p className="text-[9px] text-gray-300 text-center mt-2">
-              Doré · Assistante virtuelle C.E.G ·
+              Doré · Assistante virtuelle ONG C.E.G ·
             </p>
           </div>
         </motion.div>

@@ -2,7 +2,7 @@ export const timeline = [
   {
     id: 1,
     year: '2016',
-    title: 'Fondation de C.E.G',
+    title: 'Fondation de ONG C.E.G',
     description:
       "Création officielle de l'ONG Club Environnemental de Guinée le 06 Novembre 2016 à Forécariah par un groupe d'activistes environnementaux engagés.",
     icon: 'flag',

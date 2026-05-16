@@ -59,7 +59,7 @@ export const DONATION_IMPACTS = [
 /** Témoignages courts pour la page de don */
 export const DONOR_TESTIMONIALS = [
   {
-    text: "Soutenir C.E.G, c'est investir directement dans l'avenir de nos forêts guinéennes.",
+    text: "Soutenir ONG  C.E.G, c'est investir directement dans l'avenir de nos forêts guinéennes.",
     author: 'Kadiatou S., donatrice',
   },
   {

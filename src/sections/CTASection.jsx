@@ -29,7 +29,7 @@ export function CTASection() {
               <span className="text-green-200">durable en Guinée</span>
             </motion.h2>
             <motion.p variants={fadeUp} className="text-green-100 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-              Que vous soyez partenaire, bailleur, chercheur ou citoyen engagé, votre soutien à C.E.G amplifie l'impact de nos actions environnementales sur le terrain.
+              Que vous soyez partenaire, bailleur, chercheur ou citoyen engagé, votre soutien à ONG C.E.G amplifie l'impact de nos actions environnementales sur le terrain.
             </motion.p>
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/contact" className="inline-flex items-center gap-2 bg-white text-green-700 px-8 py-4 rounded-2xl font-semibold text-base transition-all duration-200 hover:scale-105 shadow-xl">

@@ -84,7 +84,7 @@ export function DonationModal({ isOpen, onClose }) {
                     <Leaf className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="font-poppins font-bold text-white">Faire un don à C.E.G</p>
+                    <p className="font-poppins font-bold text-white">Faire un don à  ONG C.E.G</p>
                     <p className="text-green-200 text-xs">Paiement sécurisé · Mobile Money</p>
                   </div>
                 </div>

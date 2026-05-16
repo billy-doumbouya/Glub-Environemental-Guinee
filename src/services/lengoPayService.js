@@ -48,7 +48,7 @@ export async function initiatePayment({ amount, phone, donorName, donorEmail, tr
       email: donorEmail,
       phone: normalizePhone(phone),
     },
-    description: `Don C.E.G — Club Environnemental de Guinée`,
+    description: `Don ONG C.E.G — Club Environnemental de Guinée`,
     callback_url: `${window.location.origin}/don/confirmation`,
     metadata: {
       organization: 'CEG',

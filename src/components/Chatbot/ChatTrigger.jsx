@@ -6,7 +6,7 @@ export function ChatTrigger({ isOpen, unread, onClick }) {
   return (
     <motion.button
       onClick={onClick}
-      aria-label={isOpen ? 'Fermer le chat' : 'Ouvrir l\'assistant C.E.G'}
+      aria-label={isOpen ? 'Fermer le chat' : 'Ouvrir l\'assistant ONG C.E.G'}
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.95 }}
       className="fixed bottom-5 right-4 sm:right-6 z-50 w-14 h-14 bg-gradient-to-br from-green-600 to-green-800 rounded-2xl shadow-xl shadow-green-900/40 flex items-center justify-center border border-green-500/30"

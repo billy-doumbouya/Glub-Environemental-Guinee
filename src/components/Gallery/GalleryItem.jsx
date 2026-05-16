@@ -57,7 +57,7 @@ export function GalleryItem({ item, onOpen }) {
         {!hasError && src ? (
           <img
             src={src}
-            alt={item.alt || item.title || "Photo C.E.G"}
+            alt={item.alt || item.title || "Photo  ONG C.E.G"}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy"
             onError={handleError}
