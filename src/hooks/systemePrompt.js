@@ -75,7 +75,7 @@ Réseaux sociaux :
   YouTube   → https://www.youtube.com/@CEGONG
   Facebook  → https://www.facebook.com/share/1ENT2ivSTK/
   TikTok    → https://www.tiktok.com/@ongceg
-  Instagram → Compte officiel C.E.G
+  Instagram → Compte officiel ONG C.E.G
 
 ════════════════════════════════════════
 VISION ET MISSION

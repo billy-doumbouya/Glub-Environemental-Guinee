@@ -7,7 +7,7 @@ import { fadeLeft, fadeRight, viewportConfig } from "../animations/variants";
 
 const highlights = [
   "Agrément officiel du Ministère de l'Administration",
-  "Partenaire reconnu du GEF, PNUE et SGP",
+  "Partenaire reconnu du GEF, PNUD et SGP",
   "Interventions dans 8 préfectures guinéennes",
   "Plus de 12 000 bénéficiaires directs depuis 2016",
 ];
@@ -72,7 +72,7 @@ export function AboutPreviewSection() {
           >
             <span className="inline-flex items-center gap-2 bg-green-50 text-green-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 border border-green-100">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />À propos
-              de C.E.G
+              de ONG C.E.G
             </span>
             <h2 className="font-poppins font-bold text-4xl text-gray-900 mb-6 leading-tight">
               Une ONG engagée pour{" "}

@@ -1,6 +1,6 @@
 export const organization = {
   name: 'Club Environnemental de Guinée',
-  acronym: 'C.E.G',
+  acronym: 'ONG C.E.G',
   fullName: 'ONG Club Environnemental de Guinée (C.E.G)',
   created: '06 Novembre 2016',
   agreement: 'A/N°7838 /MATD/CAB/SERPROMA/2018',
