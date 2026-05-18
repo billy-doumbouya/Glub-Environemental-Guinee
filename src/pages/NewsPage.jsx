@@ -1,113 +1,205 @@
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Calendar, User, Tag, ArrowRight } from 'lucide-react'
-import { SEO } from '../seo/SEO'
-import { MainLayout } from '../layouts/MainLayout'
-import { PageHero } from '../components/common/PageHero'
-import { news } from '../data/news'
-import { staggerContainer, fadeUp, viewportConfig } from '../animations/variants'
+import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Calendar, User, Tag, ArrowRight, X } from "lucide-react";
+import { SEO } from "../seo/SEO";
+import { MainLayout } from "../layouts/MainLayout";
+import { PageHero } from "../components/common/PageHero";
+import { news } from "../data/news";
+import { staggerContainer, fadeUp } from "../animations/variants";
 
-const categories = ['Toutes', 'Événement', 'Formation', 'Partenariat', 'Publication']
-
+// Configuration sémantique des jetons de couleur des catégories (Fallback inclus)
 const categoryColors = {
-  Événement: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-100' },
-  Formation: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-100' },
-  Partenariat: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-100' },
-  Publication: { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-100' },
-}
+  Événement: {
+    bg: "bg-green-500/10",
+    text: "text-green-300",
+    border: "border-green-500/30",
+  },
+  Formation: {
+    bg: "bg-blue-500/10",
+    text: "text-blue-300",
+    border: "border-blue-500/30",
+  },
+  Partenariat: {
+    bg: "bg-amber-500/10",
+    text: "text-amber-300",
+    border: "border-amber-500/30",
+  },
+  Publication: {
+    bg: "bg-purple-500/10",
+    text: "text-purple-300",
+    border: "border-purple-500/30",
+  },
+  Default: {
+    bg: "bg-white/10",
+    text: "text-gray-300",
+    border: "border-white/20",
+  },
+};
 
-function NewsCard({ article, featured = false }) {
-  const cat = categoryColors[article.category] || { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-100' }
+/**
+ * COMPOSANT : NewsCard
+ * Rendu atomique d'une actualité avec UI Glassmorphic
+ */
+function NewsCard({ article, featured = false, onReadMore }) {
+  const catColor = categoryColors[article.category] || categoryColors.Default;
 
   return (
     <motion.article
       variants={fadeUp}
-      className={`group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 flex ${featured ? 'flex-row' : 'flex-col'}`}
+      whileHover={{ y: -6, transition: { duration: 0.2 } }}
+      className={`group relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl overflow-hidden shadow-xl transition-all duration-300 flex flex-col justify-between ${
+        featured ? "md:flex-row lg:col-span-3 min-h-[320px]" : "h-full"
+      }`}
+      style={{
+        boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.04)",
+      }}
     >
-      <div className={`bg-gradient-to-br from-green-700 to-green-950 relative overflow-hidden ${featured ? 'w-72 shrink-0' : 'h-48'}`}>
-        <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-20">🌿</div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-        <div className="absolute top-4 left-4">
-          <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${cat.bg} ${cat.text} ${cat.border}`}>
+      {/* Container visuel supérieur / latéral */}
+      <div
+        className={`bg-gradient-to-br from-green-800/80 to-slate-900 relative overflow-hidden flex-stretch min-h-[200px] ${
+          featured ? "md:w-96 shrink-0" : "w-full"
+        }`}
+      >
+        <div className="absolute inset-0 flex items-center justify-center text-7xl opacity-10 select-none pointer-events-none">
+          🌿
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
+
+        {/* Chips de catégorie */}
+        <div className="absolute top-4 left-4 z-10">
+          <span
+            className={`text-xs font-semibold px-3 py-1.5 rounded-xl border backdrop-blur-md ${catColor.bg} ${catColor.text} ${catColor.border}`}
+          >
             {article.category}
           </span>
         </div>
+
         {article.featured && (
-          <div className="absolute bottom-4 left-4">
-            <span className="bg-amber-400 text-white text-xs font-bold px-3 py-1 rounded-full">À la une</span>
+          <div className="absolute bottom-4 left-4 z-10">
+            <span className="bg-amber-500/90 text-slate-950 text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg backdrop-blur-sm">
+              À la une
+            </span>
           </div>
         )}
       </div>
 
-      <div className="p-6 flex flex-col flex-1">
-        <div className="flex flex-wrap items-center gap-3 mb-3 text-xs text-gray-400">
-          <span className="flex items-center gap-1">
-            <Calendar className="w-3 h-3" />{article.date}
-          </span>
-          <span className="flex items-center gap-1">
-            <User className="w-3 h-3" />{article.author}
-          </span>
-        </div>
-
-        <h3 className="font-poppins font-bold text-gray-900 text-lg leading-tight mb-3 group-hover:text-green-700 transition-colors">
-          {article.title}
-        </h3>
-
-        <p className="text-gray-500 text-sm leading-relaxed mb-4 flex-1">{article.excerpt}</p>
-
-        <div className="flex flex-wrap gap-2 mb-4">
-          {article.tags.map((tag) => (
-            <span key={tag} className="flex items-center gap-1 text-xs bg-gray-50 text-gray-500 px-2.5 py-1 rounded-full">
-              <Tag className="w-2.5 h-2.5" />{tag}
+      {/* Corps éditorial */}
+      <div className="p-6 flex flex-col flex-1 justify-between">
+        <div>
+          {/* Métadonnées */}
+          <div className="flex flex-wrap items-center gap-4 mb-4 text-xs text-gray-400">
+            <span className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg border border-white/5">
+              <Calendar className="w-3.5 h-3.5 text-green-400" />
+              {article.date}
             </span>
-          ))}
+            <span className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg border border-white/5">
+              <User className="w-3.5 h-3.5 text-green-400" />
+              {article.author}
+            </span>
+          </div>
+
+          {/* Titre */}
+          <h3 className="font-poppins font-bold text-slate-800 text-xl leading-snug mb-3 group-hover:text-green-600 transition-colors duration-300">
+            {article.title}
+          </h3>
+
+          {/* Extrait */}
+          <p className="text-gray-600 text-sm leading-relaxed mb-5 line-clamp-3">
+            {article.excerpt}
+          </p>
         </div>
 
-        <button className="inline-flex items-center gap-1.5 text-green-600 text-sm font-semibold self-start">
-          Lire la suite <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </button>
+        <div>
+          {/* Tags */}
+          <div className="flex flex-wrap gap-1.5 mb-5">
+            {article.tags.map((tag) => (
+              <span
+                key={tag}
+                className="flex items-center gap-1 text-[11px] bg-slate-50 text-slate-600 border border-slate-100 px-2.5 py-1 rounded-lg"
+              >
+                <Tag className="w-2.5 h-2.5 opacity-60" />
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Bouton d'action dynamique */}
+          <button
+            onClick={() => onReadMore(article)}
+            className="inline-flex items-center gap-2 text-green-600 text-sm font-bold bg-green-50 hover:bg-green-100 px-4 py-2 rounded-xl transition-all duration-200 group/btn"
+          >
+            Lire la suite
+            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+          </button>
+        </div>
       </div>
     </motion.article>
-  )
+  );
 }
 
+/**
+ * COMPOSANT PRINCIPAL : NewsPage
+ */
 export default function NewsPage() {
-  const [activeFilter, setActiveFilter] = useState('Toutes')
+  const [activeFilter, setActiveFilter] = useState("Toutes");
+  const [selectedArticle, setSelectedArticle] = useState(null);
 
-  const filtered = activeFilter === 'Toutes'
-    ? news
-    : news.filter((n) => n.category === activeFilter)
+  /**
+   * EXTRACTION DYNAMIQUE DES CATÉGORIES (Senior Pattern)
+   */
+  const computedCategories = useMemo(() => {
+    if (!news || news.length === 0) return ["Toutes"];
+    const uniqueCategories = new Set(news.map((item) => item.category));
+    return ["Toutes", ...Array.from(uniqueCategories)];
+  }, []);
 
-  const featured = filtered.find((n) => n.featured)
-  const others = filtered.filter((n) => !n.featured || filtered.indexOf(n) > 0)
+  /**
+   * FILTRAGE DES DONNÉES
+   */
+  const filteredNews = useMemo(() => {
+    if (activeFilter === "Toutes") return news || [];
+    return news.filter((n) => n.category === activeFilter);
+  }, [activeFilter]);
+
+  // Isolation de l'article mis en avant s'il existe au sein de la collection filtrée
+  const featuredArticle = useMemo(
+    () => filteredNews.find((n) => n.featured),
+    [filteredNews],
+  );
+  const secondaryArticles = useMemo(() => {
+    return filteredNews.filter(
+      (n) => !n.featured || filteredNews.indexOf(n) > 0,
+    );
+  }, [filteredNews]);
 
   return (
     <>
       <SEO
         title="Actualités"
-        description="Suivez les dernières actualités, événements, formations et publications de l'ONG Club Environnemental de Guinée (C.E.G)."
-        keywords="actualités CEG Guinée, événements ONG environnement, nouvelles club environnemental Guinée"
+        description="Suivez les dernières actualités de l'ONG Club Environnemental de Guinée (C.E.G)."
+        keywords="actualités CEG Guinée, événements ONG environnement"
       />
       <MainLayout>
         <PageHero
           badge="Restez informé"
           title="Actualités"
           subtitle="Découvrez les dernières nouvelles, événements et publications de l'ONG C.E.G."
-          breadcrumb={['Accueil', 'Actualités']}
+          breadcrumb={["Accueil", "Actualités"]}
         />
 
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Filters */}
-            <div className="flex flex-wrap gap-3 justify-center mb-12">
-              {categories.map((cat) => (
+        {/* Section de contenu avec arrière-plan immersif */}
+        <section className="py-20 bg-gradient-to-tr from-slate-50 via-slate-100 to-green-50/40 min-h-screen relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            {/* FILTRES DYNAMIQUES - Ultra Glassmorphism */}
+            <div className="flex flex-wrap gap-2.5 justify-center mb-16 p-3 bg-white/30 backdrop-blur-xl border border-white/40 rounded-2xl shadow-sm max-w-3xl mx-auto">
+              {computedCategories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setActiveFilter(cat)}
-                  className={`px-5 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
                     activeFilter === cat
-                      ? 'bg-green-600 text-white shadow-md shadow-green-200'
-                      : 'bg-gray-50 text-gray-600 hover:bg-green-50 hover:text-green-700'
+                      ? "bg-green-600 text-white shadow-lg shadow-green-600/30 scale-105"
+                      : "bg-white/50 hover:bg-white/90 text-slate-700 border border-white/20 backdrop-blur-sm"
                   }`}
                 >
                   {cat}
@@ -115,13 +207,18 @@ export default function NewsPage() {
               ))}
             </div>
 
-            {/* Featured article */}
-            {featured && (
-              <div className="mb-10">
-                <NewsCard article={featured} featured />
+            {/* BLOC ARTICLE À LA UNE */}
+            {featuredArticle && (
+              <div className="mb-12">
+                <NewsCard
+                  article={featuredArticle}
+                  featured
+                  onReadMore={setSelectedArticle}
+                />
               </div>
             )}
 
+            {/* GRILLE SECONDAIRE */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeFilter}
@@ -130,20 +227,77 @@ export default function NewsPage() {
                 animate="visible"
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
               >
-                {others.map((article) => (
-                  <NewsCard key={article.id} article={article} />
+                {secondaryArticles.map((article) => (
+                  <NewsCard
+                    key={article.id}
+                    article={article}
+                    onReadMore={setSelectedArticle}
+                  />
                 ))}
               </motion.div>
             </AnimatePresence>
 
-            {filtered.length === 0 && (
-              <div className="text-center py-20 text-gray-400">
-                <p className="text-lg">Aucune actualité dans cette catégorie.</p>
+            {/* ÉTAT VIDE */}
+            {filteredNews.length === 0 && (
+              <div className="text-center py-20 text-gray-400 bg-white/20 backdrop-blur-md border border-white/20 rounded-2xl">
+                <p className="text-lg font-medium">
+                  Aucune actualité disponible dans cette catégorie.
+                </p>
               </div>
             )}
           </div>
         </section>
+
+        {/* MODAL / DRAWER GLASSMORPHIC (Interactivité "Lire la suite") */}
+        <AnimatePresence>
+          {selectedArticle && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedArticle(null)}
+              className="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto"
+            >
+              <motion.div
+                initial={{ scale: 0.95, y: 20, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
+                exit={{ scale: 0.95, y: 20, opacity: 0 }}
+                transition={{ type: "spring", duration: 0.5 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-white/80 backdrop-blur-2xl border border-white/50 max-w-2xl w-full rounded-3xl p-6 md:p-8 shadow-2xl relative my-auto"
+              >
+                {/* Fermeture */}
+                <button
+                  onClick={() => setSelectedArticle(null)}
+                  className="absolute top-5 right-5 p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+
+                {/* Contenu Article Complet */}
+                <div className="space-y-4">
+                  <span className="text-xs font-bold uppercase tracking-wide text-green-600 bg-green-50 px-3 py-1 rounded-lg inline-block">
+                    {selectedArticle.category}
+                  </span>
+                  <h2 className="text-2xl md:text-3xl font-poppins font-black text-slate-900 leading-tight">
+                    {selectedArticle.title}
+                  </h2>
+                  <div className="flex items-center gap-4 text-xs text-slate-500 py-2 border-y border-slate-100">
+                    <span>📅 {selectedArticle.date}</span>
+                    <span>✍️ {selectedArticle.author}</span>
+                  </div>
+                  <div className="text-slate-700 text-sm md:text-base leading-relaxed space-y-4 pt-2">
+                    <p className="font-medium text-slate-900">
+                      {selectedArticle.excerpt}
+                    </p>
+                    <p>{selectedArticle.content}</p>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </MainLayout>
     </>
-  )
+  );
 }

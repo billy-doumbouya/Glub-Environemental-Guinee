@@ -38,7 +38,7 @@ export const partners = [
   {
     id: 3,
     slug: "sgp",
-    name: "SGP / FEM",
+    name: "SGP",
     fullName: "Programme de Microfinancements du FEM",
     logo: "/assets/images/partner-logo/sgp.jpg",
     logoText: "SGP",

@@ -31,7 +31,9 @@ export function AboutPreviewSection() {
                   🌍
                 </div>
                 <div className="relative text-center text-white p-8">
-                  <p className="font-poppins font-bold text-5xl mb-2">ONG C.E.G</p>
+                  <p className="font-poppins font-bold text-5xl mb-2">
+                    ONG C.E.G
+                  </p>
                   <p className="text-green-200 text-sm uppercase tracking-widest">
                     Club Environnemental de Guinée
                   </p>
@@ -72,7 +74,7 @@ export function AboutPreviewSection() {
           >
             <span className="inline-flex items-center gap-2 bg-green-50 text-green-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 border border-green-100">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />À propos
-              de ONG C.E.G
+              de l'ONG C.E.G
             </span>
             <h2 className="font-poppins font-bold text-4xl text-gray-900 mb-6 leading-tight">
               Une ONG engagée pour{" "}
@@ -82,7 +84,7 @@ export function AboutPreviewSection() {
               {organization.mission}
             </p>
             <p className="text-gray-500 leading-relaxed mb-8">
-              Fondée le {organization.created}, l'ONG C.E.G intervient dans 4
+              Créée le {organization.created}, l'ONG C.E.G intervient dans 4
               domaines stratégiques pour réconcilier la protection de
               l'environnement avec le développement humain durable en Guinée.
             </p>

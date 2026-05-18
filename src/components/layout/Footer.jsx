@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom'
-import { Leaf, Mail, Phone, MapPin } from 'lucide-react'
-import { FaFacebook, FaInstagram, FaYoutube, FaTiktok } from 'react-icons/fa'
-import { organization } from '../../data/organization'
-import { NAV_LINKS } from '../../constants'
+import { Link } from "react-router-dom";
+import { Leaf, Mail, Phone, MapPin } from "lucide-react";
+import { FaFacebook, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa";
+import { organization } from "../../data/organization";
+import { NAV_LINKS } from "../../constants";
 
 export function Footer() {
-  const year = new Date().getFullYear()
+  const year = new Date().getFullYear();
 
   return (
     <footer className="bg-green-950 text-white">
@@ -18,19 +18,40 @@ export function Footer() {
                 <Leaf className="w-6 h-6 text-white" />
               </div>
               <div>
-                <p className="font-bold text-white text-lg font-poppins">ONG C.E.G</p>
-                <p className="text-green-400 text-xs">Club Environnemental de Guinée</p>
+                <p className="font-bold text-white text-lg font-poppins">
+                  ONG C.E.G
+                </p>
+                <p className="text-green-400 text-xs">
+                  Club Environnemental de Guinée
+                </p>
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              ONG dédiée à la préservation de l'environnement et au développement durable en République de Guinée depuis 2016.
+              ONG dédiée à la préservation de l'environnement et au
+              développement durable en République de Guinée depuis 2016.
             </p>
             <div className="flex gap-3">
               {[
-                { href: organization.socialLinks.facebookPage, icon: FaFacebook, label: 'Facebook' },
-                { href: organization.socialLinks.instagram, icon: FaInstagram, label: 'Instagram' },
-                { href: organization.socialLinks.youtube, icon: FaYoutube, label: 'YouTube' },
-                { href: organization.socialLinks.tiktok, icon: FaTiktok, label: 'TikTok' },
+                {
+                  href: organization.socialLinks.facebookPage,
+                  icon: FaFacebook,
+                  label: "Facebook",
+                },
+                {
+                  href: organization.socialLinks.instagram,
+                  icon: FaInstagram,
+                  label: "Instagram",
+                },
+                {
+                  href: organization.socialLinks.youtube,
+                  icon: FaYoutube,
+                  label: "YouTube",
+                },
+                {
+                  href: organization.socialLinks.tiktok,
+                  icon: FaTiktok,
+                  label: "TikTok",
+                },
               ].map(({ href, icon: Icon, label }) => (
                 <a
                   key={label}
@@ -48,11 +69,16 @@ export function Footer() {
 
           {/* Navigation */}
           <div>
-            <h3 className="font-semibold text-white mb-6 font-poppins text-sm uppercase tracking-wider">Navigation</h3>
+            <h3 className="font-semibold text-white mb-6 font-poppins text-sm uppercase tracking-wider">
+              Navigation
+            </h3>
             <ul className="space-y-3">
               {NAV_LINKS.map((link) => (
                 <li key={link.path}>
-                  <Link to={link.path} className="text-gray-400 hover:text-green-400 text-sm transition-colors flex items-center gap-2 group">
+                  <Link
+                    to={link.path}
+                    className="text-gray-400 hover:text-green-400 text-sm transition-colors flex items-center gap-2 group"
+                  >
                     <span className="w-1.5 h-1.5 bg-green-600 rounded-full group-hover:bg-green-400 transition-colors" />
                     {link.label}
                   </Link>
@@ -63,11 +89,21 @@ export function Footer() {
 
           {/* Domains */}
           <div>
-            <h3 className="font-semibold text-white mb-6 font-poppins text-sm uppercase tracking-wider">Nos Domaines</h3>
+            <h3 className="font-semibold text-white mb-6 font-poppins text-sm uppercase tracking-wider">
+              Nos Domaines
+            </h3>
             <ul className="space-y-3">
-              {['Environnement & Durable', 'Genre & Gouvernance', 'Santé Communautaire', 'Recherche & Formation'].map((d) => (
+              {[
+                "Environnement & Développement Durable",
+                "Genre Inclusion & Gouvernance Locale",
+                "Santé Communautaire Intégréé",
+                "Recherche Action & Formation",
+              ].map((d) => (
                 <li key={d}>
-                  <Link to="/domaines" className="text-gray-400 hover:text-green-400 text-sm transition-colors flex items-center gap-2 group">
+                  <Link
+                    to="/domaines"
+                    className="text-gray-400 hover:text-green-400 text-sm transition-colors flex items-center gap-2 group"
+                  >
                     <span className="w-1.5 h-1.5 bg-green-600 rounded-full group-hover:bg-green-400 transition-colors" />
                     {d}
                   </Link>
@@ -78,21 +114,35 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="font-semibold text-white mb-6 font-poppins text-sm uppercase tracking-wider">Contact</h3>
+            <h3 className="font-semibold text-white mb-6 font-poppins text-sm uppercase tracking-wider">
+              Contact
+            </h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
-                <span className="text-gray-400 text-sm">{organization.headquarters}</span>
+                <span className="text-gray-400 text-sm">
+                  {organization.headquarters}
+                </span>
               </li>
               {organization.phones.map((phone) => (
                 <li key={phone} className="flex items-center gap-3">
                   <Phone className="w-4 h-4 text-green-400 shrink-0" />
-                  <a href={`tel:${phone}`} className="text-gray-400 hover:text-green-400 text-sm transition-colors">{phone}</a>
+                  <a
+                    href={`tel:${phone}`}
+                    className="text-gray-400 hover:text-green-400 text-sm transition-colors"
+                  >
+                    {phone}
+                  </a>
                 </li>
               ))}
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-green-400 shrink-0" />
-                <a href={`mailto:${organization.email}`} className="text-gray-400 hover:text-green-400 text-sm transition-colors break-all">{organization.email}</a>
+                <a
+                  href={`mailto:${organization.email}`}
+                  className="text-gray-400 hover:text-green-400 text-sm transition-colors break-all"
+                >
+                  {organization.email}
+                </a>
               </li>
             </ul>
           </div>
@@ -101,10 +151,15 @@ export function Footer() {
 
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gray-500 text-sm text-center">© {year} ONG Club Environnemental de Guinée — Agrément {organization.agreement}</p>
-          <p className="text-gray-600 text-xs">Fondée le {organization.created}</p>
+          <p className="text-gray-500 text-sm text-center">
+            © {year} ONG Club Environnemental de Guinée — Agrément{" "}
+            {organization.agreement}
+          </p>
+          <p className="text-gray-600 text-xs">
+            Fondée le {organization.created}
+          </p>
         </div>
       </div>
     </footer>
-  )
+  );
 }
