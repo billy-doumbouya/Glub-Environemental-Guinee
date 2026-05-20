@@ -9,7 +9,7 @@ import { MIN_AMOUNT, MAX_AMOUNT } from "../data/donationData";
 import {
   generateTransactionId,
   initiatePayment,
-} from "../services/genunePayService";
+} from "../services/geniusPayService"; // ← nom mis à jour
 
 const schema = yup.object({
   donorName: yup
@@ -38,13 +38,9 @@ const schema = yup.object({
     }),
 });
 
-/**
- * Statuts possibles :
- * idle | loading | awaiting_payment | success | error
- */
 export function useDonation({ onSuccess } = {}) {
-  const [selectedTier, setSelectedTier] = useState(null); // id du palier choisi
-  const [isCustom, setIsCustom] = useState(false); // montant libre activé
+  const [selectedTier, setSelectedTier] = useState(null);
+  const [isCustom, setIsCustom] = useState(false);
   const [status, setStatus] = useState("idle");
   const [transactionId, setTransactionId] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -55,7 +51,6 @@ export function useDonation({ onSuccess } = {}) {
     mode: "onChange",
   });
 
-  /** Sélectionner un palier prédéfini */
   const selectTier = useCallback(
     (tier) => {
       setSelectedTier(tier.id);
@@ -65,13 +60,11 @@ export function useDonation({ onSuccess } = {}) {
     [form],
   );
 
-  /** Activer le champ montant libre */
   const enableCustom = useCallback(() => {
     setSelectedTier(null);
     setIsCustom(true);
   }, []);
 
-  /** Résout le montant final selon le mode */
   const resolveAmount = useCallback(
     (tiers, customAmountValue) => {
       if (isCustom) return Number(customAmountValue);
@@ -102,39 +95,31 @@ export function useDonation({ onSuccess } = {}) {
         try {
           const result = await initiatePayment({
             amount,
-            phone: data.phone,
+            // phone retiré : GeniusPay le demande sur sa page checkout
             donorName: data.donorName,
             donorEmail: data.donorEmail,
             transactionId: txId,
           });
 
-          // Si LengoPay retourne une URL de redirection
+          // GeniusPay retourne toujours une checkoutUrl → redirection
           if (result.paymentUrl) {
+            // Envoi reçu email avant de quitter la page
+            await sendDonationReceipt({
+              donorName: data.donorName,
+              donorEmail: data.donorEmail,
+              amount,
+              transactionId: txId,
+            }).catch(() => {}); // silencieux si email échoue
+
             window.location.href = result.paymentUrl;
             return;
           }
 
-          // Sinon : paiement initié → attente confirmation OTP sur le téléphone
-          setStatus("awaiting_payment");
-
-          // Envoi reçu email (silencieux si template non configuré)
-          await sendDonationReceipt({
-            donorName: data.donorName,
-            donorEmail: data.donorEmail,
-            amount,
-            transactionId: txId,
-          });
-
-          // Après 3s simuler la confirmation (remplacer par webhook réel si dispo)
-          setTimeout(() => {
-            setStatus("success");
-            form.reset();
-            setSelectedTier(null);
-            setIsCustom(false);
-            onSuccess?.({ amount, txId, donorName: data.donorName });
-          }, 3000);
+          // Fallback si pas d'URL (ne devrait pas arriver avec GeniusPay)
+          setStatus("success");
+          onSuccess?.({ amount, txId, donorName: data.donorName });
         } catch (err) {
-          console.error("[Donation] Erreur LengoPay:", err.message);
+          console.error("[Donation] Erreur GeniusPay:", err.message);
           setStatus("error");
           setErrorMessage(
             err.message || "Une erreur est survenue. Veuillez réessayer.",

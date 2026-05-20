@@ -26,3 +26,5 @@ dist-ssr
 .env.*.local
 *.pem
 *.key
+.vercel
+.env*.local
