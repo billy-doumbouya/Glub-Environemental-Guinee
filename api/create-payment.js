@@ -48,6 +48,7 @@ export default async function handler(req, res) {
       checkoutUrl: data.data.checkout_url,
     });
   } catch (err) {
+    console.log("Catch error:", err.message);
     res.status(500).json({ error: "Erreur serveur interne" });
   }
 }
