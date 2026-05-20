@@ -39,7 +39,7 @@ export const testimonials = [
     name: "Mariame Traore",
     role: "Presidente groupement feminin Bankoya/Dabola",
     content:
-      "L'ONG C.E.G nous a permis de creer une caisse d'epargne locale sur la base de la vente de nos produits potagers. Laquelle nous permet de satisfaire les boins primaire. ",
+      "L'ONG C.E.G nous a permis de creer une caisse d'epargne locale sur la base de la vente de nos produits potagers. Laquelle nous permet de satisfaire les besoins primaire. ",
     avatar: null,
     rating: 5,
   },
