@@ -9,13 +9,12 @@ export default async function handler(req, res) {
   try {
     const response = await fetch(
       "https://pay.genius.ci/api/v1/merchant/payments",
-
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "X-API-Key": process.env.GENIUSPAY_PUBLIC_KEY,
-          "X-API-Secret": process.env.GENIUSPAY_SECRET_KEY, // ✅ jamais visible côté client
+          "X-API-Secret": process.env.GENIUSPAY_SECRET_KEY,
         },
         body: JSON.stringify({
           amount,
@@ -28,10 +27,13 @@ export default async function handler(req, res) {
         }),
       },
     );
-    // Log temporaire — à supprimer après debug
+
+    // ✅ data défini AVANT d'être utilisé
+    const data = await response.json();
+
+    // Log temporaire
     console.log("Status:", response.status);
     console.log("GeniusPay error:", JSON.stringify(data));
-    const data = await response.json();
 
     if (!response.ok) {
       return res
