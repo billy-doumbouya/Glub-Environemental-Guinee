@@ -9,6 +9,7 @@ export default async function handler(req, res) {
   try {
     const response = await fetch(
       "https://pay.genius.ci/api/v1/merchant/payments",
+
       {
         method: "POST",
         headers: {
@@ -27,7 +28,9 @@ export default async function handler(req, res) {
         }),
       },
     );
-
+    // Log temporaire — à supprimer après debug
+    console.log("Status:", response.status);
+    console.log("GeniusPay error:", JSON.stringify(data));
     const data = await response.json();
 
     if (!response.ok) {
