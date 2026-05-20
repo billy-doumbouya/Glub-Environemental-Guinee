@@ -160,7 +160,7 @@ export default function PartnersPage() {
       <MainLayout>
         <PageHero
           badge="Partenaires de confiance"
-          title="Nos Partenaires"
+          title="Nos Partenaires Financiers"
           subtitle="ONG C.E.G collabore avec des organisations internationales reconnues qui garantissent la qualité, la transparence et l'impact de nos interventions."
           breadcrumb={["Accueil", "Partenaires"]}
         />
@@ -189,7 +189,17 @@ export default function PartnersPage() {
                       color: p.logoColor,
                     }}
                   >
-                    {p.logoText}
+                    {p.logo ? (
+                      <img
+                        src={p.logo}
+                        alt={`${p.name} logo`}
+                        className="w-full max-w-full object-contain"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-white text-5xl">
+                        🌿
+                      </div>
+                    )}
                   </div>
                   <p className="font-bold text-gray-900">{p.name}</p>
                   <p className="text-gray-400 text-xs mt-1">{p.category}</p>

@@ -12,7 +12,6 @@ const categories = [
   ...new Set(projects.map((p) => p.category).filter(Boolean)),
 ];
 
-
 const statuses = {
   completed: {
     label: "Terminé",
@@ -116,7 +115,7 @@ function ProjectCard({ project }) {
         <div className="mt-4 bg-green-50 rounded-xl px-4 py-2.5 flex items-center justify-between border border-green-100">
           <span className="text-xs text-gray-500">Budget du projet</span>
           <span className="text-sm font-bold text-green-700">
-            {project.budget}
+            {project.budget ? project.budget : "Non renseigné"}
           </span>
         </div>
       </div>

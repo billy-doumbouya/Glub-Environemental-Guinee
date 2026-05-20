@@ -91,8 +91,8 @@ export function PartnersSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionTitle
           badge="Nos partenaires de confiance"
-          title="Partenaires institutionnels"
-          subtitle="ONG C.E.G bénéficie du soutien de partenaires internationaux reconnus, gage de sérieux et de crédibilité de nos actions sur le terrain."
+          title="Partenaires Financiers"
+          subtitle="L'ONG C.E.G bénéficie du soutien de partenaires financiers internationaux, gage de sérieux et de crédibilité de nos actions sur le terrain."
         />
 
         <motion.div

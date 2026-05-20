@@ -6,9 +6,9 @@ import { SectionTitle } from "../components/common/SectionTitle";
 import { fadeLeft, fadeRight, viewportConfig } from "../animations/variants";
 
 const highlights = [
-  "Agrément officiel du Ministère de l'Administration",
-  "Partenaire reconnu du GEF, PNUD et SGP",
-  "Interventions dans 8 préfectures guinéennes",
+  "Agrément officiel du Ministère de l'Administration du Territoire et de la Decentralisation (MATD)",
+  "Partenaires financiers: SGP/GEF/PNUD-Guinee ",
+  "Interventions dans 5 préfectures guinéennes",
   "Plus de 12 000 bénéficiaires directs depuis 2016",
 ];
 

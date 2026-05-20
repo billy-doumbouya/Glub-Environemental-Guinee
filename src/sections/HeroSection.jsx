@@ -219,7 +219,9 @@ export function HeroSection() {
                   <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
                     <Leaf className="w-16 h-16 text-green-300 mb-3" />
 
-                    <p className="text-lg font-semibold text-white">ONG C.E.G</p>
+                    <p className="text-lg font-semibold text-white">
+                      ONG C.E.G
+                    </p>
 
                     <p className="text-sm text-green-300">
                       Club Environnemental de Guinée
@@ -230,8 +232,8 @@ export function HeroSection() {
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { value: "8+", label: "Années" },
-                    { value: "15+", label: "Projets" },
+                    { value: "10+", label: "Années" },
+                    { value: "8+", label: "Projets" },
                     { value: "12K+", label: "Bénéficiaires" },
                     { value: "3", label: "Partenaires" },
                   ].map(({ value, label }) => (

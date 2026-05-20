@@ -3,12 +3,13 @@ import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-  initiatePayment,
-  generateTransactionId,
-} from "../services/lengoPayService";
+
 import { sendDonationReceipt } from "../services/donationReceiptService";
 import { MIN_AMOUNT, MAX_AMOUNT } from "../data/donationData";
+import {
+  generateTransactionId,
+  initiatePayment,
+} from "../services/genunePayService";
 
 const schema = yup.object({
   donorName: yup
