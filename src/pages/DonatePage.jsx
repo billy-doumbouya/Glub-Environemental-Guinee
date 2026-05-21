@@ -1,24 +1,17 @@
 // src/pages/DonatePage.jsx
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Heart, Shield, Lock, Star } from "lucide-react";
-import { SEO } from "../seo/SEO";
-import { MainLayout } from "../layouts/MainLayout";
-import { PageHero } from "../components/common/PageHero";
-import { DonationModal } from "../components/donation/DonationModal";
-import {
-  DONATION_IMPACTS,
-  DONOR_TESTIMONIALS,
-  DONATION_TIERS,
-} from "../data/donationData";
-import {
-  staggerContainer,
-  fadeUp,
-  fadeLeft,
-  fadeRight,
-  scaleIn,
-  viewportConfig,
-} from "../animations/variants";
+// Fix "page jamais naviguée" : le modal s'ouvre automatiquement si ?open=1
+// + Layout sticky pour que le formulaire soit visible immédiatement sans scroll
+
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { Heart, Shield, Lock, Star, CheckCircle } from 'lucide-react'
+import { SEO } from '../seo/SEO'
+import { MainLayout } from '../layouts/MainLayout'
+import { PageHero } from '../components/common/PageHero'
+import { DonationModal } from '../components/donation/DonationModal'
+import { DONATION_IMPACTS, DONOR_TESTIMONIALS, DONATION_TIERS } from '../data/donationData'
+import { staggerContainer, fadeUp, fadeLeft, fadeRight, scaleIn, viewportConfig } from '../animations/variants'
 
 function ImpactCard({ item }) {
   return (
@@ -27,19 +20,18 @@ function ImpactCard({ item }) {
       className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center"
     >
       <span className="text-4xl block mb-3">{item.icon}</span>
-      <p className="font-poppins font-black text-3xl text-white mb-1">
-        {item.value}
-      </p>
+      <p className="font-poppins font-black text-3xl text-white mb-1">{item.value}</p>
       <p className="text-green-200 text-sm">{item.label}</p>
     </motion.div>
-  );
+  )
 }
 
-function TierPreviewCard({ tier }) {
+function TierCard({ tier, onDonate }) {
   return (
     <motion.div
       variants={fadeUp}
-      className="bg-white rounded-2xl p-5 border-2 border-gray-100 hover:border-green-200 hover:shadow-lg transition-all duration-300 relative"
+      className="bg-white rounded-2xl p-5 border-2 border-gray-100 hover:border-green-300 hover:shadow-lg transition-all duration-300 relative cursor-pointer group"
+      onClick={onDonate}
     >
       {tier.popular && (
         <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-green-600 text-white text-[10px] font-bold px-3 py-0.5 rounded-full">
@@ -47,23 +39,33 @@ function TierPreviewCard({ tier }) {
         </span>
       )}
       <span className="text-3xl block mb-3">{tier.emoji}</span>
-      <p className="font-poppins font-bold text-xl text-gray-900 mb-0.5">
-        {tier.label}
-      </p>
+      <p className="font-poppins font-bold text-xl text-gray-900 mb-0.5">{tier.label}</p>
       <p className="text-green-600 font-semibold text-sm mb-3">{tier.title}</p>
-      <p className="text-gray-500 text-xs leading-relaxed">{tier.impact}</p>
+      <p className="text-gray-500 text-xs leading-relaxed mb-4">{tier.impact}</p>
+      <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-600 group-hover:gap-2 transition-all">
+        Donner ce montant →
+      </span>
     </motion.div>
-  );
+  )
 }
 
 export default function DonatePage() {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false)
+  const [searchParams] = useSearchParams()
+
+  // Ouvrir automatiquement le modal si ?open=1
+  // Utile pour le bouton flottant qui navigue vers /don?open=1
+  useEffect(() => {
+    if (searchParams.get('open') === '1') {
+      setTimeout(() => setModalOpen(true), 400)
+    }
+  }, [searchParams])
 
   return (
     <>
       <SEO
         title="Faire un don"
-        description="Soutenez l'ONG C.E.G et contribuez à la préservation de l'environnement guinéen. Don sécurisé par Mobile Money via LengoPay."
+        description="Soutenez l'ONG C.E.G et contribuez à la préservation de l'environnement guinéen. Don sécurisé par Mobile Money via GuineaPay."
         keywords="don ONG Guinée, soutenir environnement Guinée, donation CEG, Mobile Money don Guinée"
       />
       <MainLayout>
@@ -71,7 +73,7 @@ export default function DonatePage() {
           badge="Chaque don compte"
           title="Soutenez C.E.G"
           subtitle="Votre générosité contribue directement à la préservation de l'environnement et à l'amélioration des conditions de vie des communautés guinéennes."
-          breadcrumb={["Accueil", "Faire un don"]}
+          breadcrumb={['Accueil', 'Faire un don']}
         />
 
         {/* Impact chiffré */}
@@ -90,7 +92,6 @@ export default function DonatePage() {
                 Ce que nous avons accompli ensemble
               </h2>
             </motion.div>
-
             <motion.div
               variants={staggerContainer}
               initial="hidden"
@@ -109,7 +110,8 @@ export default function DonatePage() {
         <section className="py-24 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start">
-              {/* Left — Paliers */}
+
+              {/* Left */}
               <motion.div
                 variants={fadeLeft}
                 initial="hidden"
@@ -125,9 +127,8 @@ export default function DonatePage() {
                   <span className="text-gradient">a un impact réel</span>
                 </h2>
                 <p className="text-gray-500 leading-relaxed mb-10">
-                  Vos dons financent directement nos projets de reboisement, de
-                  formation communautaire et d'amélioration des conditions de
-                  vie en Guinée.
+                  Vos dons financent directement nos projets de reboisement, de formation communautaire
+                  et d'amélioration des conditions de vie en Guinée.
                 </p>
 
                 <motion.div
@@ -138,7 +139,7 @@ export default function DonatePage() {
                   className="grid grid-cols-2 gap-4 mb-10"
                 >
                   {DONATION_TIERS.map((tier) => (
-                    <TierPreviewCard key={tier.id} tier={tier} />
+                    <TierCard key={tier.id} tier={tier} onDonate={() => setModalOpen(true)} />
                   ))}
                 </motion.div>
 
@@ -164,7 +165,7 @@ export default function DonatePage() {
                 </div>
               </motion.div>
 
-              {/* Right — Confiance */}
+              {/* Right */}
               <motion.div
                 variants={fadeRight}
                 initial="hidden"
@@ -172,50 +173,32 @@ export default function DonatePage() {
                 viewport={viewportConfig}
                 className="space-y-6"
               >
-                {/* Témoignages */}
                 <div className="space-y-4">
                   {DONOR_TESTIMONIALS.map((t, i) => (
-                    <div
-                      key={i}
-                      className="bg-gray-50 rounded-2xl p-6 border border-gray-100"
-                    >
+                    <div key={i} className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
                       <div className="flex gap-0.5 mb-3">
                         {[...Array(5)].map((_, j) => (
-                          <Star
-                            key={j}
-                            className="w-4 h-4 text-amber-400 fill-amber-400"
-                          />
+                          <Star key={j} className="w-4 h-4 text-amber-400 fill-amber-400" />
                         ))}
                       </div>
-                      <p className="text-gray-700 text-sm leading-relaxed italic mb-3">
-                        "{t.text}"
-                      </p>
-                      <p className="text-gray-400 text-xs font-medium">
-                        — {t.author}
-                      </p>
+                      <p className="text-gray-700 text-sm leading-relaxed italic mb-3">"{t.text}"</p>
+                      <p className="text-gray-400 text-xs font-medium">— {t.author}</p>
                     </div>
                   ))}
                 </div>
 
-                {/* Trust block */}
                 <div className="bg-green-950 rounded-3xl p-8 text-white">
-                  <p className="font-poppins font-bold text-lg mb-4">
-                    Pourquoi faire confiance à C.E.G ?
-                  </p>
+                  <p className="font-poppins font-bold text-lg mb-4">Pourquoi faire confiance à C.E.G ?</p>
                   <ul className="space-y-3">
                     {[
-                      "Agrément officiel A/N°7838/MATD/CAB/SERPROMA/2018",
-                      "Partenaires : GEF, PNUE, SGP/FEM",
-                      "8+ années d'interventions documentées",
-                      "12 000+ bénéficiaires directs",
-                      "Transparence et redevabilité garanties",
+                      'Agrément officiel A/N°7838/MATD/CAB/SERPROMA/2018',
+                      'Partenaires : GEF, PNUE, SGP/FEM',
+                      '8+ années d\'interventions documentées',
+                      '12 000+ bénéficiaires directs',
+                      'Transparence et redevabilité garanties',
                     ].map((item) => (
                       <li key={item} className="flex items-start gap-3 text-sm">
-                        <span className="w-5 h-5 bg-green-600 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                          <span className="text-white text-[10px] font-bold">
-                            ✓
-                          </span>
-                        </span>
+                        <CheckCircle className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
                         <span className="text-green-100">{item}</span>
                       </li>
                     ))}
@@ -226,21 +209,16 @@ export default function DonatePage() {
           </div>
         </section>
 
-        {/* Bottom CTA banner */}
+        {/* Bottom CTA */}
         <section className="py-16 bg-gradient-to-r from-rose-500 to-rose-700">
           <div className="max-w-3xl mx-auto px-4 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={viewportConfig}
-            >
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={viewportConfig}>
               <Heart className="w-10 h-10 text-white/80 mx-auto mb-4 fill-white/40" />
               <h2 className="font-poppins font-bold text-3xl text-white mb-4">
                 Prêt à faire la différence ?
               </h2>
               <p className="text-rose-100 mb-8">
-                Votre don, petit ou grand, protège les forêts guinéennes et
-                améliore des vies réelles.
+                Votre don, petit ou grand, protège les forêts guinéennes et améliore des vies réelles.
               </p>
               <button
                 onClick={() => setModalOpen(true)}
@@ -255,5 +233,5 @@ export default function DonatePage() {
         <DonationModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
       </MainLayout>
     </>
-  );
+  )
 }

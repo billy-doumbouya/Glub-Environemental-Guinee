@@ -9,6 +9,7 @@ export default async function handler(req, res) {
   try {
     const response = await fetch(
       "https://pay.genius.ci/api/v1/merchant/payments",
+
       {
         method: "POST",
         headers: {
@@ -21,8 +22,8 @@ export default async function handler(req, res) {
           currency: "XOF",
           description: "Don ONG C.E.G",
           customer: { name: donorName, email: donorEmail },
-          success_url: `${process.env.SITE_URL}/don/confirmation`,
-          error_url: `${process.env.SITE_URL}/don/erreur`,
+          success_url: `${process.env.SITE_URL}/don/succes`,
+          error_url: `${process.env.SITE_URL}/don/echec`,
           metadata: { transaction_id: transactionId, type: "donation" },
         }),
       },
