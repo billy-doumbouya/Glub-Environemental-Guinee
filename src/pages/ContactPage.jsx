@@ -230,7 +230,7 @@ export default function ContactPage() {
               ONG légalement reconnue — Agrément {organization.agreement}
             </p>
             <p className="text-green-600 text-xs mt-1 break-words">
-              Fondée le {organization.created} · Siège social à{" "}
+              Créée le {organization.created} · Siège social à{" "}
               {organization.headquarters}
             </p>
           </div>

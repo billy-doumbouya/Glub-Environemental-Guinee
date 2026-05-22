@@ -112,12 +112,12 @@ function ProjectCard({ project }) {
         </div>
 
         {/* Budget */}
-        <div className="mt-4 bg-green-50 rounded-xl px-4 py-2.5 flex items-center justify-between border border-green-100">
+        {/* <div className="mt-4 bg-green-50 rounded-xl px-4 py-2.5 flex items-center justify-between border border-green-100">
           <span className="text-xs text-gray-500">Budget du projet</span>
           <span className="text-sm font-bold text-green-700">
             {project.budget ? project.budget : "Non renseigné"}
           </span>
-        </div>
+        </div> */}
       </div>
     </motion.article>
   );

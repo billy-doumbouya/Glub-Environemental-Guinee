@@ -3,7 +3,7 @@ export const organization = {
   acronym: 'ONG C.E.G',
   fullName: 'ONG Club Environnemental de Guinée (C.E.G)',
   created: '06 Novembre 2016',
-  agreement: 'A/N°7838 /MATD/CAB/SERPROMA/2018',
+  agreement: 'A/N°7838/MATD/CAB/SERPROMA/2018',
   headquarters: 'Km 66/Maléah Centre I/Préfecture de Forécariah, République de Guinée',
   phones: ['(+224) 612 41 34 24', '(+224) 660 70 60 70'],
   email: 'clubenvironnementaldeguinee@gmail.com',

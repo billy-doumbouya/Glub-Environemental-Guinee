@@ -1,17 +1,21 @@
-import { motion } from 'framer-motion'
-import { ArrowRight, Calendar, MapPin, Tag } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { projects } from '../data/projects'
-import { SectionTitle } from '../components/common/SectionTitle'
-import { staggerContainer, fadeUp, viewportConfig } from '../animations/variants'
+import { motion } from "framer-motion";
+import { ArrowRight, Calendar, MapPin, Tag } from "lucide-react";
+import { Link } from "react-router-dom";
+import { projects } from "../data/projects";
+import { SectionTitle } from "../components/common/SectionTitle";
+import {
+  staggerContainer,
+  fadeUp,
+  viewportConfig,
+} from "../animations/variants";
 
 const statusConfig = {
-  completed: { label: 'Terminé', class: 'bg-green-50 text-green-700' },
-  ongoing: { label: 'En cours', class: 'bg-amber-50 text-amber-700' },
-}
+  completed: { label: "Terminé", class: "bg-green-50 text-green-700" },
+  ongoing: { label: "En cours", class: "bg-amber-50 text-amber-700" },
+};
 
 function ProjectCard({ project }) {
-  const status = statusConfig[project.status]
+  const status = statusConfig[project.status];
 
   return (
     <motion.article
@@ -27,7 +31,9 @@ function ProjectCard({ project }) {
 
         {/* Status badge */}
         <div className="absolute top-4 left-4">
-          <span className={`text-xs font-semibold px-3 py-1 rounded-full ${status.class}`}>
+          <span
+            className={`text-xs font-semibold px-3 py-1 rounded-full ${status.class}`}
+          >
             {status.label}
           </span>
         </div>
@@ -35,7 +41,7 @@ function ProjectCard({ project }) {
         {/* Funder badge */}
         <div className="absolute top-4 right-4">
           <span className="bg-white/20 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full border border-white/30">
-            {project.funder}
+            {project.funder ? project.funder : undefined}
           </span>
         </div>
 
@@ -85,7 +91,7 @@ function ProjectCard({ project }) {
         </Link>
       </div>
     </motion.article>
-  )
+  );
 }
 
 export function ProjectsPreviewSection() {
@@ -121,5 +127,5 @@ export function ProjectsPreviewSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

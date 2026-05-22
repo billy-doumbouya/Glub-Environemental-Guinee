@@ -8,7 +8,7 @@ export const statistics = [
   },
   { id: 2, value: 8, suffix: "+", label: "Projets réalisés", icon: "folder" },
   { id: 3, value: 12000, suffix: "+", label: "Bénéficiaires", icon: "users" },
-  { id: 4, value: 5, suffix: "", label: "Préfectures couvertes", icon: "map" },
+  { id: 4, value: 7, suffix: "", label: "Préfectures couvertes", icon: "map" },
   {
     id: 5,
     value: 3,

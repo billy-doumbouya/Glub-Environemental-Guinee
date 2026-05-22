@@ -53,7 +53,7 @@ export const DONATION_IMPACTS = [
   { value: '12 000+', label: 'Bénéficiaires directs',     icon: '👥' },
   { value: '520 ha',  label: 'Hectares reboisés',          icon: '🌳' },
   { value: '15+',     label: 'Projets environnementaux',   icon: '📋' },
-  { value: '8',       label: 'Préfectures couvertes',      icon: '📍' },
+  { value: '7',       label: 'Préfectures couvertes',      icon: '📍' },
 ]
 
 /** Témoignages courts pour la page de don */

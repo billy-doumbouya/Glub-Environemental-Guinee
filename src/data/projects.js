@@ -88,14 +88,14 @@ export const projects = [
     id: 4,
     slug: "Autonomisation sociale et économique des femmes de l'île de Kakossa",
     title:
-      "Appui à la conservation des habitats humides par le développement de la saliculture solaire auprès de groupements féminins de l’île de Kakossa.",
-    date: "Du 01 Avril 2024 au 31 Mars 2026",
+      "Membre du consortium ONG au compte du projet : Appui à la conservation des habitats humides par le développement de la saliculture solaire auprès de groupements féminins de l’île de Kakossa.",
+    date: "Du 1 Novembre 2021 au 27 Mars 2024",
     location: "Préfectures de Forécariah et Kindia, Guinée",
     category: "Conservation des Écosystèmes",
     status: "completed",
-    funder: "PQDI",
+    funder: null,
     budget: "",
-    image: "/assets/images/partner-logo/habitat-humid.jpg", 
+    image: "/assets/images/partner-logo/habitat-humid.jpg",
     description:
       " Amélioration de la production et promouvoir une gestion durable des ressources naturelles à travers la promotion de la saliculture solaire auprès de groupements féminins de l’île de Kakossa, en impliquant les communautés locales dans la conservation des écosystèmes de mangrove.",
     objectives: [
@@ -119,7 +119,7 @@ export const projects = [
     location: "Préfectures de Forécariah et Kindia, Guinée",
     category: "Autonomisation des femmes",
     status: "completed",
-    funder: "FFEM/PRCM/WACA",
+    funder: null,
     budget: "104 660 EUR",
     image: "/assets/images/partner-logo/dagamou.jpg",
     description:

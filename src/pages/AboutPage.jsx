@@ -221,6 +221,7 @@ export default function AboutPage() {
                     "Préfecture de Conakry",
                     "Préfecture de Kouroussa",
                     "Préfecture de Boffa",
+                    "Région de Kankan",
                   ].map((zone) => (
                     <div key={zone} className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-green-300 shrink-0" />
@@ -233,7 +234,7 @@ export default function AboutPage() {
                     Impact total
                   </p>
                   <p className="font-poppins font-bold text-3xl">
-                    6 Préfectures
+                    7 Préfectures
                   </p>
                   <p className="text-green-300 text-sm mt-1">
                     couverts en République de Guinée

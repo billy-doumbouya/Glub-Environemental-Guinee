@@ -156,7 +156,7 @@ export function Footer() {
             {organization.agreement}
           </p>
           <p className="text-gray-600 text-xs">
-            Fondée le {organization.created}
+            Créée le {organization.created}
           </p>
         </div>
       </div>
