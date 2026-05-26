@@ -114,6 +114,7 @@ export default function ContactPage() {
       <MainLayout>
         <PageHero
           badge="Entrons en contact"
+          bgImage="/ceg-bg-contact.jpg"
           title="Contactez C.E.G"
           subtitle="Partenariat, financement, bénévolat ou simple question — l'équipe C.E.G est à votre écoute."
           breadcrumb={["Accueil", "Contact"]}

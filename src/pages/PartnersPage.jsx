@@ -160,49 +160,121 @@ export default function PartnersPage() {
       <MainLayout>
         <PageHero
           badge="Partenaires de confiance"
+          bgImage="/ceg-bg-partenaires.jpg"
           title="Nos Partenaires Financiers"
           subtitle="ONG C.E.G collabore avec des organisations internationales reconnues qui garantissent la qualité, la transparence et l'impact de nos interventions."
           breadcrumb={["Accueil", "Partenaires"]}
         />
 
         {/* Overview cards */}
-        <section className="py-16 bg-white">
+        <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
               viewport={viewportConfig}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16"
+              className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
             >
               {partners.map((p) => (
                 <motion.a
                   key={p.id}
                   href={`#${p.slug}`}
                   variants={fadeUp}
-                  className="group bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-lg hover:border-transparent transition-all duration-300 text-center"
+                  className="group relative bg-white rounded-3xl border border-gray-100
+                             hover:shadow-2xl hover:border-transparent hover:-translate-y-1
+                             transition-all duration-300 overflow-hidden flex flex-col"
                 >
+                  {/* Accent bar top */}
                   <div
-                    className="h-16 w-32 rounded-xl flex items-center justify-center text-2xl font-black font-poppins mx-auto mb-4 shadow-inner"
-                    style={{
-                      backgroundColor: `${p.logoColor}15`,
-                      color: p.logoColor,
-                    }}
-                  >
-                    {p.logo ? (
-                      <img
-                        src={p.logo}
-                        alt={`${p.name} logo`}
-                        className="w-full max-w-full object-contain"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-white text-5xl">
-                        🌿
+                    className="h-1 w-full"
+                    style={{ backgroundColor: p.logoColor }}
+                  />
+
+                  <div className="p-8 flex flex-col flex-1">
+                    {/* Logo + category */}
+                    <div className="flex items-start justify-between mb-6">
+                      {/* Logo container */}
+                      <div
+                        className="w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden border"
+                        style={{
+                          backgroundColor: `${p.logoColor}10`,
+                          borderColor: `${p.logoColor}20`,
+                        }}
+                      >
+                        {p.logo ? (
+                          <img
+                            src={p.logo}
+                            alt={`${p.name} logo`}
+                            className="w-14 h-14 object-contain"
+                          />
+                        ) : (
+                          <span className="text-3xl">🌿</span>
+                        )}
                       </div>
-                    )}
+
+                      {/* Since badge */}
+                      <span
+                        className="text-xs font-semibold px-3 py-1 rounded-full"
+                        style={{
+                          backgroundColor: `${p.logoColor}10`,
+                          color: p.logoColor,
+                        }}
+                      >
+                        Depuis {p.since}
+                      </span>
+                    </div>
+
+                    {/* Name & fullName */}
+                    <p
+                      className="font-poppins font-black text-2xl mb-1"
+                      style={{ color: p.logoColor }}
+                    >
+                      {p.name}
+                    </p>
+                    <p className="text-gray-700 font-semibold text-sm leading-snug mb-2">
+                      {p.fullName}
+                    </p>
+                    <span
+                      className="inline-block text-xs font-medium px-2.5 py-1 rounded-lg mb-4 w-fit"
+                      style={{
+                        backgroundColor: `${p.logoColor}10`,
+                        color: p.logoColor,
+                      }}
+                    >
+                      {p.category}
+                    </span>
+
+                    {/* Description */}
+                    <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 flex-1">
+                      {p.description}
+                    </p>
+
+                    {/* Domains */}
+                    <div className="flex flex-wrap gap-2 mt-5">
+                      {p.domains.map((d) => (
+                        <span
+                          key={d}
+                          className="text-xs px-2.5 py-1 rounded-lg bg-gray-50 text-gray-500 border border-gray-100"
+                        >
+                          {d}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Footer */}
+                    <div className="mt-6 pt-5 border-t border-gray-100 flex items-center justify-between">
+                      <span className="text-xs text-gray-400 font-medium">
+                        {p.partnership}
+                      </span>
+                      <span
+                        className="text-xs font-semibold flex items-center gap-1 group-hover:gap-2 transition-all"
+                        style={{ color: p.logoColor }}
+                      >
+                        Voir plus →
+                      </span>
+                    </div>
                   </div>
-                  <p className="font-bold text-gray-900">{p.name}</p>
-                  <p className="text-gray-400 text-xs mt-1">{p.category}</p>
                 </motion.a>
               ))}
             </motion.div>

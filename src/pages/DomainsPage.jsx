@@ -140,6 +140,7 @@ export default function DomainsPage() {
       <MainLayout>
         <PageHero
           badge="4 piliers d'action stratégique"
+          bgImage="/ceg-bg-domaines.jpg"
           title="Domaines d'intervention"
           subtitle="C.E.G intervient sur quatre axes complémentaires pour un impact durable, mesurable et pérenne sur les communautés et l'environnement guinéen."
           breadcrumb={["Accueil", "Domaines"]}

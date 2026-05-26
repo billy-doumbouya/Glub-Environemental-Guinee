@@ -182,6 +182,7 @@ export default function NewsPage() {
       <MainLayout>
         <PageHero
           badge="Restez informé"
+          bgImage="/ceg-bg-news.jpg"
           title="Actualités"
           subtitle="Découvrez les dernières nouvelles, événements et publications de l'ONG C.E.G."
           breadcrumb={["Accueil", "Actualités"]}

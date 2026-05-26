@@ -4,15 +4,15 @@ import { CONTACT_SUBJECTS } from "../../constants";
 
 function FormField({ label, error, children, required }) {
   return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+    <div className="group">
+      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className="text-green-500 ml-1">*</span>}
       </label>
       {children}
       {error && (
-        <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
-          <XCircle className="w-3 h-3" />
+        <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1">
+          <XCircle className="w-3 h-3 shrink-0" />
           {error}
         </p>
       )}
@@ -21,45 +21,60 @@ function FormField({ label, error, children, required }) {
 }
 
 const inputClass = (hasError) =>
-  `w-full px-4 py-3 rounded-xl border text-sm transition-all duration-200 outline-none focus:ring-2 focus:ring-green-500/20 ${
-    hasError
-      ? "border-red-300 bg-red-50 focus:border-red-400"
-      : "border-gray-200 bg-white focus:border-green-500"
-  }`;
+  `w-full px-4 py-3.5 rounded-xl border-0 border-b-2 bg-gray-50 text-sm text-gray-800
+   placeholder:text-gray-300 transition-all duration-200 outline-none
+   focus:bg-white focus:shadow-sm
+   ${
+     hasError
+       ? "border-red-300 focus:border-red-400"
+       : "border-gray-200 focus:border-green-500"
+   }`;
 
 export function ContactForm() {
   const { form, status, onSubmit, resetStatus } = useContactForm();
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors },
   } = form;
 
   if (status === "success") {
     return (
-      <div className="bg-green-50 rounded-3xl p-12 text-center border border-green-100">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-          <CheckCircle className="w-8 h-8 text-green-600" />
+      <div className="flex flex-col items-center justify-center text-center py-16 px-8">
+        {/* Animated checkmark ring */}
+        <div className="relative mb-8">
+          <div className="w-24 h-24 rounded-full bg-green-50 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+              <CheckCircle className="w-8 h-8 text-green-600" />
+            </div>
+          </div>
+          {/* Decorative ring */}
+          <div className="absolute inset-0 rounded-full border-2 border-green-200 animate-ping opacity-30" />
         </div>
+
         <h3 className="font-poppins font-bold text-2xl text-gray-900 mb-3">
-          Message envoyé avec succès !
+          Message envoyé !
         </h3>
-        <p className="text-gray-500 mb-8 max-w-sm mx-auto">
+        <p className="text-gray-400 text-sm leading-relaxed mb-8 max-w-xs">
           Merci pour votre message. L'équipe ONG C.E.G vous contactera dans les
           meilleurs délais.
         </p>
         <button
           onClick={resetStatus}
-          className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-semibold text-sm transition-colors"
+          className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700
+                     text-white px-7 py-3 rounded-xl font-semibold text-sm
+                     transition-all duration-200 hover:shadow-lg hover:shadow-green-100"
         >
-          Envoyer un autre message
+          <Send className="w-4 h-4" />
+          Nouveau message
         </button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="space-y-5">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <form onSubmit={onSubmit} noValidate className="space-y-6">
+      {/* Row 1 */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <FormField label="Nom complet" error={errors.name?.message} required>
           <input
             {...register("name")}
@@ -79,12 +94,13 @@ export function ContactForm() {
         </FormField>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      {/* Row 2 */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <FormField label="Téléphone" error={errors.phone?.message}>
           <input
             {...register("phone")}
             type="tel"
-            placeholder="(+224) xxx xxx xxx (optionnel)"
+            placeholder="(+224) xxx xxx xxx"
             className={inputClass(!!errors.phone)}
           />
         </FormField>
@@ -104,56 +120,67 @@ export function ContactForm() {
         </FormField>
       </div>
 
+      {/* Message */}
       <FormField label="Message" error={errors.message?.message} required>
         <textarea
           {...register("message")}
-          rows={6}
+          rows={5}
           placeholder="Décrivez votre demande en détail..."
           className={`${inputClass(!!errors.message)} resize-none`}
         />
       </FormField>
 
+      {/* Error states */}
       {status === "error" && (
-        <div className="flex items-center gap-2 text-red-600 bg-red-50 rounded-xl px-4 py-3 border border-red-100">
-          <XCircle className="w-4 h-4 shrink-0" />
-          <p className="text-sm">
-            Une erreur est survenue. Veuillez réessayer ou nous contacter par
-            email.
+        <div className="flex items-start gap-3 text-red-500 bg-red-50 rounded-2xl px-5 py-4 border border-red-100">
+          <XCircle className="w-4 h-4 mt-0.5 shrink-0" />
+          <p className="text-sm leading-relaxed">
+            Une erreur est survenue. Veuillez réessayer ou nous contacter
+            directement par email.
           </p>
         </div>
       )}
 
       {status === "spam" && (
-        <div className="flex items-center gap-2 text-amber-600 bg-amber-50 rounded-xl px-4 py-3 border border-amber-100">
-          <XCircle className="w-4 h-4 shrink-0" />
-          <p className="text-sm">
+        <div className="flex items-start gap-3 text-amber-600 bg-amber-50 rounded-2xl px-5 py-4 border border-amber-100">
+          <XCircle className="w-4 h-4 mt-0.5 shrink-0" />
+          <p className="text-sm leading-relaxed">
             Trop de messages envoyés. Veuillez patienter quelques minutes.
           </p>
         </div>
       )}
 
-      <button
-        type="submit"
-        disabled={status === "loading"}
-        className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed text-white py-4 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-green-200"
-      >
-        {status === "loading" ? (
-          <>
-            <Loader2 className="w-4 h-4 animate-spin" />
-            Envoi en cours...
-          </>
-        ) : (
-          <>
-            <Send className="w-4 h-4" />
-            Envoyer le message
-          </>
-        )}
-      </button>
+      {/* Submit */}
+      <div className="pt-2">
+        <button
+          type="submit"
+          disabled={status === "loading"}
+          className="w-full relative overflow-hidden
+                     bg-green-600 hover:bg-green-700
+                     disabled:opacity-60 disabled:cursor-not-allowed
+                     text-white py-4 rounded-2xl font-semibold text-sm
+                     transition-all duration-300
+                     flex items-center justify-center gap-2
+                     hover:shadow-xl hover:shadow-green-600/20
+                     hover:-translate-y-0.5"
+        >
+          {status === "loading" ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Envoi en cours...
+            </>
+          ) : (
+            <>
+              <Send className="w-4 h-4" />
+              Envoyer le message
+            </>
+          )}
+        </button>
 
-      <p className="text-xs text-gray-400 text-center">
-        En soumettant ce formulaire, vous acceptez que vos données soient
-        utilisées pour répondre à votre demande.
-      </p>
+        <p className="text-xs text-gray-300 text-center mt-4">
+          Vos données sont utilisées uniquement pour répondre à votre demande.
+        </p>
+      </div>
     </form>
   );
 }

@@ -13,57 +13,48 @@ const features = [
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen overflow-x-hidden bg-gradient-to-br from-green-950 via-green-900 to-green-800">
-      {/* BACKGROUND */}
+    <section className="relative min-h-screen overflow-x-hidden">
+      {/* ── BACKGROUND IMAGE ── */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/ceg-bg.jpg')" }}
+        aria-hidden="true"
+      />
+
+      {/* ── OVERLAY : reprend exactement les couleurs de marque ── */}
+      {/* Couche 1 : assombrit l'image tout en gardant la teinte verte */}
+      <div className="absolute inset-0 bg-green-950/55" aria-hidden="true" />
+      {/* Couche 2 : dégradé directionnel pour conserver la profondeur d'origine */}
+      <div
+        className="absolute inset-0 bg-gradient-to-br from-green-950/60 via-green-900/40 to-green-800/30"
+        aria-hidden="true"
+      />
+
+      {/* ── BACKGROUND DECORATIONS (inchangées) ── */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Blur circle 1 */}
         <motion.div
-          animate={{
-            scale: [1, 1.08, 1],
-            opacity: [0.25, 0.15, 0.25],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute top-10 right-[-120px] md:right-10 
-                     w-[260px] h-[260px] md:w-[380px] md:h-[380px] 
+          animate={{ scale: [1, 1.08, 1], opacity: [0.25, 0.15, 0.25] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-10 right-[-120px] md:right-10
+                     w-[260px] h-[260px] md:w-[380px] md:h-[380px]
                      rounded-full bg-green-400/30 blur-3xl"
         />
-
-        {/* Blur circle 2 */}
         <motion.div
-          animate={{
-            scale: [1.05, 1, 1.05],
-            opacity: [0.2, 0.3, 0.2],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute bottom-0 left-[-100px] md:left-10 
-                     w-[240px] h-[240px] md:w-[320px] md:h-[320px] 
+          animate={{ scale: [1.05, 1, 1.05], opacity: [0.2, 0.3, 0.2] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-0 left-[-100px] md:left-10
+                     w-[240px] h-[240px] md:w-[320px] md:h-[320px]
                      rounded-full bg-emerald-300/20 blur-3xl"
         />
-
-        {/* Large animated ring */}
         <motion.div
           animate={{ y: [0, -15, 0] }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute top-1/2 left-1/2 
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/2 left-1/2
                      -translate-x-1/2 -translate-y-1/2
                      w-[90vw] h-[90vw]
                      max-w-[700px] max-h-[700px]
                      border border-white/5 rounded-full"
         />
-
-        {/* Grid pattern */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -74,7 +65,7 @@ export function HeroSection() {
         />
       </div>
 
-      {/* CONTENT */}
+      {/* ── CONTENT (identique à l'original) ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-center">
           {/* LEFT */}
@@ -87,7 +78,7 @@ export function HeroSection() {
             {/* Badge */}
             <motion.div variants={fadeUp} className="mb-6">
               <span
-                className="inline-flex flex-wrap items-center gap-2 
+                className="inline-flex flex-wrap items-center gap-2
                            rounded-full border border-green-400/30
                            bg-green-400/20 px-4 py-2
                            text-xs font-semibold text-green-300
@@ -101,7 +92,7 @@ export function HeroSection() {
             {/* TITLE */}
             <motion.h1
               variants={fadeUp}
-              className="font-poppins font-bold 
+              className="font-poppins font-bold
                          text-4xl sm:text-5xl lg:text-7xl
                          leading-tight lg:leading-none
                          mb-6 break-words"
@@ -144,9 +135,7 @@ export function HeroSection() {
                            shadow-2xl shadow-green-900/40"
               >
                 <Package className="w-5 h-5 shrink-0" />
-
                 <span className="truncate">Découvrir nos projets</span>
-
                 <ArrowRight className="w-5 h-5 shrink-0" />
               </Link>
 
@@ -169,7 +158,6 @@ export function HeroSection() {
                 >
                   <FaYoutube className="text-white text-xl" />
                 </span>
-
                 <span className="truncate">Voir nos actions</span>
               </a>
             </motion.div>
@@ -185,7 +173,6 @@ export function HeroSection() {
                              px-4 py-2"
                 >
                   <Icon className="w-4 h-4 text-green-400 shrink-0" />
-
                   <span className="text-sm text-white/80">{text}</span>
                 </div>
               ))}
@@ -200,29 +187,26 @@ export function HeroSection() {
             className="hidden lg:block min-w-0"
           >
             <div className="relative max-w-lg mx-auto">
-              {/* CARD */}
+              {/* CARD — semi-transparent, laisse voir l'image de fond */}
               <div
-                className="rounded-3xl border border-white/20
-                           bg-white/10 backdrop-blur-xl
+                className="rounded-3xl border border-white/15
+                           bg-white/5 backdrop-blur-md
                            p-8 shadow-2xl overflow-hidden"
               >
-                {/* Top visual */}
+                {/* Top visual — très transparent */}
                 <div
                   className="relative mb-6 h-64 overflow-hidden
-                             rounded-2xl bg-gradient-to-br
-                             from-green-800 to-green-950"
+                             rounded-2xl border border-white/10
+                             bg-black/20 backdrop-blur-sm"
                 >
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-8xl opacity-20">🌿</div>
+                    <div className="text-8xl opacity-10">🌿</div>
                   </div>
-
                   <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
                     <Leaf className="w-16 h-16 text-green-300 mb-3" />
-
                     <p className="text-lg font-semibold text-white">
                       ONG C.E.G
                     </p>
-
                     <p className="text-sm text-green-300">
                       Club Environnemental de Guinée
                     </p>
@@ -239,12 +223,11 @@ export function HeroSection() {
                   ].map(({ value, label }) => (
                     <div
                       key={label}
-                      className="rounded-xl bg-white/5 p-4 text-center"
+                      className="rounded-xl bg-white/5 border border-white/10 p-4 text-center"
                     >
                       <p className="font-poppins text-2xl font-bold text-green-300">
                         {value}
                       </p>
-
                       <p className="mt-1 text-xs text-white/60">{label}</p>
                     </div>
                   ))}
@@ -264,7 +247,6 @@ export function HeroSection() {
                            px-4 py-2 text-white shadow-lg"
               >
                 <p className="text-sm font-bold">Agrément Officiel</p>
-
                 <p className="text-xs text-amber-100">MATD 2018</p>
               </motion.div>
             </div>
@@ -272,7 +254,7 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* SCROLL INDICATOR */}
+      {/* ── SCROLL INDICATOR (inchangé) ── */}
       <motion.div
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity }}

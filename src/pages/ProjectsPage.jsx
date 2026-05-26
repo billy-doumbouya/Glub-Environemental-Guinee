@@ -141,6 +141,7 @@ export default function ProjectsPage() {
       <MainLayout>
         <PageHero
           badge={`${projects.length} projets réalisés`}
+          bgImage="/ceg-bg-projets.jpg"
           title="Nos Projets"
           subtitle="Des actions concrètes, mesurables et documentées pour l'environnement et les communautés de Guinée."
           breadcrumb={["Accueil", "Projets"]}

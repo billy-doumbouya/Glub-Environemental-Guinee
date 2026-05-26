@@ -65,6 +65,7 @@ export default function GalleryPage() {
       <MainLayout>
         <PageHero
           badge="Nos actions en images"
+          bgImage="/ceg-bg-gallery.jpg"
           title="Galerie Photos"
           subtitle="Découvrez nos actions terrain"
           breadcrumb={["Accueil", "Galerie"]}

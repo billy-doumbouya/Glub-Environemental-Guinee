@@ -84,6 +84,7 @@ export default function AboutPage() {
       <MainLayout>
         <PageHero
           badge="Notre histoire depuis 2016"
+          bgImage="/ceg-bg-about.jpg"
           title="À Propos de C.E.G"
           subtitle="Découvrez l'organisation, ses valeurs et son engagement pour l'environnement et le développement durable en Guinée."
           breadcrumb={["Accueil", "À Propos"]}
@@ -152,9 +153,21 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Organization Info */}
-        <section className="py-24 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Organization Info — Unsplash bg avec overlay blanc léger */}
+        <section className="relative py-24 overflow-hidden">
+          {/* Image Unsplash : forêt tropicale / nature Guinée */}
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage:
+                "url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80')",
+            }}
+            aria-hidden="true"
+          />
+          {/* Overlay blanc léger pour lisibilité du contenu */}
+          <div className="absolute inset-0 bg-white/88" aria-hidden="true" />
+
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <motion.div
                 variants={fadeLeft}
@@ -187,7 +200,7 @@ export default function AboutPage() {
                   ].map(({ label, value }) => (
                     <div
                       key={label}
-                      className="flex gap-4 items-start bg-white rounded-2xl p-5 border border-gray-100"
+                      className="flex gap-4 items-start bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-gray-100"
                     >
                       <div className="w-2 h-2 bg-green-500 rounded-full mt-2 shrink-0" />
                       <div>
@@ -203,42 +216,58 @@ export default function AboutPage() {
                 </div>
               </motion.div>
 
+              {/* Zones d'intervention — image ONG terrain */}
               <motion.div
                 variants={fadeRight}
                 initial="hidden"
                 whileInView="visible"
                 viewport={viewportConfig}
-                className="bg-gradient-to-br from-green-700 to-green-950 rounded-3xl p-10 text-white shadow-2xl"
+                className="relative rounded-3xl overflow-hidden shadow-2xl min-h-[520px]"
               >
-                <h3 className="font-poppins font-bold text-2xl mb-8">
-                  Zones d'intervention
-                </h3>
-                <div className="space-y-4">
-                  {[
-                    "Préfecture de Forécariah",
-                    "Préfecture de Dabola",
-                    "Préfecture de Boké",
-                    "Préfecture de Conakry",
-                    "Préfecture de Kouroussa",
-                    "Préfecture de Boffa",
-                    "Région de Kankan",
-                  ].map((zone) => (
-                    <div key={zone} className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-green-300 shrink-0" />
-                      <span className="text-green-100 text-sm">{zone}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-8 bg-white/10 rounded-2xl p-5 border border-white/20">
-                  <p className="text-green-200 text-xs uppercase tracking-wider mb-1">
-                    Impact total
-                  </p>
-                  <p className="font-poppins font-bold text-3xl">
-                    7 Préfectures
-                  </p>
-                  <p className="text-green-300 text-sm mt-1">
-                    couverts en République de Guinée
-                  </p>
+                {/* Image ONG terrain */}
+                <div
+                  className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                  style={{ backgroundImage: "url('/ceg-bg-about.jpg')" }}
+                  aria-hidden="true"
+                />
+                {/* Overlay vert sombre pour lisibilité */}
+                <div
+                  className="absolute inset-0 bg-gradient-to-t from-green-950/95 via-green-900/70 to-green-800/30"
+                  aria-hidden="true"
+                />
+
+                {/* Contenu par-dessus l'image */}
+                <div className="relative z-10 p-10 flex flex-col justify-end h-full min-h-[520px]">
+                  <h3 className="font-poppins font-bold text-2xl text-white mb-6">
+                    Zones d'intervention
+                  </h3>
+                  <div className="space-y-3">
+                    {[
+                      "Préfecture de Forécariah",
+                      "Préfecture de Dabola",
+                      "Préfecture de Boké",
+                      "Préfecture de Conakry",
+                      "Préfecture de Kouroussa",
+                      "Préfecture de Boffa",
+                      "Région de Kankan",
+                    ].map((zone) => (
+                      <div key={zone} className="flex items-center gap-3">
+                        <CheckCircle className="w-5 h-5 text-green-300 shrink-0" />
+                        <span className="text-green-100 text-sm">{zone}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-8 bg-white/10 backdrop-blur-sm rounded-2xl p-5 border border-white/20">
+                    <p className="text-green-200 text-xs uppercase tracking-wider mb-1">
+                      Impact total
+                    </p>
+                    <p className="font-poppins font-bold text-3xl text-white">
+                      7 Préfectures
+                    </p>
+                    <p className="text-green-300 text-sm mt-1">
+                      couverts en République de Guinée
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             </div>
