@@ -60,8 +60,18 @@ function NewsCard({ article, featured = false, onReadMore }) {
           featured ? "md:w-96 shrink-0" : "w-full"
         }`}
       >
-        <div className="absolute inset-0 flex items-center justify-center text-7xl opacity-10 select-none pointer-events-none">
-          🌿
+        <div className="">
+          {article.image ? (
+            <img
+              src={article.image}
+              alt={article.title}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span className="absolute inset-0 flex items-center justify-center text-7xl opacity-10 select-none pointer-events-none ">
+              🌿
+            </span>
+          )}
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
 

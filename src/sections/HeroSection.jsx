@@ -11,260 +11,251 @@ const features = [
   { icon: Globe, text: "Impact communautaire" },
 ];
 
+const stats = [
+  { value: "10+", label: "Années d'action" },
+  { value: "8+", label: "Projets actifs" },
+  { value: "12K+", label: "Bénéficiaires" },
+  { value: "3", label: "Partenaires" },
+];
+
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen overflow-x-hidden">
+    <section className="relative h-screen w-full overflow-hidden">
       {/* ── BACKGROUND IMAGE ── */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat brightness-75"
         style={{ backgroundImage: "url('/ceg-bg.jpg')" }}
         aria-hidden="true"
       />
 
-      {/* ── OVERLAY : reprend exactement les couleurs de marque ── */}
-      {/* Couche 1 : assombrit l'image tout en gardant la teinte verte */}
-      <div className="absolute inset-0 bg-green-950/55" aria-hidden="true" />
-      {/* Couche 2 : dégradé directionnel pour conserver la profondeur d'origine */}
+      {/* ── OVERLAY ── */}
       <div
-        className="absolute inset-0 bg-gradient-to-br from-green-950/60 via-green-900/40 to-green-800/30"
+        className="absolute inset-0"
         aria-hidden="true"
+        style={{
+          background: `
+            linear-gradient(
+              105deg,
+              rgba(3, 22, 14, 0.74) 0%,
+              rgba(4, 32, 20, 0.58) 35%,
+              rgba(5, 40, 24, 0.30) 60%,
+              rgba(5, 40, 24, 0.14) 100%
+            ),
+            radial-gradient(
+              ellipse at 50% 50%,
+              transparent 42%,
+              rgba(2, 12, 8, 0.36) 100%
+            )
+          `,
+        }}
       />
 
-      {/* ── BACKGROUND DECORATIONS (inchangées) ── */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          animate={{ scale: [1, 1.08, 1], opacity: [0.25, 0.15, 0.25] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-10 right-[-120px] md:right-10
-                     w-[260px] h-[260px] md:w-[380px] md:h-[380px]
-                     rounded-full bg-green-400/30 blur-3xl"
-        />
-        <motion.div
-          animate={{ scale: [1.05, 1, 1.05], opacity: [0.2, 0.3, 0.2] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-0 left-[-100px] md:left-10
-                     w-[240px] h-[240px] md:w-[320px] md:h-[320px]
-                     rounded-full bg-emerald-300/20 blur-3xl"
-        />
-        <motion.div
-          animate={{ y: [0, -15, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/2 left-1/2
-                     -translate-x-1/2 -translate-y-1/2
-                     w-[90vw] h-[90vw]
-                     max-w-[700px] max-h-[700px]
-                     border border-white/5 rounded-full"
-        />
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, #ffffff 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
-        />
-      </div>
-
-      {/* ── CONTENT (identique à l'original) ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 lg:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-center">
-          {/* LEFT */}
+      {/* ── CONTENU ── */}
+      <div className="relative z-10 h-full w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="h-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          {/* ── COLONNE GAUCHE ── */}
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="text-white min-w-0"
+            className="text-white flex flex-col justify-center min-w-0"
           >
             {/* Badge */}
-            <motion.div variants={fadeUp} className="mb-6">
+            <motion.div variants={fadeUp} className="mb-5 mt-2  md:mt-10">
               <span
-                className="inline-flex flex-wrap items-center gap-2
-                           rounded-full border border-green-400/30
-                           bg-green-400/20 px-4 py-2
+                className="flex flex-wrap gap-1.5 w-fit mt-1  items-center gap-2 rounded-full
+                           border border-green-400/30 px-4 py-2
                            text-xs font-semibold text-green-300
                            backdrop-blur-sm"
+                style={{ backgroundColor: "rgba(74,222,128,0.12)" }}
               >
-                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                {/*
+                  Dot : inline-block obligatoire en Tailwind v4
+                  pour que animate-pulse (opacity) s'applique.
+                  framer-motion utilisé en secours garanti cross-v4.
+                */}
+                <motion.span
+                  className="inline-block w-1.5 h-1.5 rounded-full bg-green-400 "
+                  animate={{ opacity: [1, 0.2, 1] }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
                 Depuis 2016 — Forécariah, Guinée
               </span>
             </motion.div>
 
-            {/* TITLE */}
+            {/* Titre */}
             <motion.h1
               variants={fadeUp}
               className="font-poppins font-bold
-                         text-4xl sm:text-5xl lg:text-7xl
-                         leading-tight lg:leading-none
-                         mb-6 break-words"
+                         text-4xl sm:text-5xl lg:text-6xl xl:text-7xl
+                         leading-[1.05] mb-5 break-words"
             >
               Protéger la{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-emerald-200">
                 Nature
               </span>
-              ,
-              <br className="hidden sm:block" />
-              <span className="sm:hidden"> </span>
+              , <br className="hidden sm:block" />
               Construire{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-200">
                 l'Avenir
               </span>
             </motion.h1>
 
-            {/* DESCRIPTION */}
+            {/* Description */}
             <motion.p
               variants={fadeUp}
-              className="max-w-xl text-base sm:text-lg text-gray-300 leading-relaxed mb-10"
+              className="max-w-lg text-sm sm:text-base leading-relaxed mb-8"
+              style={{ color: "rgba(255,255,255,0.70)" }}
             >
               ONG pionnière en Guinée pour la préservation des écosystèmes, le
               développement durable et l'amélioration des conditions de vie des
               communautés rurales.
             </motion.p>
 
-            {/* BUTTONS */}
+            {/* Boutons */}
             <motion.div
               variants={fadeUp}
-              className="flex flex-col sm:flex-row flex-wrap gap-4 mb-12"
+              className="flex flex-col sm:flex-row flex-wrap gap-3 mb-10"
             >
               <Link
                 to="/projets"
-                className="inline-flex items-center justify-center gap-3
-                           rounded-2xl bg-green-500 px-6 py-4
-                           text-white font-semibold
+                className="inline-flex items-center justify-center gap-2.5
+                           rounded-xl bg-green-500 px-5 py-3.5
+                           text-sm font-semibold text-white
                            transition-all duration-300
                            hover:bg-green-400 hover:scale-[1.02]
-                           shadow-2xl shadow-green-900/40"
+                           shadow-lg shadow-green-900/30"
               >
-                <Package className="w-5 h-5 shrink-0" />
-                <span className="truncate">Découvrir nos projets</span>
-                <ArrowRight className="w-5 h-5 shrink-0" />
+                <Package className="w-4 h-4 shrink-0" />
+                Découvrir nos projets
+                <ArrowRight className="w-4 h-4 shrink-0" />
               </Link>
 
               <a
                 href="https://www.youtube.com/@CEGONG"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-3
-                           rounded-2xl border border-white/20
-                           bg-white/10 backdrop-blur-md
-                           px-6 py-4 text-white font-semibold
-                           transition-all duration-300
-                           hover:bg-white/20"
+                className="group inline-flex items-center justify-center gap-2.5
+                           rounded-xl border border-white/20 backdrop-blur-sm
+                           px-5 py-3.5 text-sm font-semibold text-white
+                           transition-all duration-300"
+                style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor =
+                    "rgba(255,255,255,0.15)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor =
+                    "rgba(255,255,255,0.08)")
+                }
               >
                 <span
-                  className="flex h-10 w-10 items-center justify-center
-                             rounded-xl bg-red-600
-                             transition-transform duration-300
-                             group-hover:scale-105 shrink-0"
+                  className="flex h-7 w-7 items-center justify-center
+                             rounded-lg bg-red-600 shrink-0
+                             transition-transform duration-300 group-hover:scale-105"
                 >
-                  <FaYoutube className="text-white text-xl" />
+                  <FaYoutube className="text-white text-sm" />
                 </span>
-                <span className="truncate">Voir nos actions</span>
+                Voir nos actions
               </a>
             </motion.div>
 
-            {/* FEATURES */}
-            <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
+            {/* Feature pills */}
+            <motion.div variants={fadeUp} className="flex flex-wrap gap-2">
               {features.map(({ icon: Icon, text }) => (
                 <div
                   key={text}
-                  className="inline-flex items-center gap-2
-                             rounded-xl border border-white/10
-                             bg-white/5 backdrop-blur-sm
-                             px-4 py-2"
+                  className="inline-flex items-center gap-1.5 rounded-lg
+                             border border-white/10 backdrop-blur-sm
+                             px-3 py-1.5"
+                  style={{ backgroundColor: "rgba(255,255,255,0.05)" }}
                 >
-                  <Icon className="w-4 h-4 text-green-400 shrink-0" />
-                  <span className="text-sm text-white/80">{text}</span>
+                  <Icon className="w-3.5 h-3.5 text-green-400 shrink-0" />
+                  <span
+                    className="text-xs"
+                    style={{ color: "rgba(255,255,255,0.75)" }}
+                  >
+                    {text}
+                  </span>
                 </div>
               ))}
             </motion.div>
           </motion.div>
 
-          {/* RIGHT */}
+          {/* ── COLONNE DROITE : stats ── */}
           <motion.div
             variants={fadeRight}
             initial="hidden"
             animate="visible"
-            className="hidden lg:block min-w-0"
+            className="hidden lg:flex flex-col items-end justify-center gap-4"
           >
-            <div className="relative max-w-lg mx-auto">
-              {/* CARD — semi-transparent, laisse voir l'image de fond */}
+            {/* Badge officiel */}
+            <div className="self-end mb-2">
               <div
-                className="rounded-3xl border border-white/15
-                           bg-white/5 backdrop-blur-md
-                           p-8 shadow-2xl overflow-hidden"
+                className="rounded-xl px-4 py-2 text-center shadow-md backdrop-blur-sm"
+                style={{ backgroundColor: "rgba(251,191,36,0.90)" }}
               >
-                {/* Top visual — très transparent */}
-                <div
-                  className="relative mb-6 h-64 overflow-hidden
-                             rounded-2xl border border-white/10
-                             bg-black/20 backdrop-blur-sm"
-                >
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-8xl opacity-10">🌿</div>
-                  </div>
-                  <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
-                    <Leaf className="w-16 h-16 text-green-300 mb-3" />
-                    <p className="text-lg font-semibold text-white">
-                      ONG C.E.G
-                    </p>
-                    <p className="text-sm text-green-300">
-                      Club Environnemental de Guinée
-                    </p>
-                  </div>
-                </div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { value: "10+", label: "Années" },
-                    { value: "8+", label: "Projets" },
-                    { value: "12K+", label: "Bénéficiaires" },
-                    { value: "3", label: "Partenaires" },
-                  ].map(({ value, label }) => (
-                    <div
-                      key={label}
-                      className="rounded-xl bg-white/5 border border-white/10 p-4 text-center"
-                    >
-                      <p className="font-poppins text-2xl font-bold text-green-300">
-                        {value}
-                      </p>
-                      <p className="mt-1 text-xs text-white/60">{label}</p>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-xs font-bold text-amber-900">
+                  Agrément Officiel
+                </p>
+                <p className="text-[11px] text-amber-800">MATD 2018</p>
               </div>
+            </div>
 
-              {/* Floating badge */}
-              <motion.div
-                animate={{ y: [-5, 5, -5] }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute top-4 right-4
-                           rounded-2xl bg-amber-400
-                           px-4 py-2 text-white shadow-lg"
+            {/* Grille stats */}
+            <div className="grid grid-cols-2 gap-3 w-full max-w-xs">
+              {stats.map(({ value, label }) => (
+                <div
+                  key={label}
+                  className="rounded-xl border border-white/20 p-4 text-center backdrop-blur-[6px]"
+                  style={{ backgroundColor: "rgba(0,0,0,0.20)" }}
+                >
+                  <p className="font-poppins text-2xl font-bold text-green-300 leading-none mb-1">
+                    {value}
+                  </p>
+                  <p
+                    className="text-[11px] leading-snug"
+                    style={{ color: "rgba(255,255,255,0.55)" }}
+                  >
+                    {label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Signature ONG */}
+            <div className="flex items-center gap-2.5 mt-2 self-end">
+              <Leaf
+                style={{ color: "rgba(74,222,128,0.70)" }}
+                className="w-4 h-4"
+              />
+              <span
+                className="text-xs tracking-widest uppercase"
+                style={{ color: "rgba(255,255,255,0.40)" }}
               >
-                <p className="text-sm font-bold">Agrément Officiel</p>
-                <p className="text-xs text-amber-100">MATD 2018</p>
-              </motion.div>
+                Club Environnemental de Guinée
+              </span>
             </div>
           </motion.div>
         </div>
       </div>
 
-      {/* ── SCROLL INDICATOR (inchangé) ── */}
+      {/* ── SCROLL INDICATOR ── */}
       <motion.div
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:block"
       >
-        <div
-          className="flex h-10 w-6 items-start justify-center
-                     rounded-full border-2 border-white/30 p-1.5"
-        >
-          <div className="h-2 w-1 rounded-full bg-white/60" />
+        <div className="flex h-9 w-5 items-start justify-center rounded-full border border-white/25 p-1.5">
+          <motion.div
+            animate={{ opacity: [1, 0, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="h-1.5 w-0.5 rounded-full bg-white/50"
+          />
         </div>
       </motion.div>
     </section>
