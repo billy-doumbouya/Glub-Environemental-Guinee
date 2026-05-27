@@ -10,6 +10,7 @@ export function Navbar() {
   const { pathname } = useLocation();
 
   const isHome = pathname === "/";
+  const isTransparent = !scrolled && isHome;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -21,31 +22,39 @@ export function Navbar() {
     setIsOpen(false);
   }, [pathname]);
 
-  const navClass =
-    scrolled || !isHome
-      ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-green-50"
-      : "bg-transparent";
-
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navClass}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isTransparent
+          ? "bg-transparent"
+          : "bg-white/95 backdrop-blur-md shadow-lg border-b border-green-50"
+      }`}
     >
-      <nav className="w-full md:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-w-0">
+      <nav className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-green-800 rounded-xl flex items-center overflow-hidden justify-center shadow-lg group-hover:shadow-green-200 transition-shadow">
+            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg group-hover:shadow-green-200 transition-shadow">
               <img
                 src="/logo.png"
                 alt="C.E.G Logo"
-                className="w-full h-full object-contain  rounded-md"
+                className="w-full h-full object-contain"
               />
             </div>
             <div className="hidden sm:block">
-              <p className="font-bold text-green-800 text-sm leading-tight font-poppins">
-               ONG C.E.G
+              <p
+                className="font-bold text-sm leading-tight font-poppins
+                            transition-colors duration-300"
+                style={{ color: isTransparent ? "#fff" : "#166534" }}
+              >
+                ONG C.E.G
               </p>
-              <p className="text-xs text-gray-500 leading-tight">
+              <p
+                className="text-xs leading-tight transition-colors duration-300"
+                style={{
+                  color: isTransparent ? "rgba(255,255,255,0.70)" : "#6b7280",
+                }}
+              >
                 Club Environnemental de Guinée
               </p>
             </div>
@@ -60,10 +69,12 @@ export function Navbar() {
                 className={({ isActive }) =>
                   `px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? "bg-green-50 text-green-700 font-semibold"
-                      : scrolled || !isHome
-                        ? "text-gray-700 hover:text-green-700 hover:bg-green-50"
-                        : "text-white/90 hover:text-white hover:bg-white/10"
+                      ? isTransparent
+                        ? "bg-white/15 text-white font-semibold"
+                        : "bg-green-50 text-green-700 font-semibold"
+                      : isTransparent
+                        ? "text-white/85 hover:text-white hover:bg-white/10"
+                        : "text-gray-700 hover:text-green-700 hover:bg-green-50"
                   }`
                 }
               >
@@ -72,7 +83,7 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* CTA + Mobile menu */}
+          {/* CTA + Hamburger */}
           <div className="flex items-center gap-3">
             <Link
               to="/contact"
@@ -81,16 +92,27 @@ export function Navbar() {
               Nous contacter
             </Link>
 
+            {/* Hamburger — FIX couleur + transition icône animée */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors duration-500"
-              aria-label="Menu"
+              className={`lg:hidden p-2 rounded-xl transition-all duration-200 ${
+                isTransparent
+                  ? "text-white hover:bg-white/10"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
+              aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              aria-expanded={isOpen}
             >
-              {isOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
+              <motion.div
+                animate={{ rotate: isOpen ? 90 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {isOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </motion.div>
             </button>
           </div>
         </div>
@@ -103,8 +125,8 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="lg:hidden bg-white border-t border-gray-100 shadow-xl"
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="lg:hidden bg-white border-t border-gray-100 shadow-xl overflow-hidden"
           >
             <div className="px-4 py-4 space-y-1">
               {NAV_LINKS.map((link) => (
@@ -124,7 +146,7 @@ export function Navbar() {
               ))}
               <Link
                 to="/contact"
-                className="block w-full text-center bg-green-600 text-white px-4 py-3 rounded-xl text-sm font-semibold mt-2"
+                className="block w-full text-center bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-xl text-sm font-semibold mt-2 transition-colors duration-200"
               >
                 Nous contacter
               </Link>
