@@ -49,7 +49,7 @@ export const timeline = [
     year: "2022",
     title: "Attestation de bonne fin de traveaux",
     description:
-      "Reconnaissance de l'impact de ONG C.E.G par M. le Coordinateur National SGP/GEF/PNUD-GUINEE pour ses contributions exceptionnelles à la conservation des écosystèmes.",
+      "Reconnaissance de l'impact de ONG C.E.G par M. le Coordinateur National du SGP/GEF/PNUD-GUINEE pour ses contributions exceptionnelles à la conservation des écosystèmes.",
     icon: "award",
     color: "#7C3AED",
   },

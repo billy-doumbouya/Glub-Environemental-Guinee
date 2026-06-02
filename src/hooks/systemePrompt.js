@@ -123,7 +123,7 @@ PARTENAIRES OFFICIELS
 ════════════════════════════════════════
 
 - GEF  (Fonds pour l'Environnement Mondial)
-- PNUE (Programme des Nations Unies pour l'Environnement)
+- PNUD-GUINEE (Programme des Nations Unies pour l'Environnement)
 - SGP/FEM (Programme de Micro-Financements du FEM)
 
 ════════════════════════════════════════

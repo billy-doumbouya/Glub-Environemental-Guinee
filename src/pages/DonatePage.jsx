@@ -226,7 +226,7 @@ export default function DonatePage() {
                   <ul className="space-y-3">
                     {[
                       "Agrément officiel A/N°7838/MATD/CAB/SERPROMA/2018",
-                      "Partenaires : GEF, PNUE, SGP/FEM",
+                      "Partenaires : GEF, PNUD-GUINEE, SGP/FEM",
                       "8+ années d'interventions documentées",
                       "12 000+ bénéficiaires directs",
                       "Transparence et redevabilité garanties",

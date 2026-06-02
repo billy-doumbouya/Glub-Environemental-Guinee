@@ -154,8 +154,8 @@ export default function PartnersPage() {
     <>
       <SEO
         title="Partenaires"
-        description="Les partenaires institutionnels de ONG C.E.G : GEF, PNUE, SGP/FEM. Découvrez nos collaborations internationales pour la protection de l'environnement en Guinée."
-        keywords="partenaires CEG Guinée, GEF Guinée, PNUE Guinée, SGP FEM Guinée, partenariat ONG environnement"
+        description="Les partenaires institutionnels de ONG C.E.G : GEF, PNUD-GUINEE, SGP/FEM. Découvrez nos collaborations internationales pour la protection de l'environnement en Guinée."
+        keywords="partenaires CEG Guinée, GEF Guinée, PNUD-Guinée, SGP FEM Guinée, partenariat ONG environnement"
       />
       <MainLayout>
         <PageHero

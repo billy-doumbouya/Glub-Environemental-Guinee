@@ -169,7 +169,7 @@ export const projects = [
     location: "Préfectures de Kouroussa et Mandiana, Kankan, Guinée",
     category: "Sensibilisation des communautés locales",
     status: "completed",
-    funder: "GEF/PNUD AbE",
+    funder: "GEF/PNUD-GUINEE AbE",
     budget: "",
     image: "/assets/images/partner-logo/formation.jpg",
     description:

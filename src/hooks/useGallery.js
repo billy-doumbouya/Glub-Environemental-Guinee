@@ -33,7 +33,11 @@ export function useGallery(options = {}) {
       } catch (err) {
         if (!alive) return;
 
-        setError(err?.message || "Erreur chargement galerie");
+        setError(
+          err?.message
+            ? `${err.message}\nvous devez avoir une connexion internet pour afficher les images`
+            : "Erreur chargement galerie, \nverifiez votre connexion",
+        );
         setImages([]);
       } finally {
         if (alive) setLoading(false);

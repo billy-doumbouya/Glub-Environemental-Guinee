@@ -15,7 +15,7 @@ export default function HomePage() {
     <>
       <SEO
         title="C.E.G — ONG Club Environnemental de Guinée"
-        description="ONG Club Environnemental de Guinée : protection de l'environnement, développement durable et amélioration des conditions de vie des populations. Partenaire GEF, PNUE, SGP depuis 2016."
+        description="ONG Club Environnemental de Guinée : protection de l'environnement, développement durable et amélioration des conditions de vie des populations. Partenaire GEF, PNUD-GUINEE, SGP depuis 2016."
         keywords="ONG environnement Guinée, développement durable Guinée, conservation environnement Guinée, ONG écologique Guinée, CEG Forécariah, reboisement Guinée"
       />
       <MainLayout>

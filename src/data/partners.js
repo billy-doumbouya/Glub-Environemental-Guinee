@@ -22,10 +22,10 @@ export const partners = [
   {
     id: 2,
     slug: "pnud",
-    name: "PNUD",
+    name: "PNUD-GUINEE",
     fullName: "Programme des Nations Unies pour le Développement",
     logo: "/assets/images/partner-logo/penue.jpg",
-    logoText: "PNUD",
+    logoText: "PNUD-GUINEE",
     logoColor: "#009EDB",
     category: "Nations Unies",
     description:
