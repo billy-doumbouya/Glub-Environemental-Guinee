@@ -34,14 +34,14 @@ export const news = [
     slug: "partenariat-sgp-renouvele",
     title: "Renouvellement du partenariat avec le SGP/FEM/PNUD-GUINEE",
     excerpt:
-      "L'ONG  ONG C.E.G et le Programme de Microfinancements du FEM ont officiellement renouvelé leur accord de partenariat pour la période 2024-2026.",
+      "L'ONG C.E.G et le Programme de Microfinancements du FEM ont officiellement renouvelé leur accord de partenariat pour la période 2024-2026.",
     content:
       "Une cérémonie officielle de signature a eu lieu à Conakry en présence des représentants du SGP/FEM et de l'équipe dirigeante de C.E.G...",
     date: "",
     category: "Partenariat",
     image: "/assets/images/newsImages/kaback.jpg",
     author: "Équipe Technique ONG C.E.G",
-    tags: ["Partenariat", "SGP", "FEM", "PNEUD-GUINEE", "Financement"],
+    tags: ["Partenariat", "SGP", "FEM", "PNUD-GUINEE", "Financement"],
     featured: true,
   },
   {
