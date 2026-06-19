@@ -1,14 +1,14 @@
-import { SEO } from '../seo/SEO'
-import { MainLayout } from '../layouts/MainLayout'
-import { HeroSection } from '../sections/HeroSection'
-import { StatisticsSection } from '../sections/StatisticsSection'
-import { AboutPreviewSection } from '../sections/AboutPreviewSection'
-import { DomainsSection } from '../sections/DomainsSection'
-import { ProjectsPreviewSection } from '../sections/ProjectsPreviewSection'
-import { PartnersSection } from '../sections/PartnersSection'
-import { TestimonialsSection } from '../sections/TestimonialsSection'
-import { NewsPreviewSection } from '../sections/NewsPreviewSection'
-import { CTASection } from '../sections/CTASection'
+import { SEO } from "../seo/SEO";
+import { MainLayout } from "../layouts/MainLayout";
+import { HeroSection } from "../sections/HeroSection";
+import { StatisticsSection } from "../sections/StatisticsSection";
+import { AboutPreviewSection } from "../sections/AboutPreviewSection";
+import { DomainsSection } from "../sections/DomainsSection";
+import { ProjectsPreviewSection } from "../sections/ProjectsPreviewSection";
+import { PartnersSection } from "../sections/PartnersSection";
+import { TestimonialsSection } from "../sections/TestimonialsSection";
+import { NewsPreviewSection } from "../sections/NewsPreviewSection";
+import { CTASection } from "../sections/CTASection";
 
 export default function HomePage() {
   return (
@@ -30,5 +30,5 @@ export default function HomePage() {
         <CTASection />
       </MainLayout>
     </>
-  )
+  );
 }

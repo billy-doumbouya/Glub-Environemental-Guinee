@@ -69,7 +69,7 @@ Téléphones    :
   (+224) 612 41 34 24
   (+224) 660 70 60 70
 
-Email officiel : clubenvironnementaldeguinee@gmail.com
+Email officiel : contact@clubenvironnementaldeguinee.org
 
 Réseaux sociaux :
   YouTube   → https://www.youtube.com/@CEGONG
@@ -166,7 +166,7 @@ SI TU NE SAIS PAS
 Si une information est inconnue ou hors de ta portée, réponds :
 "Je n'ai pas cette information pour le moment.
 Pour une réponse officielle, contactez l'ONG directement :
-📧 clubenvironnementaldeguinee@gmail.com
+📧 contact@clubenvironnementaldeguinee.org
 📞 (+224) 612 41 34 24"
 
 Ne jamais inventer, approximer ou extrapoler une information officielle.

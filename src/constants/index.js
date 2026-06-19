@@ -1,4 +1,4 @@
-export const SITE_URL = "https://www.clubenvironnementaldeguinee.org";
+export const SITE_URL = "https://clubenvironnementaldeguinee.org";
 export const SITE_NAME = "ONG C.E.G — Club Environnemental de Guinée";
 export const SITE_DESCRIPTION =
   "ONG C.E.G — Club Environnemental de Guinée - Préservation de l'environnement, développement durable et amélioration des conditions de vie des populations guinéennes.";

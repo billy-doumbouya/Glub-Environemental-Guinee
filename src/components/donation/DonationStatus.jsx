@@ -1,13 +1,19 @@
 // src/components/donation/DonationStatus.jsx
-import { motion } from 'framer-motion'
-import { CheckCircle, Loader2, Smartphone, XCircle, RotateCcw } from 'lucide-react'
+import { motion } from "framer-motion";
+import {
+  CheckCircle,
+  Loader2,
+  Smartphone,
+  XCircle,
+  RotateCcw,
+} from "lucide-react";
 
 export function DonationSuccess({ donorName, transactionId, onReset }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+      transition={{ type: "spring", stiffness: 300, damping: 25 }}
       className="py-10 text-center"
     >
       <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -15,17 +21,19 @@ export function DonationSuccess({ donorName, transactionId, onReset }) {
       </div>
 
       <h3 className="font-poppins font-bold text-2xl text-gray-900 mb-2">
-        Merci, {donorName?.split(' ')[0]} ! 🌿
+        Merci, {donorName?.split(" ")[0]} ! 🌿
       </h3>
       <p className="text-gray-500 text-sm leading-relaxed max-w-sm mx-auto mb-4">
-        Votre don a été reçu avec succès. Il contribuera directement à la préservation
-        de l'environnement guinéen.
+        Votre don a été reçu avec succès. Il contribuera directement à la
+        préservation de l'environnement guinéen.
       </p>
 
       {transactionId && (
         <div className="bg-gray-50 rounded-xl px-5 py-3 inline-block mb-6 border border-gray-100">
           <p className="text-xs text-gray-400">Référence de transaction</p>
-          <p className="font-mono font-bold text-gray-700 text-sm">{transactionId}</p>
+          <p className="font-mono font-bold text-gray-700 text-sm">
+            {transactionId}
+          </p>
         </div>
       )}
 
@@ -41,7 +49,7 @@ export function DonationSuccess({ donorName, transactionId, onReset }) {
         Faire un autre don
       </button>
     </motion.div>
-  )
+  );
 }
 
 export function DonationAwaiting() {
@@ -75,7 +83,7 @@ export function DonationAwaiting() {
         <span className="text-sm font-medium">En attente de confirmation…</span>
       </div>
     </motion.div>
-  )
+  );
 }
 
 export function DonationError({ message, onReset }) {
@@ -93,7 +101,7 @@ export function DonationError({ message, onReset }) {
       </h3>
       <p className="text-gray-500 text-sm mb-2">{message}</p>
       <p className="text-gray-400 text-xs mb-6">
-        Contactez-nous : clubenvironnementaldeguinee@gmail.com
+        Contactez-nous : contact@clubenvironnementaldeguinee.org
       </p>
       <button
         onClick={onReset}
@@ -103,5 +111,5 @@ export function DonationError({ message, onReset }) {
         Réessayer
       </button>
     </motion.div>
-  )
+  );
 }
