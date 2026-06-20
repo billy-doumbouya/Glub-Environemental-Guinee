@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { SITE_URL, SITE_NAME } from "../constants";
 import { organization } from "../data/organization";
+import { useLocation } from "react-router-dom";
 
 const defaultMeta = {
   title: "C.E.G — ONG Club Environnemental de Guinée",
@@ -54,6 +55,7 @@ const schemaOrganization = {
 };
 
 export function SEO({ title, description, keywords, image, type, article }) {
+  const location = useLocation(); // ← ajout
   const metaTitle = title ? `${title} | ${SITE_NAME}` : defaultMeta.title;
   const metaDescription = description || defaultMeta.description;
   const metaKeywords = keywords || defaultMeta.keywords;
@@ -68,7 +70,15 @@ export function SEO({ title, description, keywords, image, type, article }) {
       <meta name="keywords" content={metaKeywords} />
       <meta name="author" content={organization.fullName} />
       <meta name="robots" content="index, follow" />
-      <link rel="canonical" href={SITE_URL} />
+
+      {/* Canonical dynamique ← correction */}
+      <link rel="canonical" href={`${SITE_URL}${location.pathname}`} />
+
+      {/* Google Search Console verification ← ajout */}
+      <meta
+        name="google-site-verification"
+        content="GCLHAUTQKS5OwJSB1bb_juztj4DNRiPzvG"
+      />
 
       {/* Geo / Local SEO */}
       <meta name="geo.region" content="GN" />

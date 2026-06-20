@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /don/succes
+Disallow: /don/echec
+
+Sitemap: https://www.clubenvironnementaldeguinee.org/sitemap.xml
