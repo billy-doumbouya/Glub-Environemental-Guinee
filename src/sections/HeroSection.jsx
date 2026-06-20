@@ -132,18 +132,10 @@ export function HeroSection() {
         {/* ── TOP BAR ── */}
         <div className="flex justify-between items-center pt-5 pb-0">
           {/* Logo */}
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-[10px] bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-base">
-              🌿
-            </div>
-            <div>
-              <p className="font-poppins font-bold text-sm text-white leading-tight tracking-wide">
-                CEG
-              </p>
-              <p className="text-[10px] text-white/40 leading-none tracking-widest">
-                Guinée · Depuis 2016
-              </p>
-            </div>
+          <div className="flex items-center gap-2.5 mt-5 md:mt-16 ml-5 md:ml-10">
+            <p className="text-[10px] text-white/40 leading-none tracking-widest  mb-0.5">
+              Guinée · Depuis 2016
+            </p>
           </div>
 
           {/* Badge agrément */}
