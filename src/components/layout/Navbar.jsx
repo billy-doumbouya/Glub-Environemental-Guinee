@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, Phone, X } from "lucide-react";
 import { NAV_LINKS } from "../../constants";
 
 export function Navbar() {
@@ -144,12 +144,16 @@ export function Navbar() {
                   {link.label}
                 </NavLink>
               ))}
-              <Link
-                to="/contact"
-                className="block w-full text-center bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-xl text-sm font-semibold mt-2 transition-colors duration-200"
-              >
-                Nous contacter
-              </Link>
+              <div className="block w-full items-center   bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-xl text-sm font-semibold mt-2 transition-colors duration-200">
+                <Link
+                  to="/contact"
+                  className="flex items-center justify-center gap-4 "
+                >
+                <Phone />
+                  {" "}
+                  Nous contacter
+                </Link>
+              </div>
             </div>
           </motion.div>
         )}

@@ -132,7 +132,7 @@ export function HeroSection() {
         {/* ── TOP BAR ── */}
         <div className="flex justify-between items-center pt-5 pb-0">
           {/* Logo */}
-          <div className="flex items-center gap-2.5 mt-5 md:mt-16 ml-5 md:ml-10">
+          <div className="flex items-center gap-2.5 mt-16  md:ml-10">
             <p className="text-[10px] text-white/40 leading-none tracking-widest  mb-0.5">
               Guinée · Depuis 2016
             </p>
@@ -140,7 +140,7 @@ export function HeroSection() {
 
           {/* Badge agrément */}
           <div
-            className="rounded-xl px-3 py-1.5 text-center border"
+            className="rounded-xl px-3 py-1.5 text-center border mt-9 lg:mt-15"
             style={{
               background: "rgba(251,191,36,0.10)",
               borderColor: "rgba(251,191,36,0.25)",
