@@ -149,9 +149,7 @@ export function Navbar() {
                   to="/contact"
                   className="flex items-center justify-center gap-4 "
                 >
-                <Phone />
-                  {" "}
-                  Nous contacter
+                  <Phone /> Nous contacter
                 </Link>
               </div>
             </div>

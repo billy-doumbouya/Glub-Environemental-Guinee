@@ -1,18 +1,43 @@
-import { CheckCircle, XCircle, Loader2, Send } from "lucide-react";
+import {
+  CheckCircle,
+  XCircle,
+  Loader2,
+  Send,
+  AlertTriangle,
+} from "lucide-react";
 import { useContactForm } from "../../hooks/useContactForm";
 import { CONTACT_SUBJECTS } from "../../constants";
 
+// ─── Shared input style factory ───────────────────────────────────────────────
+const inputBase = `
+  w-full px-4 py-3.5 rounded-xl text-sm text-gray-800
+  bg-white border transition-all duration-200 outline-none
+  placeholder:text-gray-300
+`;
+
+const inputClass = (hasError) =>
+  `${inputBase} ${
+    hasError
+      ? "border-red-300 focus:border-red-400 focus:ring-2 focus:ring-red-100"
+      : "border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-100"
+  }`;
+
+// ─── FormField ────────────────────────────────────────────────────────────────
 function FormField({ label, error, children, required }) {
   return (
-    <div className="group">
-      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+    <div className="flex flex-col gap-1.5">
+      <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">
         {label}
-        {required && <span className="text-green-500 ml-1">*</span>}
+        {required && (
+          <span className="text-green-500 ml-1" aria-hidden="true">
+            *
+          </span>
+        )}
       </label>
       {children}
       {error && (
-        <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1">
-          <XCircle className="w-3 h-3 shrink-0" />
+        <p className="flex items-center gap-1.5 text-red-500 text-xs font-medium mt-0.5">
+          <XCircle className="w-3.5 h-3.5 shrink-0" />
           {error}
         </p>
       )}
@@ -20,16 +45,79 @@ function FormField({ label, error, children, required }) {
   );
 }
 
-const inputClass = (hasError) =>
-  `w-full px-4 py-3.5 rounded-xl border-0 border-b-2 bg-gray-50 text-sm text-gray-800
-   placeholder:text-gray-300 transition-all duration-200 outline-none
-   focus:bg-white focus:shadow-sm
-   ${
-     hasError
-       ? "border-red-300 focus:border-red-400"
-       : "border-gray-200 focus:border-green-500"
-   }`;
+// ─── Success screen ───────────────────────────────────────────────────────────
+function SuccessState({ onReset }) {
+  return (
+    <div className="flex flex-col items-center justify-center text-center py-14 px-6">
+      {/* Animated rings */}
+      <div className="relative mb-7">
+        <div
+          className="absolute inset-0 rounded-full animate-ping opacity-20"
+          style={{ background: "rgba(22,163,74,0.4)" }}
+        />
+        <div
+          className="relative w-20 h-20 rounded-full flex items-center justify-center"
+          style={{ background: "rgba(22,163,74,0.10)" }}
+        >
+          <div
+            className="w-14 h-14 rounded-full flex items-center justify-center"
+            style={{ background: "rgba(22,163,74,0.16)" }}
+          >
+            <CheckCircle className="w-7 h-7 text-green-600" />
+          </div>
+        </div>
+      </div>
 
+      <h3 className="font-poppins font-bold text-xl text-gray-900 mb-2">
+        Message envoyé !
+      </h3>
+      <p className="text-gray-400 text-sm leading-relaxed mb-8 max-w-[260px]">
+        L'équipe C.E.G vous contactera sous{" "}
+        <span className="font-semibold text-gray-600">
+          48 heures ouvrables.
+        </span>
+      </p>
+      <button
+        onClick={onReset}
+        className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700
+                   text-white px-6 py-3 rounded-xl text-sm font-semibold
+                   transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-200"
+      >
+        <Send className="w-4 h-4" />
+        Nouveau message
+      </button>
+    </div>
+  );
+}
+
+// ─── Alert banner ─────────────────────────────────────────────────────────────
+function Alert({ type, message }) {
+  const styles = {
+    error: {
+      bg: "bg-red-50",
+      border: "border-red-100",
+      text: "text-red-600",
+      Icon: XCircle,
+    },
+    spam: {
+      bg: "bg-amber-50",
+      border: "border-amber-100",
+      text: "text-amber-700",
+      Icon: AlertTriangle,
+    },
+  };
+  const { bg, border, text, Icon } = styles[type];
+  return (
+    <div
+      className={`flex items-start gap-3 ${bg} border ${border} rounded-xl px-4 py-3.5`}
+    >
+      <Icon className={`w-4 h-4 mt-0.5 shrink-0 ${text}`} />
+      <p className={`text-sm leading-relaxed ${text}`}>{message}</p>
+    </div>
+  );
+}
+
+// ─── Main form ────────────────────────────────────────────────────────────────
 export function ContactForm() {
   const { form, status, onSubmit, resetStatus } = useContactForm();
   const {
@@ -37,44 +125,12 @@ export function ContactForm() {
     formState: { errors },
   } = form;
 
-  if (status === "success") {
-    return (
-      <div className="flex flex-col items-center justify-center text-center py-16 px-8">
-        {/* Animated checkmark ring */}
-        <div className="relative mb-8">
-          <div className="w-24 h-24 rounded-full bg-green-50 flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-              <CheckCircle className="w-8 h-8 text-green-600" />
-            </div>
-          </div>
-          {/* Decorative ring */}
-          <div className="absolute inset-0 rounded-full border-2 border-green-200 animate-ping opacity-30" />
-        </div>
-
-        <h3 className="font-poppins font-bold text-2xl text-gray-900 mb-3">
-          Message envoyé !
-        </h3>
-        <p className="text-gray-400 text-sm leading-relaxed mb-8 max-w-xs">
-          Merci pour votre message. L'équipe ONG C.E.G vous contactera dans les
-          meilleurs délais.
-        </p>
-        <button
-          onClick={resetStatus}
-          className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700
-                     text-white px-7 py-3 rounded-xl font-semibold text-sm
-                     transition-all duration-200 hover:shadow-lg hover:shadow-green-100"
-        >
-          <Send className="w-4 h-4" />
-          Nouveau message
-        </button>
-      </div>
-    );
-  }
+  if (status === "success") return <SuccessState onReset={resetStatus} />;
 
   return (
-    <form onSubmit={onSubmit} noValidate className="space-y-6">
-      {/* Row 1 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <form onSubmit={onSubmit} noValidate className="space-y-5">
+      {/* Row 1 — Nom + Email */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <FormField label="Nom complet" error={errors.name?.message} required>
           <input
             {...register("name")}
@@ -94,8 +150,8 @@ export function ContactForm() {
         </FormField>
       </div>
 
-      {/* Row 2 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {/* Row 2 — Téléphone + Sujet */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <FormField label="Téléphone" error={errors.phone?.message}>
           <input
             {...register("phone")}
@@ -108,7 +164,13 @@ export function ContactForm() {
         <FormField label="Sujet" error={errors.subject?.message} required>
           <select
             {...register("subject")}
-            className={inputClass(!!errors.subject)}
+            className={`${inputClass(!!errors.subject)} cursor-pointer appearance-none`}
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "right 16px center",
+              paddingRight: "40px",
+            }}
           >
             <option value="">Sélectionner un sujet</option>
             {CONTACT_SUBJECTS.map((s) => (
@@ -130,39 +192,40 @@ export function ContactForm() {
         />
       </FormField>
 
-      {/* Error states */}
+      {/* Error banners */}
       {status === "error" && (
-        <div className="flex items-start gap-3 text-red-500 bg-red-50 rounded-2xl px-5 py-4 border border-red-100">
-          <XCircle className="w-4 h-4 mt-0.5 shrink-0" />
-          <p className="text-sm leading-relaxed">
-            Une erreur est survenue. Veuillez réessayer ou nous contacter
-            directement par email.
-          </p>
-        </div>
+        <Alert
+          type="error"
+          message="Une erreur est survenue. Veuillez réessayer ou nous contacter directement par email."
+        />
       )}
-
       {status === "spam" && (
-        <div className="flex items-start gap-3 text-amber-600 bg-amber-50 rounded-2xl px-5 py-4 border border-amber-100">
-          <XCircle className="w-4 h-4 mt-0.5 shrink-0" />
-          <p className="text-sm leading-relaxed">
-            Trop de messages envoyés. Veuillez patienter quelques minutes.
-          </p>
-        </div>
+        <Alert
+          type="spam"
+          message="Trop de messages envoyés. Veuillez patienter quelques minutes."
+        />
       )}
 
       {/* Submit */}
-      <div className="pt-2">
+      <div className="pt-1">
         <button
           type="submit"
           disabled={status === "loading"}
-          className="w-full relative overflow-hidden
-                     bg-green-600 hover:bg-green-700
+          className="w-full flex items-center justify-center gap-2.5
+                     py-4 rounded-2xl text-sm font-bold text-white
+                     transition-all duration-200
                      disabled:opacity-60 disabled:cursor-not-allowed
-                     text-white py-4 rounded-2xl font-semibold text-sm
-                     transition-all duration-300
-                     flex items-center justify-center gap-2
-                     hover:shadow-xl hover:shadow-green-600/20
                      hover:-translate-y-0.5"
+          style={{
+            background:
+              status === "loading"
+                ? "#16a34a"
+                : "linear-gradient(135deg, #16a34a, #059669)",
+            boxShadow:
+              status === "loading"
+                ? "none"
+                : "0 0 0 1px rgba(22,163,74,0.3), 0 8px 24px rgba(5,150,105,0.20)",
+          }}
         >
           {status === "loading" ? (
             <>
@@ -177,7 +240,7 @@ export function ContactForm() {
           )}
         </button>
 
-        <p className="text-xs text-gray-300 text-center mt-4">
+        <p className="text-[11px] text-gray-300 text-center mt-4 leading-relaxed">
           Vos données sont utilisées uniquement pour répondre à votre demande.
         </p>
       </div>
