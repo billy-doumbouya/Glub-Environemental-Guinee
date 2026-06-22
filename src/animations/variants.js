@@ -5,12 +5,12 @@ export const fadeUp = {
     y: 0,
     transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
-}
+};
 
 export const fadeIn = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.5 } },
-}
+};
 
 export const fadeLeft = {
   hidden: { opacity: 0, x: -40 },
@@ -19,7 +19,7 @@ export const fadeLeft = {
     x: 0,
     transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
-}
+};
 
 export const fadeRight = {
   hidden: { opacity: 0, x: 40 },
@@ -28,7 +28,7 @@ export const fadeRight = {
     x: 0,
     transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
-}
+};
 
 export const staggerContainer = {
   hidden: {},
@@ -38,7 +38,7 @@ export const staggerContainer = {
       delayChildren: 0.1,
     },
   },
-}
+};
 
 export const staggerContainerFast = {
   hidden: {},
@@ -48,7 +48,7 @@ export const staggerContainerFast = {
       delayChildren: 0.05,
     },
   },
-}
+};
 
 export const scaleIn = {
   hidden: { opacity: 0, scale: 0.85 },
@@ -57,7 +57,7 @@ export const scaleIn = {
     scale: 1,
     transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   },
-}
+};
 
 export const slideUp = {
   hidden: { opacity: 0, y: 60 },
@@ -66,9 +66,9 @@ export const slideUp = {
     y: 0,
     transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
   },
-}
+};
 
 export const viewportConfig = {
   once: true,
-  margin: '-80px',
-}
+  margin: "-80px",
+};
