@@ -117,7 +117,11 @@ export default function LoginPage() {
               letterSpacing: -1,
             }}
           >
-            <img src="/logo.png" alt="ONG C.E.G" className="w-full h-full object-cover" />
+            <img
+              src="/logo.png"
+              alt="ONG C.E.G"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div
             style={{
@@ -257,7 +261,9 @@ export default function LoginPage() {
                 transition: "color 0.2s",
               }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#4ade80")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(240,253,244,0.35)")}
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "rgba(240,253,244,0.35)")
+              }
             >
               <i
                 className={`ti ${showPwd ? "ti-eye-off" : "ti-eye"}`}
