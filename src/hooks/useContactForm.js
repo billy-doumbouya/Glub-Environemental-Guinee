@@ -19,11 +19,22 @@ const schema = yup.object({
     .email("Adresse email invalide")
     .required("L'email est requis"),
   // Dans useDonation.js / schéma Yup
-  phone: yup
-    .string()
-    .nullable()
-    .optional()
-    .matches(/^[\d\s\+\-\(\)]{8,15}$/, "Numéro invalide"),
+ phone: yup
+  .string()
+  .nullable()
+  .optional()
+  .test(
+    "phone-format",
+    "Numéro invalide",
+    (value) => {
+      if (!value) return true; // champ optionnel
+      // Caractères autorisés (formatage international)
+      if (!/^[\d\s\+\-\(\)]+$/.test(value)) return false;
+      // On compte uniquement les chiffres pour la longueur réelle
+      const digitsOnly = value.replace(/\D/g, "");
+      return digitsOnly.length >= 8 && digitsOnly.length <= 15;
+    }
+  ),
   subject: yup.string().required("Le sujet est requis"),
   message: yup
     .string()

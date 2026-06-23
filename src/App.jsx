@@ -8,30 +8,33 @@ import { Toaster } from "sonner";
 import "nprogress/nprogress.css";
 import { AuthProvider } from "./hooks/useAuth";
 import ToastComponent from "./components/ui/Mytoaster";
+import { useGlobalChunkErrorHandler } from "./fallback/useGlobalChunkErrorHandler";
 
 export default function App() {
+  useGlobalChunkErrorHandler(); 
   return (
     <>
-      <AuthProvider>
-        {" "}
-        {/* ← remonté au-dessus de Suspense */}
-        <Toaster
-          position="top-right"
-          richColors
-          duration={3000}
-          toastOptions={{
-            style: { fontFamily: "Inter, sans-serif", fontSize: "14px" },
-          }}
-        />
-        <ToastComponent />
-        <HelmetProvider>
-          <ErrorBoundary>
+      {/* Gère les erreurs de chargement de chunk */}
+      <ErrorBoundary>
+        <AuthProvider>
+          {" "}
+          {/* ← remonté au-dessus de Suspense */}
+          <Toaster
+            position="top-right"
+            richColors
+            duration={3000}
+            toastOptions={{
+              style: { fontFamily: "Inter, sans-serif", fontSize: "14px" },
+            }}
+          />
+          <ToastComponent />
+          <HelmetProvider>
             <Suspense fallback={<LoadingFallback />}>
               <RouterProvider router={router} />
             </Suspense>
-          </ErrorBoundary>
-        </HelmetProvider>
-      </AuthProvider>
+          </HelmetProvider>
+        </AuthProvider>
+      </ErrorBoundary>
     </>
   );
 }
