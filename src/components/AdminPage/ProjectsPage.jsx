@@ -30,6 +30,7 @@ const STATUS_COLORS = {
   completed: "green",
   planned: "yellow",
 };
+
 const STATUS_LABELS = {
   ongoing: "En cours",
   completed: "Terminé",
@@ -183,9 +184,17 @@ export default function ProjectsPage() {
     <DashboardLayout>
       <div style={{ padding: "32px" }}>
         <PageHeader
-          title="📋 Projets"
+          title={
+            <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+              <i className="ti ti-folder" aria-hidden="true" /> Projets
+            </span>
+          }
           subtitle={` ${projects.length ?? 0} projet(s) au total`}
-          action={<Button onClick={openCreate}>+ Nouveau projet</Button>}
+          action={
+            <Button onClick={openCreate}>
+              <i className="ti ti-plus" style={{ marginRight: "4px" }} aria-hidden="true" /> Nouveau projet
+            </Button>
+          }
         />
 
         {loading ? (
@@ -265,14 +274,14 @@ export default function ProjectsPage() {
                           variant="ghost"
                           onClick={() => openEdit(p)}
                         >
-                          ✏️ Éditer
+                          <i className="ti ti-edit" style={{ marginRight: "4px" }} aria-hidden="true" /> Éditer
                         </Button>
                         <Button
                           size="sm"
                           variant="danger"
                           onClick={() => setDeleteItem(p)}
                         >
-                          🗑️
+                          <i className="ti ti-trash" aria-hidden="true" />
                         </Button>
                       </div>
                     </td>
@@ -414,7 +423,7 @@ export default function ProjectsPage() {
               variant="secondary"
               onClick={() => fileRef.current?.click()}
             >
-              📷 Choisir une image
+              <i className="ti ti-camera" style={{ marginRight: "4px" }} aria-hidden="true" /> Choisir une image
             </Button>
           </div>
 
@@ -431,7 +440,7 @@ export default function ProjectsPage() {
               Annuler
             </Button>
             <Button onClick={handleSave} loading={saving}>
-              💾 Sauvegarder
+              <i className="ti ti-device-floppy" style={{ marginRight: "4px" }} aria-hidden="true" /> Sauvegarder
             </Button>
           </div>
         </Modal>

@@ -1,6 +1,9 @@
-// src/pages/PartnersPage.jsx
+// src/pages/ProjectsPage.jsx
+// Gestion complète des projets — liste, création, édition, suppression
+
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
+import { projectsService } from "../../../api/services";
 import {
   Badge,
   Button,
@@ -10,34 +13,53 @@ import {
   Input,
   Modal,
   PageHeader,
+  Select,
   Textarea,
   TogglePublished,
 } from "../ui";
-import { partnersService } from "../../../api/services";
 import { DashboardLayout } from "../../layouts/DashboardLayout";
 
-const EMPTY = {
-  name: "",
-  fullName: "",
-  logoText: "",
-  logoColor: "#000000",
-  category: "",
+const STATUS_OPTIONS = [
+  { value: "ongoing", label: "En cours" },
+  { value: "completed", label: "Terminé" },
+  { value: "planned", label: "Planifié" },
+];
+
+const STATUS_COLORS = {
+  ongoing: "blue",
+  completed: "green",
+  planned: "yellow",
+};
+
+const STATUS_LABELS = {
+  ongoing: "En cours",
+  completed: "Terminé",
+  planned: "Planifié",
+};
+
+const EMPTY_FORM = {
+  title: "",
   description: "",
-  website: "",
-  partnership: "",
-  since: "",
-  domains: "",
+  date: "",
+  location: "",
+  category: "",
+  status: "ongoing",
+  funder: "",
+  budget: "",
+  objectives: "",
+  results: "",
+  tags: "",
   order: 0,
   isPublished: true,
 };
 
-export default function PartnersPage() {
-  const [items, setItems] = useState([]);
+export default function ProjectsPage() {
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [deleteItem, setDeleteItem] = useState(null);
-  const [form, setForm] = useState(EMPTY);
+  const [form, setForm] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [imageFile, setImageFile] = useState(null);
@@ -46,76 +68,99 @@ export default function PartnersPage() {
 
   const load = async () => {
     try {
-      const res = await partnersService.getAll();
-      setItems(res.data.data);
+      const res = await projectsService.getAll();
+      setProjects(res.data.data || []);
     } catch {
-      toast.error("Erreur chargement");
+      toast.error("Erreur lors du chargement");
     } finally {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     load();
   }, []);
 
   const openCreate = () => {
     setEditItem(null);
-    setForm(EMPTY);
+    setForm(EMPTY_FORM);
     setImageFile(null);
     setImagePreview(null);
     setModalOpen(true);
   };
-  const openEdit = (item) => {
-    setEditItem(item);
+
+  const openEdit = (project) => {
+    setEditItem(project);
     setForm({
-      name: item.name || "",
-      fullName: item.fullName || "",
-      logoText: item.logoText || "",
-      logoColor: item.logoColor || "#000000",
-      category: item.category || "",
-      description: item.description || "",
-      website: item.website || "",
-      partnership: item.partnership || "",
-      since: item.since || "",
-      domains: Array.isArray(item.domains) ? item.domains.join(", ") : "",
-      order: item.order || 0,
-      isPublished: item.isPublished !== false,
+      title: project.title || "",
+      description: project.description || "",
+      date: project.date || "",
+      location: project.location || "",
+      category: project.category || "",
+      status: project.status || "ongoing",
+      funder: project.funder || "",
+      budget: project.budget || "",
+      objectives: Array.isArray(project.objectives)
+        ? project.objectives.join("\n")
+        : "",
+      results: Array.isArray(project.results) ? project.results.join("\n") : "",
+      tags: Array.isArray(project.tags) ? project.tags.join(", ") : "",
+      order: project.order || 0,
+      isPublished: project.isPublished !== false,
     });
-    setImagePreview(item.logo?.url || null);
+    setImagePreview(project.image?.url || null);
     setImageFile(null);
     setModalOpen(true);
   };
 
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
   const handleSave = async () => {
-    if (!form.name.trim()) return toast.error("Nom requis");
+    if (!form.title.trim()) return toast.error("Le titre est requis");
+    if (!form.description.trim())
+      return toast.error("La description est requise");
+
     setSaving(true);
     try {
       const fd = new FormData();
       Object.entries(form).forEach(([k, v]) => {
-        if (k === "domains")
-          fd.append(
-            k,
-            JSON.stringify(
-              v
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean),
-            ),
-          );
-        else fd.append(k, v);
+        if (k === "objectives" || k === "results") {
+          const arr = v
+            .split("\n")
+            .map((s) => s.trim())
+            .filter(Boolean);
+          fd.append(k, JSON.stringify(arr));
+        } else if (k === "tags") {
+          const arr = v
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean);
+          fd.append(k, JSON.stringify(arr));
+        } else {
+          fd.append(k, v);
+        }
       });
-      if (imageFile) fd.append("logo", imageFile);
+      if (imageFile) fd.append("image", imageFile);
+
       if (editItem) {
-        await partnersService.update(editItem._id, fd);
-        toast.success("Partenaire mis à jour ✅");
+        await projectsService.update(editItem._id, fd);
+        toast.success("Projet mis à jour ✅");
       } else {
-        await partnersService.create(fd);
-        toast.success("Partenaire créé ✅");
+        await projectsService.create(fd);
+        toast.success("Projet créé ✅");
       }
+
       setModalOpen(false);
       load();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Erreur");
+      toast.error(
+        err.response?.data?.message || "Erreur lors de la sauvegarde",
+      );
     } finally {
       setSaving(false);
     }
@@ -124,12 +169,12 @@ export default function PartnersPage() {
   const handleDelete = async () => {
     setDeleting(true);
     try {
-      await partnersService.remove(deleteItem._id);
-      toast.success("Partenaire supprimé");
+      await projectsService.remove(deleteItem._id);
+      toast.success("Projet supprimé");
       setDeleteItem(null);
       load();
     } catch {
-      toast.error("Erreur");
+      toast.error("Erreur lors de la suppression");
     } finally {
       setDeleting(false);
     }
@@ -139,10 +184,19 @@ export default function PartnersPage() {
     <DashboardLayout>
       <div style={{ padding: "32px" }}>
         <PageHeader
-          title="🤝 Partenaires"
-          subtitle={`${items.length} partenaire(s)`}
-          action={<Button onClick={openCreate}>+ Nouveau partenaire</Button>}
+          title={
+            <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+              <i className="ti ti-folder" aria-hidden="true" /> Projets
+            </span>
+          }
+          subtitle={` ${projects.length ?? 0} projet(s) au total`}
+          action={
+            <Button onClick={openCreate}>
+              <i className="ti ti-plus" style={{ marginRight: "4px" }} aria-hidden="true" /> Nouveau projet
+            </Button>
+          }
         />
+
         {loading ? (
           <p>Chargement...</p>
         ) : (
@@ -151,10 +205,10 @@ export default function PartnersPage() {
               <thead>
                 <tr style={{ borderBottom: "2px solid #E5E7EB" }}>
                   {[
-                    "Logo",
-                    "Nom",
+                    "Image",
+                    "Titre",
                     "Catégorie",
-                    "Depuis",
+                    "Statut",
                     "Publié",
                     "Actions",
                   ].map((h) => (
@@ -174,31 +228,43 @@ export default function PartnersPage() {
                 </tr>
               </thead>
               <tbody>
-                {items.map((item) => (
-                  <tr
-                    key={item._id}
-                    style={{ borderBottom: "1px solid #F3F4F6" }}
-                  >
+                {(projects || []).map((p) => (
+                  <tr key={p._id} style={{ borderBottom: "1px solid #F3F4F6" }}>
                     <td style={{ padding: "12px 16px" }}>
-                      <ImagePreview src={item.logo?.url} size={48} />
+                      <ImagePreview src={p.image?.url} size={48} />
                     </td>
                     <td style={{ padding: "12px 16px" }}>
-                      <div style={{ fontWeight: "600", fontSize: "14px" }}>
-                        {item.name}
+                      <div
+                        style={{
+                          fontWeight: "600",
+                          fontSize: "14px",
+                          color: "#111827",
+                          maxWidth: "280px",
+                        }}
+                      >
+                        {p.title}
                       </div>
                       <div style={{ fontSize: "12px", color: "#6B7280" }}>
-                        {item.fullName}
+                        {p.location}
                       </div>
                     </td>
-                    <td style={{ padding: "12px 16px", fontSize: "13px" }}>
-                      {item.category || "—"}
-                    </td>
-                    <td style={{ padding: "12px 16px", fontSize: "13px" }}>
-                      {item.since || "—"}
+                    <td
+                      style={{
+                        padding: "12px 16px",
+                        fontSize: "13px",
+                        color: "#374151",
+                      }}
+                    >
+                      {p.category || "—"}
                     </td>
                     <td style={{ padding: "12px 16px" }}>
-                      <Badge color={item.isPublished ? "green" : "gray"}>
-                        {item.isPublished ? "Oui" : "Non"}
+                      <Badge color={STATUS_COLORS[p.status]}>
+                        {STATUS_LABELS[p.status]}
+                      </Badge>
+                    </td>
+                    <td style={{ padding: "12px 16px" }}>
+                      <Badge color={p.isPublished ? "green" : "gray"}>
+                        {p.isPublished ? "Oui" : "Non"}
                       </Badge>
                     </td>
                     <td style={{ padding: "12px 16px" }}>
@@ -206,16 +272,16 @@ export default function PartnersPage() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => openEdit(item)}
+                          onClick={() => openEdit(p)}
                         >
-                          ✏️
+                          <i className="ti ti-edit" style={{ marginRight: "4px" }} aria-hidden="true" /> Éditer
                         </Button>
                         <Button
                           size="sm"
                           variant="danger"
-                          onClick={() => setDeleteItem(item)}
+                          onClick={() => setDeleteItem(p)}
                         >
-                          🗑️
+                          <i className="ti ti-trash" aria-hidden="true" />
                         </Button>
                       </div>
                     </td>
@@ -225,15 +291,29 @@ export default function PartnersPage() {
             </table>
           </Card>
         )}
+
+        {/* Modal création/édition */}
         <Modal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
-          title={editItem ? "Modifier le partenaire" : "Nouveau partenaire"}
+          title={editItem ? "Modifier le projet" : "Nouveau projet"}
           size="lg"
         >
           <TogglePublished
             value={form.isPublished}
             onChange={(v) => setForm({ ...form, isPublished: v })}
+          />
+          <Input
+            label="Titre *"
+            value={form.title}
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            placeholder="Titre du projet"
+          />
+          <Textarea
+            label="Description *"
+            value={form.description}
+            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            rows={3}
           />
           <div
             style={{
@@ -243,52 +323,69 @@ export default function PartnersPage() {
             }}
           >
             <Input
-              label="Nom court *"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              placeholder="GEF"
+              label="Date"
+              value={form.date}
+              onChange={(e) => setForm({ ...form, date: e.target.value })}
+              placeholder="Ex: Du 15 Juin 2021 au 30 Nov 2022"
             />
             <Input
-              label="Nom complet"
-              value={form.fullName}
-              onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+              label="Lieu"
+              value={form.location}
+              onChange={(e) => setForm({ ...form, location: e.target.value })}
+              placeholder="Préfecture de..."
             />
             <Input
               label="Catégorie"
               value={form.category}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
             />
-            <Input
-              label="Partenariat depuis"
-              value={form.since}
-              onChange={(e) => setForm({ ...form, since: e.target.value })}
-              placeholder="2019"
+            <Select
+              label="Statut"
+              value={form.status}
+              onChange={(e) => setForm({ ...form, status: e.target.value })}
+              options={STATUS_OPTIONS}
             />
             <Input
-              label="Site web"
-              value={form.website}
-              onChange={(e) => setForm({ ...form, website: e.target.value })}
-              placeholder="https://..."
+              label="Bailleur"
+              value={form.funder}
+              onChange={(e) => setForm({ ...form, funder: e.target.value })}
+              placeholder="SGP/FEM/PNUD..."
             />
             <Input
-              label="Type de partenariat"
-              value={form.partnership}
-              onChange={(e) =>
-                setForm({ ...form, partnership: e.target.value })
-              }
+              label="Budget"
+              value={form.budget}
+              onChange={(e) => setForm({ ...form, budget: e.target.value })}
+              placeholder="Ex: 30 000 USD"
             />
           </div>
           <Textarea
-            label="Description"
-            value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
-            rows={3}
+            label="Objectifs (un par ligne)"
+            value={form.objectives}
+            onChange={(e) => setForm({ ...form, objectives: e.target.value })}
+            rows={4}
+            placeholder="Objectif 1&#10;Objectif 2"
+          />
+          <Textarea
+            label="Résultats (un par ligne)"
+            value={form.results}
+            onChange={(e) => setForm({ ...form, results: e.target.value })}
+            rows={4}
+            placeholder="Résultat 1&#10;Résultat 2"
           />
           <Input
-            label="Domaines (séparés par virgule)"
-            value={form.domains}
-            onChange={(e) => setForm({ ...form, domains: e.target.value })}
+            label="Tags (séparés par virgule)"
+            value={form.tags}
+            onChange={(e) => setForm({ ...form, tags: e.target.value })}
+            placeholder="Reboisement, Forêt, Communauté"
           />
+          <Input
+            label="Ordre d'affichage"
+            type="number"
+            value={form.order}
+            onChange={(e) => setForm({ ...form, order: e.target.value })}
+          />
+
+          {/* Upload image */}
           <div style={{ marginBottom: "16px" }}>
             <label
               style={{
@@ -296,21 +393,21 @@ export default function PartnersPage() {
                 fontSize: "13px",
                 fontWeight: "600",
                 marginBottom: "8px",
+                color: "#374151",
               }}
             >
-              Logo
+              Image
             </label>
             {imagePreview && (
               <img
                 src={imagePreview}
                 alt="preview"
                 style={{
-                  height: "60px",
-                  objectFit: "contain",
-                  marginBottom: "8px",
-                  border: "1px solid #E5E7EB",
+                  width: "120px",
+                  height: "80px",
+                  objectFit: "cover",
                   borderRadius: "8px",
-                  padding: "4px",
+                  marginBottom: "8px",
                 }}
               />
             )}
@@ -318,13 +415,7 @@ export default function PartnersPage() {
               ref={fileRef}
               type="file"
               accept="image/*"
-              onChange={(e) => {
-                const f = e.target.files[0];
-                if (f) {
-                  setImageFile(f);
-                  setImagePreview(URL.createObjectURL(f));
-                }
-              }}
+              onChange={handleImage}
               style={{ display: "none" }}
             />
             <Button
@@ -332,9 +423,10 @@ export default function PartnersPage() {
               variant="secondary"
               onClick={() => fileRef.current?.click()}
             >
-              📷 Choisir un logo
+              <i className="ti ti-camera" style={{ marginRight: "4px" }} aria-hidden="true" /> Choisir une image
             </Button>
           </div>
+
           <div
             style={{
               display: "flex",
@@ -348,17 +440,19 @@ export default function PartnersPage() {
               Annuler
             </Button>
             <Button onClick={handleSave} loading={saving}>
-              💾 Sauvegarder
+              <i className="ti ti-device-floppy" style={{ marginRight: "4px" }} aria-hidden="true" /> Sauvegarder
             </Button>
           </div>
         </Modal>
+
+        {/* Confirm delete */}
         <ConfirmDialog
           isOpen={!!deleteItem}
           onClose={() => setDeleteItem(null)}
           onConfirm={handleDelete}
           loading={deleting}
-          title="Supprimer le partenaire"
-          message={`Supprimer "${deleteItem?.name}" ?`}
+          title="Supprimer le projet"
+          message={`Êtes-vous sûr de vouloir supprimer "${deleteItem?.title}" ? Cette action est irréversible.`}
         />
       </div>
     </DashboardLayout>

@@ -54,7 +54,7 @@ export default function NewsPage() {
   const load = async () => {
     try {
       const res = await newsService.getAll();
-      setItems(res.data.data);
+      setItems(res.data.data || []);
     } catch {
       toast.error("Erreur chargement");
     } finally {
@@ -146,9 +146,17 @@ export default function NewsPage() {
     <DashboardLayout>
       <div style={{ padding: "32px" }}>
         <PageHeader
-          title="📰 Actualités"
+          title={
+            <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+              <i className="ti ti-news" aria-hidden="true" /> Actualités
+            </span>
+          }
           subtitle={`${items.length} article(s)`}
-          action={<Button onClick={openCreate}>+ Nouvel article</Button>}
+          action={
+            <Button onClick={openCreate}>
+              <i className="ti ti-plus" style={{ marginRight: "4px" }} aria-hidden="true" /> Nouvel article
+            </Button>
+          }
         />
         {loading ? (
           <p>Chargement...</p>
@@ -194,6 +202,7 @@ export default function NewsPage() {
                         style={{
                           fontWeight: "600",
                           fontSize: "14px",
+                          color: "#111827",
                           maxWidth: "250px",
                         }}
                       >
@@ -208,7 +217,13 @@ export default function NewsPage() {
                     </td>
                     <td style={{ padding: "12px 16px" }}>
                       <Badge color={item.featured ? "yellow" : "gray"}>
-                        {item.featured ? "⭐ Oui" : "Non"}
+                        {item.featured ? (
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                            <i className="ti ti-star-filled" style={{ fontSize: "12px" }} /> Oui
+                          </span>
+                        ) : (
+                          "Non"
+                        )}
                       </Badge>
                     </td>
                     <td style={{ padding: "12px 16px" }}>
@@ -223,14 +238,14 @@ export default function NewsPage() {
                           variant="ghost"
                           onClick={() => openEdit(item)}
                         >
-                          ✏️ Éditer
+                          <i className="ti ti-edit" style={{ marginRight: "4px" }} aria-hidden="true" /> Éditer
                         </Button>
                         <Button
                           size="sm"
                           variant="danger"
                           onClick={() => setDeleteItem(item)}
                         >
-                          🗑️
+                          <i className="ti ti-trash" aria-hidden="true" />
                         </Button>
                       </div>
                     </td>
@@ -267,9 +282,16 @@ export default function NewsPage() {
             />
             <label
               htmlFor="featured"
-              style={{ fontSize: "13px", fontWeight: "600" }}
+              style={{
+                fontSize: "13px",
+                fontWeight: "600",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                cursor: "pointer",
+              }}
             >
-              ⭐ Mettre en avant sur l'accueil
+              <i className="ti ti-star" aria-hidden="true" /> Mettre en avant sur l'accueil
             </label>
           </div>
           <Input
@@ -326,6 +348,7 @@ export default function NewsPage() {
                 fontSize: "13px",
                 fontWeight: "600",
                 marginBottom: "8px",
+                color: "#374151",
               }}
             >
               Image
@@ -361,7 +384,7 @@ export default function NewsPage() {
               variant="secondary"
               onClick={() => fileRef.current?.click()}
             >
-              📷 Choisir une image
+              <i className="ti ti-camera" style={{ marginRight: "4px" }} aria-hidden="true" /> Choisir une image
             </Button>
           </div>
           <div
@@ -377,7 +400,7 @@ export default function NewsPage() {
               Annuler
             </Button>
             <Button onClick={handleSave} loading={saving}>
-              💾 Sauvegarder
+              <i className="ti ti-device-floppy" style={{ marginRight: "4px" }} aria-hidden="true" /> Sauvegarder
             </Button>
           </div>
         </Modal>

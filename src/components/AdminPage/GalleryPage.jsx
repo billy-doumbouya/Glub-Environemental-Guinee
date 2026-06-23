@@ -31,14 +31,23 @@ export default function GalleryPage() {
   const fileRef = useRef();
 
   const loadCategories = async () => {
-    const res = await galleryService.getCategories();
-    setCategories(res.data.data);
-    setLoading(false);
+    try {
+      const res = await galleryService.getCategories();
+      setCategories(res.data.data || []);
+    } catch {
+      toast.error("Erreur chargement catégories");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const loadImages = async (catId) => {
-    const res = await galleryService.getImages({ category: catId });
-    setImages(res.data.data);
+    try {
+      const res = await galleryService.getImages({ category: catId });
+      setImages(res.data.data || []);
+    } catch {
+      toast.error("Erreur chargement images");
+    }
   };
 
   useEffect(() => {
@@ -55,6 +64,7 @@ export default function GalleryPage() {
     setCatForm({ name: "", description: "", order: 0 });
     setCatModal(true);
   };
+  
   const openEditCat = (cat) => {
     setEditCat(cat);
     setCatForm({
@@ -73,15 +83,15 @@ export default function GalleryPage() {
       Object.entries(catForm).forEach(([k, v]) => fd.append(k, v));
       if (editCat) {
         await galleryService.updateCategory(editCat._id, fd);
-        toast.success("Catégorie mise à jour");
+        toast.success("Catégorie mise à jour ✅");
       } else {
         await galleryService.createCategory(fd);
-        toast.success("Catégorie créée");
+        toast.success("Catégorie créée ✅");
       }
       setCatModal(false);
       loadCategories();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Erreur");
+      toast.error(err.response?.data?.message || "Erreur sauvegarde");
     } finally {
       setSaving(false);
     }
@@ -151,15 +161,19 @@ export default function GalleryPage() {
     <DashboardLayout>
       <div style={{ padding: "32px" }}>
         <PageHeader
-          title="🖼️ Galerie Photo"
+          title={
+            <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+              <i className="ti ti-photo" aria-hidden="true" /> Galerie Photo
+            </span>
+          }
           subtitle={`${categories.length} catégorie(s)`}
           action={
             <div style={{ display: "flex", gap: "10px" }}>
               <Button variant="secondary" onClick={openCreateCat}>
-                + Catégorie
+                <i className="ti ti-plus" style={{ marginRight: "4px" }} aria-hidden="true" /> Catégorie
               </Button>
               <Button onClick={openUpload} disabled={!activeCategory}>
-                ⬆️ Upload photos
+                <i className="ti ti-upload" style={{ marginRight: "4px" }} aria-hidden="true" /> Upload photos
               </Button>
             </div>
           }
@@ -185,6 +199,7 @@ export default function GalleryPage() {
               color: !activeCategory ? "white" : "#374151",
               fontWeight: "600",
               fontSize: "13px",
+              transition: "background 0.2s",
             }}
           >
             Toutes
@@ -192,17 +207,22 @@ export default function GalleryPage() {
           {categories.map((cat) => (
             <div
               key={cat._id}
-              style={{ display: "flex", alignItems: "center", gap: "4px" }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                background: activeCategory === cat._id ? "#15803D" : "#E5E7EB",
+                padding: "4px 12px 4px 4px",
+                borderRadius: "20px",
+              }}
             >
               <button
                 onClick={() => setActiveCategory(cat._id)}
                 style={{
-                  padding: "8px 16px",
-                  borderRadius: "20px",
+                  padding: "4px 6px 4px 12px",
                   border: "none",
                   cursor: "pointer",
-                  background:
-                    activeCategory === cat._id ? "#15803D" : "#E5E7EB",
+                  background: "transparent",
                   color: activeCategory === cat._id ? "white" : "#374151",
                   fontWeight: "600",
                   fontSize: "13px",
@@ -216,10 +236,15 @@ export default function GalleryPage() {
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  fontSize: "13px",
+                  fontSize: "14px",
+                  color: activeCategory === cat._id ? "white" : "#4B5563",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "2px",
                 }}
+                title="Modifier"
               >
-                ✏️
+                <i className="ti ti-edit" aria-hidden="true" />
               </button>
               <button
                 onClick={() => setDeleteCat(cat)}
@@ -227,17 +252,24 @@ export default function GalleryPage() {
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  fontSize: "13px",
+                  fontSize: "14px",
+                  color: activeCategory === cat._id ? "white" : "#DC2626",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "2px",
                 }}
+                title="Supprimer"
               >
-                🗑️
+                <i className="ti ti-trash" aria-hidden="true" />
               </button>
             </div>
           ))}
         </div>
 
         {/* Grille d'images */}
-        {activeCategory ? (
+        {loading ? (
+          <p>Chargement...</p>
+        ) : activeCategory ? (
           <div
             style={{
               display: "grid",
@@ -253,6 +285,7 @@ export default function GalleryPage() {
                   borderRadius: "10px",
                   overflow: "hidden",
                   background: "#F3F4F6",
+                  border: "1px solid #E5E7EB",
                 }}
               >
                 <img
@@ -271,6 +304,7 @@ export default function GalleryPage() {
                       padding: "6px 8px",
                       fontSize: "11px",
                       color: "#374151",
+                      background: "white",
                     }}
                   >
                     {img.caption}
@@ -282,16 +316,18 @@ export default function GalleryPage() {
                     position: "absolute",
                     top: "6px",
                     right: "6px",
-                    background: "rgba(220,38,38,0.85)",
+                    background: "rgba(220,38,38,0.9)",
                     color: "white",
                     border: "none",
                     borderRadius: "6px",
-                    padding: "4px 8px",
+                    padding: "4px 6px",
                     cursor: "pointer",
-                    fontSize: "12px",
+                    display: "inline-flex",
+                    alignItems: "center",
                   }}
+                  title="Supprimer l'image"
                 >
-                  🗑️
+                  <i className="ti ti-trash" aria-hidden="true" />
                 </button>
               </div>
             ))}
@@ -303,7 +339,7 @@ export default function GalleryPage() {
           </div>
         ) : (
           <Card>
-            <p style={{ color: "#6B7280", textAlign: "center" }}>
+            <p style={{ color: "#6B7280", textAlign: "center", margin: "16px 0" }}>
               Sélectionnez une catégorie pour voir ses images
             </p>
           </Card>
@@ -336,13 +372,13 @@ export default function GalleryPage() {
             onChange={(e) => setCatForm({ ...catForm, order: e.target.value })}
           />
           <div
-            style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}
+            style={{ display: "flex", gap: "12px", justifyContent: "flex-end", marginTop: "20px" }}
           >
             <Button variant="secondary" onClick={() => setCatModal(false)}>
               Annuler
             </Button>
             <Button onClick={saveCat} loading={saving}>
-              💾 Sauvegarder
+              <i className="ti ti-device-floppy" style={{ marginRight: "4px" }} aria-hidden="true" /> Sauvegarder
             </Button>
           </div>
         </Modal>
@@ -361,6 +397,7 @@ export default function GalleryPage() {
                 fontSize: "13px",
                 fontWeight: "600",
                 marginBottom: "6px",
+                color: "#374151",
               }}
             >
               Catégorie *
@@ -376,6 +413,7 @@ export default function GalleryPage() {
                 border: "1px solid #D1D5DB",
                 borderRadius: "8px",
                 fontSize: "14px",
+                outline: "none",
               }}
             >
               {categories.map((c) => (
@@ -400,7 +438,7 @@ export default function GalleryPage() {
             }
             placeholder="Ex: Juillet 2023"
           />
-          <div style={{ marginBottom: "16px" }}>
+          <div style={{ marginBottom: "20px" }}>
             <input
               ref={fileRef}
               type="file"
@@ -413,24 +451,24 @@ export default function GalleryPage() {
               variant="secondary"
               onClick={() => fileRef.current?.click()}
             >
-              📷 Choisir des images ({files.length} sélectionnée(s))
+              <i className="ti ti-camera" style={{ marginRight: "4px" }} aria-hidden="true" /> Choisir des images ({files.length} sélectionnée(s))
             </Button>
             {files.length > 0 && (
               <p
-                style={{ fontSize: "12px", color: "#15803D", marginTop: "6px" }}
+                style={{ fontSize: "12px", color: "#15803D", marginTop: "6px", display: "flex", alignItems: "center", gap: "4px" }}
               >
-                ✅ {files.length} image(s) prête(s) à l'upload
+                <i className="ti ti-check" aria-hidden="true" /> {files.length} image(s) prête(s) à l'upload
               </p>
             )}
           </div>
           <div
-            style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}
+            style={{ display: "flex", gap: "12px", justifyContent: "flex-end", borderTop: "1px solid #E5E7EB", paddingTop: "16px" }}
           >
             <Button variant="secondary" onClick={() => setUploadModal(false)}>
               Annuler
             </Button>
             <Button onClick={handleUpload} loading={saving}>
-              ⬆️ Uploader
+              <i className="ti ti-upload" style={{ marginRight: "4px" }} aria-hidden="true" /> Uploader
             </Button>
           </div>
         </Modal>
