@@ -116,7 +116,7 @@ export default function LoginPage() {
               letterSpacing: -1,
             }}
           >
-          <img src="/logo.png" alt="ONG C.E.G" style={{ width: 72, height: 72, objectFit: "cover", borderRadius: 20, marginBottom: 14 }} />
+          <img src="/logo.png" alt="ONG C.E.G" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 20, marginBottom: 14, overflow: "hidden" }} />
           </div>
           <div
             style={{
