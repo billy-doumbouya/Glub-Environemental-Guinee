@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import emailjs from "emailjs-com";
+import { isValidPhoneNumber } from "libphonenumber-js";
 import {
   EMAILJS_SERVICE_ID,
   EMAILJS_TEMPLATE_ID,
@@ -18,23 +19,18 @@ const schema = yup.object({
     .string()
     .email("Adresse email invalide")
     .required("L'email est requis"),
-  // Dans useDonation.js / schéma Yup
- phone: yup
-  .string()
-  .nullable()
-  .optional()
-  .test(
-    "phone-format",
-    "Numéro invalide",
-    (value) => {
-      if (!value) return true; // champ optionnel
-      // Caractères autorisés (formatage international)
-      if (!/^[\d\s\+\-\(\)]+$/.test(value)) return false;
-      // On compte uniquement les chiffres pour la longueur réelle
-      const digitsOnly = value.replace(/\D/g, "");
-      return digitsOnly.length >= 8 && digitsOnly.length <= 15;
-    }
-  ),
+  // react-international-phone renvoie toujours la valeur au format
+  // international complet (ex: "+224622000000"), avec indicatif inclus.
+  // isValidPhoneNumber valide la longueur/le format réel attendu pour
+  // le pays détecté à partir de l'indicatif, pas juste un comptage brut.
+  phone: yup
+    .string()
+    .required("Le numéro de téléphone est requis")
+    .test(
+      "phone-valid",
+      "Numéro de téléphone invalide",
+      (value) => !!value && isValidPhoneNumber(value),
+    ),
   subject: yup.string().required("Le sujet est requis"),
   message: yup
     .string()
@@ -50,6 +46,15 @@ export function useContactForm() {
   const form = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
+    defaultValues: {
+      name: "",
+      email: "",
+      // Indicatif guinéen pré-rempli ; cohérent avec defaultCountry="gn"
+      // passé au composant PhoneInput côté UI.
+      phone: "+224",
+      subject: "",
+      message: "",
+    },
   });
 
   const isSpam = () => {
@@ -63,9 +68,7 @@ export function useContactForm() {
       setStatus("spam");
       return;
     }
-
     setStatus("loading");
-
     try {
       await emailjs.send(
         EMAILJS_SERVICE_ID,
@@ -73,7 +76,7 @@ export function useContactForm() {
         {
           from_name: data.name,
           from_email: data.email,
-          phone: data.phone || "Non renseigné",
+          phone: data.phone,
           subject: data.subject,
           message: data.message,
           to_name: "C.E.G",
@@ -81,7 +84,6 @@ export function useContactForm() {
         },
         EMAILJS_PUBLIC_KEY,
       );
-
       setStatus("success");
       setSubmitCount((prev) => prev + 1);
       setLastSubmitTime(Date.now());

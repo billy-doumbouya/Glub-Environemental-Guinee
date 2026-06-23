@@ -5,6 +5,9 @@ import {
   Send,
   AlertTriangle,
 } from "lucide-react";
+import { Controller } from "react-hook-form";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 import { useContactForm } from "../../hooks/useContactForm";
 import { CONTACT_SUBJECTS } from "../../constants";
 
@@ -122,6 +125,7 @@ export function ContactForm() {
   const { form, status, onSubmit, resetStatus } = useContactForm();
   const {
     register,
+    control,
     formState: { errors },
   } = form;
 
@@ -152,12 +156,21 @@ export function ContactForm() {
 
       {/* Row 2 — Téléphone + Sujet */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <FormField label="Téléphone" error={errors.phone?.message}>
-          <input
-            {...register("phone")}
-            type="tel"
-            placeholder="(+224) xxx xxx xxx"
-            className={inputClass(!!errors.phone)}
+        <FormField label="Téléphone" error={errors.phone?.message} required>
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field }) => (
+              <PhoneInput
+                defaultCountry="gn"
+                value={field.value}
+                onChange={field.onChange}
+                inputClassName={inputClass(!!errors.phone)}
+                className={`phone-input-wrapper ${
+                  errors.phone ? "phone-input-error" : ""
+                }`}
+              />
+            )}
           />
         </FormField>
 
