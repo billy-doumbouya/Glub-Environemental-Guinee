@@ -1,9 +1,8 @@
 // src/pages/TimelinePage.jsx
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { DashboardLayout } from "../components/layout/DashboardLayout";
-import {
-  Button,
+import { timelineService } from "../../../api/services";
+import { Badge   Button,
   Input,
   Textarea,
   Modal,
@@ -11,9 +10,9 @@ import {
   PageHeader,
   Card,
   Badge,
-  TogglePublished,
-} from "../components/ui/index";
-import { timelineService } from "../api/services";
+  TogglePublished, } from "../ui";
+import { DashboardLayout } from "../../layouts/DashboardLayout";
+
 
 const EMPTY = {
   year: "",
