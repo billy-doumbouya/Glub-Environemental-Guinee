@@ -147,14 +147,25 @@ export default function NewsPage() {
       <div style={{ padding: "32px" }}>
         <PageHeader
           title={
-            <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
               <i className="ti ti-news" aria-hidden="true" /> Actualités
             </span>
           }
           subtitle={`${items.length} article(s)`}
           action={
             <Button onClick={openCreate}>
-              <i className="ti ti-plus" style={{ marginRight: "4px" }} aria-hidden="true" /> Nouvel article
+              <i
+                className="ti ti-plus"
+                style={{ marginRight: "4px" }}
+                aria-hidden="true"
+              />{" "}
+              Nouvel article
             </Button>
           }
         />
@@ -218,8 +229,18 @@ export default function NewsPage() {
                     <td style={{ padding: "12px 16px" }}>
                       <Badge color={item.featured ? "yellow" : "gray"}>
                         {item.featured ? (
-                          <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
-                            <i className="ti ti-star-filled" style={{ fontSize: "12px" }} /> Oui
+                          <span
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "4px",
+                            }}
+                          >
+                            <i
+                              className="ti ti-star-filled"
+                              style={{ fontSize: "12px" }}
+                            />{" "}
+                            Oui
                           </span>
                         ) : (
                           "Non"
@@ -238,7 +259,12 @@ export default function NewsPage() {
                           variant="ghost"
                           onClick={() => openEdit(item)}
                         >
-                          <i className="ti ti-edit" style={{ marginRight: "4px" }} aria-hidden="true" /> Éditer
+                          <i
+                            className="ti ti-edit"
+                            style={{ marginRight: "4px" }}
+                            aria-hidden="true"
+                          />{" "}
+                          Éditer
                         </Button>
                         <Button
                           size="sm"
@@ -291,7 +317,8 @@ export default function NewsPage() {
                 cursor: "pointer",
               }}
             >
-              <i className="ti ti-star" aria-hidden="true" /> Mettre en avant sur l'accueil
+              <i className="ti ti-star" aria-hidden="true" /> Mettre en avant
+              sur l'accueil
             </label>
           </div>
           <Input
@@ -384,7 +411,12 @@ export default function NewsPage() {
               variant="secondary"
               onClick={() => fileRef.current?.click()}
             >
-              <i className="ti ti-camera" style={{ marginRight: "4px" }} aria-hidden="true" /> Choisir une image
+              <i
+                className="ti ti-camera"
+                style={{ marginRight: "4px" }}
+                aria-hidden="true"
+              />{" "}
+              Choisir une image
             </Button>
           </div>
           <div
@@ -400,7 +432,12 @@ export default function NewsPage() {
               Annuler
             </Button>
             <Button onClick={handleSave} loading={saving}>
-              <i className="ti ti-device-floppy" style={{ marginRight: "4px" }} aria-hidden="true" /> Sauvegarder
+              <i
+                className="ti ti-device-floppy"
+                style={{ marginRight: "4px" }}
+                aria-hidden="true"
+              />{" "}
+              Sauvegarder
             </Button>
           </div>
         </Modal>
