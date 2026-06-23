@@ -18,7 +18,7 @@ export function ProtectedRoute({ children }) {
     );
   }
 
-  if (!isAdmin) return <Navigate to="/login" replace />;
+  if (!isAdmin) return <Navigate to="/admin-login" replace />;
 
   return children;
 }

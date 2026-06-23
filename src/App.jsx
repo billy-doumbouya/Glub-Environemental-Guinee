@@ -12,24 +12,26 @@ import ToastComponent from "./components/ui/Mytoaster";
 export default function App() {
   return (
     <>
-          <AuthProvider>          {/* ← remonté au-dessus de Suspense */}
-      <Toaster
-        position="top-right"
-        richColors
-        duration={3000}
-        toastOptions={{
-          style: { fontFamily: "Inter, sans-serif", fontSize: "14px" },
-        }}
-      />
-      <ToastComponent />
-      <HelmetProvider>
-        <ErrorBoundary>
+      <AuthProvider>
+        {" "}
+        {/* ← remonté au-dessus de Suspense */}
+        <Toaster
+          position="top-right"
+          richColors
+          duration={3000}
+          toastOptions={{
+            style: { fontFamily: "Inter, sans-serif", fontSize: "14px" },
+          }}
+        />
+        <ToastComponent />
+        <HelmetProvider>
+          <ErrorBoundary>
             <Suspense fallback={<LoadingFallback />}>
               <RouterProvider router={router} />
             </Suspense>
-        </ErrorBoundary>
-      </HelmetProvider>
-          </AuthProvider>
+          </ErrorBoundary>
+        </HelmetProvider>
+      </AuthProvider>
     </>
   );
 }

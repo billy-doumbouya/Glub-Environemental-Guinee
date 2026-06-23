@@ -11,8 +11,8 @@ NProgress.configure({ showSpinner: false, speed: 400, trickleSpeed: 200 });
 
 // Instance Axios
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || " http://localhost:5000/",
-  withCredentials: true, // Envoyer les cookies de session
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/",
+  withCredentials: true, // Envoyer les cookies de session (crucial pour la prod)
   timeout: 30000,
   headers: { "Content-Type": "application/json" },
 });
@@ -29,7 +29,7 @@ api.interceptors.request.use(
   }
 );
 
-// ─── Intercepteur de réponse ──────────────────────────────────────────────────
+// ─── Intercepteur de réponse (Unique et Corrigé) ──────────────────────────────
 api.interceptors.response.use(
   (response) => {
     NProgress.done();
@@ -40,18 +40,23 @@ api.interceptors.response.use(
 
     const status = error.response?.status;
     const message = error.response?.data?.message || "Une erreur est survenue";
+    const currentPath = window.location.pathname;
 
-    // Session expirée — rediriger vers login
+    // Session expirée — rediriger vers login UNIQUEMENT si on tente d'accéder à l'admin
     if (status === 401) {
-      // Ne pas rediriger si on est déjà sur /login
-      if (!window.location.pathname.includes("/admin-login")) {
+      const isTryingToAccessAdmin = currentPath.startsWith("/admin");
+      const isAlreadyOnLogin = currentPath.includes("/admin-login");
+
+      if (isTryingToAccessAdmin && !isAlreadyOnLogin) {
         toast.error("Session expirée — veuillez vous reconnecter");
-        setTimeout(() => { window.location.href = "/admin-login"; }, 1500);
+        setTimeout(() => { 
+          window.location.href = "/admin-login"; 
+        }, 1500);
       }
     } else if (status === 404) {
       toast.error("Ressource non trouvée");
     } else if (status === 500) {
-      toast.error(message || "Erreur serveur, reessayez plus tard");
+      toast.error(message || "Erreur serveur, réessayez plus tard");
     }
 
     return Promise.reject(error);

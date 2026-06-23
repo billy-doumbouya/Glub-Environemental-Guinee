@@ -1,5 +1,4 @@
 // src/components/ui/LogoutModal.jsx
-import React from "react";
 
 export function LogoutModal({ isOpen, onClose, onConfirm, isMobile }) {
   if (!isOpen) return null;
