@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { FaFacebook, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaYoutube, FaTiktok, FaLinkedin } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6"; // Import du nouveau logo X (Twitter)
 import { organization } from "../../data/organization";
 
 const links = [
@@ -26,6 +27,18 @@ const links = [
     icon: FaTiktok,
     label: "TikTok",
     color: "hover:bg-gray-900",
+  },
+  {
+    href: organization.socialLinks.linkedin,
+    icon: FaLinkedin,
+    label: "LinkedIn",
+    color: "hover:bg-blue-700",
+  },
+  {
+    href: organization.socialLinks.x,
+    icon: FaXTwitter,
+    label: "X (Twitter)",
+    color: "hover:bg-black",
   },
 ];
 

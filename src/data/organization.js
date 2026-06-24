@@ -12,7 +12,7 @@ export const organization = {
   vision:
     "ONG C.E.G vise à centrer la préservation et la conservation de l'environnement, la promotion du développement durable et l'amélioration des conditions de vie des populations tout en respectant les limites agroécologiques à travers la participation des parties prenantes.",
   mission:
-    "ONG C.E.G a pour mission de promouvoir le développement des initiatives de développement durable en réconciliant la protection de l'environnement et l'amélioration des pratiques agricoles résilientes par les actions de mobilisation et de sensibilisation communautaire.",
+    "ONG C.E.G a pour mission de promouvoir le développement des initiatives de développement durable en réconciliant la protection de l'environnement et l'amélioration des practices agricoles résilientes par les actions de mobilisation et de sensibilisation communautaire.",
   objective:
     "Participer à la préservation des sites sensibles et stratégiques des écosystèmes.",
   socialLinks: {
@@ -22,5 +22,7 @@ export const organization = {
       "https://www.instagram.com/invites/contact/?utm_source=ig_contact_invite&utm_medium=copy_link&utm_content=muhvgyx",
     tiktok: "https://www.tiktok.com/@ongceg?_r=1&_t=ZS-96JPvgqOad6",
     youtube: "https://www.youtube.com/@CEGONG",
+    linkedin: "https://www.linkedin.com/in/ong-c-e-g-1b0338419",
+    x: "https://x.com/OngCeg",
   },
 };

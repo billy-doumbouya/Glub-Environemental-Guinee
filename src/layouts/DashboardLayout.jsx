@@ -282,6 +282,7 @@ function LogoutModal({ isOpen, onClose, onConfirm }) {
             style={{ color: "#f87171", fontSize: 22 }}
             aria-hidden="true"
           />
+          <img src="/logo.png" alt="logo" style={{ width: 48, height: 48 }} />
         </div>
         <div
           style={{
