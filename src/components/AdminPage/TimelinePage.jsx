@@ -2,19 +2,20 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { timelineService } from "../../../api/services";
-import { Badge   Button,
+import {
+  Badge,
+  Button,
   Input,
   Textarea,
   Modal,
   ConfirmDialog,
   PageHeader,
   Card,
-  Badge,
-  TogglePublished, } from "../ui";
+  TogglePublished,
+} from "../ui";
 import { DashboardLayout } from "../../layouts/DashboardLayout";
 
-
-const EMPTY = {
+const getEmptyForm = () => ({
   year: "",
   title: "",
   description: "",
@@ -22,7 +23,7 @@ const EMPTY = {
   color: "#15803D",
   order: 0,
   isPublished: true,
-};
+});
 
 export default function TimelinePage() {
   const [items, setItems] = useState([]);
@@ -30,11 +31,12 @@ export default function TimelinePage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [deleteItem, setDeleteItem] = useState(null);
-  const [form, setForm] = useState(EMPTY);
+  const [form, setForm] = useState(getEmptyForm());
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
   const load = async () => {
+    setLoading(true);
     try {
       const res = await timelineService.getAll();
       setItems(res.data.data || []);
@@ -51,7 +53,7 @@ export default function TimelinePage() {
 
   const openCreate = () => {
     setEditItem(null);
-    setForm(EMPTY);
+    setForm(getEmptyForm());
     setModalOpen(true);
   };
 
@@ -70,9 +72,12 @@ export default function TimelinePage() {
   };
 
   const handleSave = async () => {
-    if (!form.year.trim() || !form.title.trim())
+    if (!form.year.trim() || !form.title.trim()) {
       return toast.error("Année et titre requis");
+    }
+
     setSaving(true);
+
     try {
       if (editItem) {
         await timelineService.update(editItem._id, form);
@@ -81,8 +86,9 @@ export default function TimelinePage() {
         await timelineService.create(form);
         toast.success("Événement créé ✅");
       }
+
       setModalOpen(false);
-      load();
+      await load();
     } catch (err) {
       toast.error(err.response?.data?.message || "Erreur sauvegarde");
     } finally {
@@ -91,12 +97,15 @@ export default function TimelinePage() {
   };
 
   const handleDelete = async () => {
+    if (!deleteItem?._id) return;
+
     setDeleting(true);
+
     try {
       await timelineService.remove(deleteItem._id);
       toast.success("Événement supprimé");
       setDeleteItem(null);
-      load();
+      await load();
     } catch {
       toast.error("Erreur suppression");
     } finally {
@@ -109,14 +118,25 @@ export default function TimelinePage() {
       <div style={{ padding: "32px" }}>
         <PageHeader
           title={
-            <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
-              <i className="ti ti-calendar" aria-hidden="true" /> Timeline
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
+              Timeline
             </span>
           }
           subtitle="Historique de l'ONG C.E.G"
           action={
             <Button onClick={openCreate}>
-              <i className="ti ti-plus" style={{ marginRight: "4px" }} aria-hidden="true" /> Nouvel événement
+              <i
+                className="ti ti-plus"
+                style={{ marginRight: "4px" }}
+                aria-hidden="true"
+              />
+              Nouvel événement
             </Button>
           }
         />
@@ -136,9 +156,8 @@ export default function TimelinePage() {
                 background: "#E5E7EB",
               }}
             />
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-            >
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               {items.map((item) => (
                 <div
                   key={item._id}
@@ -148,7 +167,7 @@ export default function TimelinePage() {
                     alignItems: "flex-start",
                   }}
                 >
-                  {/* Dot container */}
+                  {/* Dot */}
                   <div
                     style={{
                       display: "flex",
@@ -176,10 +195,10 @@ export default function TimelinePage() {
                       }}
                     >
                       {item.icon && (
-                        <i 
-                          className={`ti ti-${item.icon}`} 
-                          style={{ fontSize: "14px", marginBottom: "2px" }} 
-                          aria-hidden="true" 
+                        <i
+                          className={`ti ti-${item.icon}`}
+                          style={{ fontSize: "14px", marginBottom: "2px" }}
+                          aria-hidden="true"
                         />
                       )}
                       <span>{item.year}</span>
@@ -205,6 +224,7 @@ export default function TimelinePage() {
                       >
                         {item.title}
                       </div>
+
                       <div
                         style={{
                           display: "flex",
@@ -216,6 +236,7 @@ export default function TimelinePage() {
                         <Badge color={item.isPublished ? "green" : "gray"}>
                           {item.isPublished ? "Publié" : "Masqué"}
                         </Badge>
+
                         <Button
                           size="sm"
                           variant="ghost"
@@ -224,6 +245,7 @@ export default function TimelinePage() {
                         >
                           <i className="ti ti-edit" aria-hidden="true" />
                         </Button>
+
                         <Button
                           size="sm"
                           variant="danger"
@@ -234,6 +256,7 @@ export default function TimelinePage() {
                         </Button>
                       </div>
                     </div>
+
                     <p
                       style={{
                         fontSize: "13px",
@@ -247,6 +270,7 @@ export default function TimelinePage() {
                   </Card>
                 </div>
               ))}
+
               {items.length === 0 && (
                 <p style={{ color: "#6B7280", marginLeft: "80px" }}>
                   Aucun événement dans la timeline pour le moment.
@@ -256,6 +280,7 @@ export default function TimelinePage() {
           </div>
         )}
 
+        {/* MODAL */}
         <Modal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
@@ -268,7 +293,7 @@ export default function TimelinePage() {
               onChange={(v) => setForm({ ...form, isPublished: v })}
             />
           </div>
-          
+
           <div
             style={{
               display: "grid",
@@ -279,9 +304,12 @@ export default function TimelinePage() {
             <Input
               label="Année *"
               value={form.year}
-              onChange={(e) => setForm({ ...form, year: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, year: e.target.value })
+              }
               placeholder="Ex: 2016"
             />
+
             <div style={{ marginBottom: "16px" }}>
               <label
                 style={{
@@ -297,7 +325,9 @@ export default function TimelinePage() {
               <input
                 type="color"
                 value={form.color}
-                onChange={(e) => setForm({ ...form, color: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, color: e.target.value })
+                }
                 style={{
                   width: "100%",
                   height: "40px",
@@ -305,7 +335,7 @@ export default function TimelinePage() {
                   borderRadius: "8px",
                   cursor: "pointer",
                   padding: "2px 4px",
-                  background: "white"
+                  background: "white",
                 }}
               />
             </div>
@@ -314,14 +344,18 @@ export default function TimelinePage() {
           <Input
             label="Titre *"
             value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            onChange={(e) =>
+              setForm({ ...form, title: e.target.value })
+            }
             placeholder="Ex: Création de l'association"
           />
 
           <Textarea
             label="Description *"
             value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            onChange={(e) =>
+              setForm({ ...form, description: e.target.value })
+            }
             rows={4}
             placeholder="Détails de l'événement marquant..."
           />
@@ -331,20 +365,29 @@ export default function TimelinePage() {
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
               gap: "16px",
-              marginBottom: "16px"
+              marginBottom: "16px",
             }}
           >
             <Input
               label="Icône (Tabler name)"
               value={form.icon}
-              onChange={(e) => setForm({ ...form, icon: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, icon: e.target.value })
+              }
               placeholder="Ex: flag, award, star, user..."
             />
+
             <Input
               label="Ordre d'affichage"
               type="number"
               value={form.order}
-              onChange={(e) => setForm({ ...form, order: parseInt(e.target.value) || 0 })}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                setForm({
+                  ...form,
+                  order: Number.isNaN(value) ? 0 : value,
+                });
+              }}
             />
           </div>
 
@@ -355,18 +398,25 @@ export default function TimelinePage() {
               justifyContent: "flex-end",
               paddingTop: "16px",
               borderTop: "1px solid #E5E7EB",
-              marginTop: "24px"
+              marginTop: "24px",
             }}
           >
             <Button variant="secondary" onClick={() => setModalOpen(false)}>
               Annuler
             </Button>
+
             <Button onClick={handleSave} loading={saving}>
-              <i className="ti ti-device-floppy" style={{ marginRight: "4px" }} aria-hidden="true" /> Sauvegarder
+              <i
+                className="ti ti-device-floppy"
+                style={{ marginRight: "4px" }}
+                aria-hidden="true"
+              />
+              Sauvegarder
             </Button>
           </div>
         </Modal>
 
+        {/* CONFIRM DELETE */}
         <ConfirmDialog
           isOpen={!!deleteItem}
           onClose={() => setDeleteItem(null)}
