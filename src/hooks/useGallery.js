@@ -1,56 +1,35 @@
 import { useEffect, useState } from "react";
-import { fetchGalleryImages } from "../services/googleDriveService";
-import {
-  GOOGLE_MAPS_DRIVE_API_KEY,
-  GOOGLE_MAPS_DRIVE_FOLDER_ID,
-} from "../constants";
+import { galleryService } from "../../api/services";
 
-export function useGallery(options = {}) {
-  const { folderId, apiKey } = options;
-
+export function useGallery() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let alive = true;
-    const controller = new AbortController();
-
-    async function load() {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const data = await fetchGalleryImages({
-          folderId: GOOGLE_MAPS_DRIVE_FOLDER_ID,
-          apiKey: GOOGLE_MAPS_DRIVE_API_KEY,
-          signal: controller.signal,
-        });
-
-        if (!alive) return;
-
-        setImages(Array.isArray(data) ? data : []);
-      } catch (err) {
-        if (!alive) return;
-
-        setError(
-          err?.message
-            ? `${err.message}\nvous devez avoir une connexion internet pour afficher les images`
-            : "Erreur chargement galerie, \nverifiez votre connexion",
-        );
+    galleryService.getImages()
+      .then((res) => {
+        const raw = res.data.data || [];
+        // Normalisation : adapte la structure backend → structure attendue par GalleryItem
+        const normalized = raw.map((item) => ({
+          id:       item._id,
+          title:    item.title || item.alt || "",
+          category: item.category || "Galerie",
+          src:      item.url,
+          thumb:    item.url,
+           fullImage: item.url,
+          full:     item.url,
+          aspect:   "normal",
+        }));
+        setImages(normalized);
+      })
+      .catch((err) => {
+        console.error("Erreur chargement galerie :", err);
+        setError("Erreur chargement galerie, vérifiez votre connexion");
         setImages([]);
-      } finally {
-        if (alive) setLoading(false);
-      }
-    }
-
-    load();
-
-    return () => {
-      alive = false;
-      controller.abort();
-    };
-  }, [folderId, apiKey]);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   return { images, loading, error };
 }

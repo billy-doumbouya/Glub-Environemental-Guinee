@@ -1,76 +1,68 @@
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { FaFacebook, FaInstagram, FaYoutube, FaTiktok, FaLinkedin } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6"; // Import du nouveau logo X (Twitter)
+import { FaXTwitter } from "react-icons/fa6";
 import { organization } from "../../data/organization";
 
 const links = [
-  {
-    href: organization.socialLinks.facebookPage,
-    icon: FaFacebook,
-    label: "Facebook",
-    color: "hover:bg-blue-600",
-  },
-  {
-    href: organization.socialLinks.instagram,
-    icon: FaInstagram,
-    label: "Instagram",
-    color: "hover:bg-pink-600",
-  },
-  {
-    href: organization.socialLinks.youtube,
-    icon: FaYoutube,
-    label: "YouTube",
-    color: "hover:bg-red-600",
-  },
-  {
-    href: organization.socialLinks.tiktok,
-    icon: FaTiktok,
-    label: "TikTok",
-    color: "hover:bg-gray-900",
-  },
-  {
-    href: organization.socialLinks.linkedin,
-    icon: FaLinkedin,
-    label: "LinkedIn",
-    color: "hover:bg-blue-700",
-  },
-  {
-    href: organization.socialLinks.x,
-    icon: FaXTwitter,
-    label: "X (Twitter)",
-    color: "hover:bg-black",
-  },
+  { href: organization.socialLinks.facebookPage, icon: FaFacebook, label: "Facebook",   color: "hover:bg-blue-600"  },
+  { href: organization.socialLinks.instagram,    icon: FaInstagram, label: "Instagram",  color: "hover:bg-pink-600"  },
+  { href: organization.socialLinks.youtube,      icon: FaYoutube,   label: "YouTube",    color: "hover:bg-red-600"   },
+  { href: organization.socialLinks.tiktok,       icon: FaTiktok,    label: "TikTok",     color: "hover:bg-gray-900"  },
+  { href: organization.socialLinks.linkedin,     icon: FaLinkedin,  label: "LinkedIn",   color: "hover:bg-blue-700"  },
+  { href: organization.socialLinks.x,            icon: FaXTwitter,  label: "X (Twitter)",color: "hover:bg-black"     },
 ];
 
 export function SocialFloatingBar() {
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    let lastY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      // Disparaît quand on scroll vers le bas, réapparaît vers le haut
+      setVisible(currentY < lastY || currentY < 100);
+      lastY = currentY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 1.5, duration: 0.5 }}
-      className="fixed right-2 sm:right-4 top-1/2 -translate-y-1/2 z-40
-                 flex flex-col gap-2"
-    >
-      {links.map(({ href, icon: Icon, label, color }) => (
-        <a
-          key={label}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={label}
-          className={`
-            w-8 h-8 sm:w-10 sm:h-10
-            bg-white shadow-lg rounded-xl
-            flex items-center justify-center
-            text-gray-500
-            ${color} hover:text-white
-            transition-all duration-200
-            hover:scale-110 hover:shadow-xl
-          `}
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          key="social-bar"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 20 }}
+          transition={{ duration: 0.3 }}
+          className="fixed right-2 sm:right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-2"
         >
-          <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-        </a>
-      ))}
-    </motion.div>
+          {links.map(({ href, icon: Icon, label, color }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className={`
+                w-8 h-8 sm:w-10 sm:h-10
+                bg-white shadow-lg rounded-xl
+                flex items-center justify-center
+                text-gray-500
+                ${color} hover:text-white
+                transition-all duration-200
+                hover:scale-110 hover:shadow-xl
+              `}
+            >
+              <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            </a>
+          ))}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
