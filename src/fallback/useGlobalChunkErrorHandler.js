@@ -30,28 +30,36 @@ function isChunkLoadError(message) {
 
 export function useGlobalChunkErrorHandler() {
   useEffect(() => {
+    // Cas 1 — Promise rejetée (import dynamique async)
     const handleRejection = (event) => {
-      const message = String(event.reason?.message || event.reason || '')
-
+      const message = String(event.reason?.message || event.reason || "");
       if (isChunkLoadError(message)) {
-        console.error('Chunk load error (unhandled rejection):', event.reason)
-
-        const flagKey = 'app:chunk-reload-attempted'
-        const alreadyTried = sessionStorage.getItem(flagKey)
-
-        if (!alreadyTried) {
-          // Empêche l'affichage du message d'erreur natif du navigateur
-          event.preventDefault()
-          sessionStorage.setItem(flagKey, '1')
-          window.location.reload()
-        }
-        // Si déjà essayé une fois dans cette session, on laisse l'erreur
-        // remonter normalement (évite une boucle infinie de rechargement
-        // en cas de vraie panne réseau / serveur down).
+        event.preventDefault();
+        reloadOnce();
       }
-    }
+    };
 
-    window.addEventListener('unhandledrejection', handleRejection)
-    return () => window.removeEventListener('unhandledrejection', handleRejection)
-  }, [])
+    // Cas 2 — Erreur synchrone globale (ex: chunk manquant au parse)
+    const handleError = (event) => {
+      const message = String(event.message || event.error?.message || "");
+      if (isChunkLoadError(message)) {
+        reloadOnce();
+      }
+    };
+
+    window.addEventListener("unhandledrejection", handleRejection);
+    window.addEventListener("error", handleError);
+    return () => {
+      window.removeEventListener("unhandledrejection", handleRejection);
+      window.removeEventListener("error", handleError);
+    };
+  }, []);
+}
+
+function reloadOnce() {
+  const flagKey = "app:chunk-reload-attempted";
+  if (!sessionStorage.getItem(flagKey)) {
+    sessionStorage.setItem(flagKey, "1");
+    window.location.reload();
+  }
 }

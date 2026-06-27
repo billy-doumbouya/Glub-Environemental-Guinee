@@ -2,30 +2,12 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Phone, X } from "lucide-react";
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
 import { NAV_LINKS } from "../../constants";
+import { useNProgress } from "../../utils/useNProgress ";
 
-// ── NProgress couleur brand verte ────────────────────────────────────
-NProgress.configure({ showSpinner: false, trickleSpeed: 200 });
-
-// Injection du style brand une seule fois
-if (typeof document !== "undefined" && !document.getElementById("nprogress-brand")) {
-  const style = document.createElement("style");
-  style.id = "nprogress-brand";
-  style.textContent = `
-    #nprogress .bar {
-      background: #16a34a !important;
-      height: 3px !important;
-    }
-    #nprogress .peg {
-      box-shadow: 0 0 10px #16a34a, 0 0 5px #16a34a !important;
-    }
-  `;
-  document.head.appendChild(style);
-}
 
 export function Navbar() {
+  useNProgress()
   const [isOpen, setIsOpen]   = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { pathname } = useLocation();
@@ -33,16 +15,7 @@ export function Navbar() {
   const isHome        = pathname === "/";
   const isTransparent = !scrolled && isHome;
 
-  // ── NProgress sur changement de route ────────────────────────────
-  useEffect(() => {
-    NProgress.start();
-    const t = setTimeout(() => NProgress.done(), 300);
-    setIsOpen(false);
-    return () => {
-      clearTimeout(t);
-      NProgress.done();
-    };
-  }, [pathname]);
+
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);

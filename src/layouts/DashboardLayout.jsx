@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import NProgress from "nprogress";
 import { useAuth } from "../hooks/useAuth";
+import { useNProgress } from "../utils/useNProgress ";
 
 const NAV_ITEMS = [
   {
@@ -345,6 +345,7 @@ function LogoutModal({ isOpen, onClose, onConfirm }) {
 
 // ── Layout principal ──────────────────────────────────────────────
 export function DashboardLayout({ children }) {
+  useNProgress()
   const { logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -363,15 +364,7 @@ export function DashboardLayout({ children }) {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  useEffect(() => {
-    NProgress.start();
-    const t = setTimeout(() => NProgress.done(), 300);
-    setMenuOpen(false);
-    return () => {
-      clearTimeout(t);
-      NProgress.done();
-    };
-  }, [location.pathname]);
+ 
 
   const handleConfirmLogout = async () => {
     setLogoutModal(false);
