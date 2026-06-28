@@ -25,7 +25,7 @@ const NAV_ITEMS = [
       {
         path: "/admin/partenaires",
         label: "Partenaires",
-        icon: "ti-handshake",
+        icon: "ti-heart-handshake",
       },
       {
         path: "/admin/temoignages",
@@ -93,6 +93,7 @@ const S = {
     fontWeight: 800,
     color: "#fff",
     boxShadow: "0 0 14px rgba(34,197,94,0.2)",
+    overflow: "hidden",
   },
 
   navSection: {
@@ -345,7 +346,7 @@ function LogoutModal({ isOpen, onClose, onConfirm }) {
 
 // ── Layout principal ──────────────────────────────────────────────
 export function DashboardLayout({ children }) {
-  useNProgress()
+  useNProgress();
   const { logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -363,8 +364,6 @@ export function DashboardLayout({ children }) {
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
-
- 
 
   const handleConfirmLogout = async () => {
     setLogoutModal(false);
@@ -401,7 +400,14 @@ export function DashboardLayout({ children }) {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={S.logoBadge}>C</div>
+            <div style={S.logoBadge}>
+              <img
+                src="/logo.png"
+                alt="logo"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            
             <div>
               <div style={{ fontSize: 14, fontWeight: 700, color: "#f0fdf4" }}>
                 ONG C.E.G

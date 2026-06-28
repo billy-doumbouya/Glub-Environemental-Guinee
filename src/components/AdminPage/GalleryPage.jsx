@@ -64,7 +64,7 @@ export default function GalleryPage() {
     setCatForm({ name: "", description: "", order: 0 });
     setCatModal(true);
   };
-  
+
   const openEditCat = (cat) => {
     setEditCat(cat);
     setCatForm({
@@ -113,8 +113,14 @@ export default function GalleryPage() {
   };
 
   const openUpload = () => {
+    if (!activeCategory) {
+      toast.error(
+        "Choisissez d'abord une catégorie avant d'uploader des photos",
+      );
+      return;
+    }
     setUploadForm({
-      category: activeCategory || categories[0]?._id || "",
+      category: activeCategory,
       caption: "",
       takenAt: "",
     });
@@ -162,7 +168,13 @@ export default function GalleryPage() {
       <div style={{ padding: "32px" }}>
         <PageHeader
           title={
-            <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
               <i className="ti ti-photo" aria-hidden="true" /> Galerie Photo
             </span>
           }
@@ -170,10 +182,28 @@ export default function GalleryPage() {
           action={
             <div style={{ display: "flex", gap: "10px" }}>
               <Button variant="secondary" onClick={openCreateCat}>
-                <i className="ti ti-plus" style={{ marginRight: "4px" }} aria-hidden="true" /> Catégorie
+                <i
+                  className="ti ti-plus"
+                  style={{ marginRight: "4px" }}
+                  aria-hidden="true"
+                />{" "}
+                Catégorie
               </Button>
-              <Button onClick={openUpload} disabled={!activeCategory}>
-                <i className="ti ti-upload" style={{ marginRight: "4px" }} aria-hidden="true" /> Upload photos
+              <Button
+                onClick={openUpload}
+                disabled={!activeCategory}
+                title={
+                  !activeCategory
+                    ? "Sélectionnez d'abord une catégorie"
+                    : undefined
+                }
+              >
+                <i
+                  className="ti ti-upload"
+                  style={{ marginRight: "4px" }}
+                  aria-hidden="true"
+                />{" "}
+                Upload photos
               </Button>
             </div>
           }
@@ -339,7 +369,13 @@ export default function GalleryPage() {
           </div>
         ) : (
           <Card>
-            <p style={{ color: "#6B7280", textAlign: "center", margin: "16px 0" }}>
+            <p
+              style={{
+                color: "#6B7280",
+                textAlign: "center",
+                margin: "16px 0",
+              }}
+            >
               Sélectionnez une catégorie pour voir ses images
             </p>
           </Card>
@@ -372,13 +408,23 @@ export default function GalleryPage() {
             onChange={(e) => setCatForm({ ...catForm, order: e.target.value })}
           />
           <div
-            style={{ display: "flex", gap: "12px", justifyContent: "flex-end", marginTop: "20px" }}
+            style={{
+              display: "flex",
+              gap: "12px",
+              justifyContent: "flex-end",
+              marginTop: "20px",
+            }}
           >
             <Button variant="secondary" onClick={() => setCatModal(false)}>
               Annuler
             </Button>
             <Button onClick={saveCat} loading={saving}>
-              <i className="ti ti-device-floppy" style={{ marginRight: "4px" }} aria-hidden="true" /> Sauvegarder
+              <i
+                className="ti ti-device-floppy"
+                style={{ marginRight: "4px" }}
+                aria-hidden="true"
+              />{" "}
+              Sauvegarder
             </Button>
           </div>
         </Modal>
@@ -451,24 +497,48 @@ export default function GalleryPage() {
               variant="secondary"
               onClick={() => fileRef.current?.click()}
             >
-              <i className="ti ti-camera" style={{ marginRight: "4px" }} aria-hidden="true" /> Choisir des images ({files.length} sélectionnée(s))
+              <i
+                className="ti ti-camera"
+                style={{ marginRight: "4px" }}
+                aria-hidden="true"
+              />{" "}
+              Choisir des images ({files.length} sélectionnée(s))
             </Button>
             {files.length > 0 && (
               <p
-                style={{ fontSize: "12px", color: "#15803D", marginTop: "6px", display: "flex", alignItems: "center", gap: "4px" }}
+                style={{
+                  fontSize: "12px",
+                  color: "#15803D",
+                  marginTop: "6px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
               >
-                <i className="ti ti-check" aria-hidden="true" /> {files.length} image(s) prête(s) à l'upload
+                <i className="ti ti-check" aria-hidden="true" /> {files.length}{" "}
+                image(s) prête(s) à l'upload
               </p>
             )}
           </div>
           <div
-            style={{ display: "flex", gap: "12px", justifyContent: "flex-end", borderTop: "1px solid #E5E7EB", paddingTop: "16px" }}
+            style={{
+              display: "flex",
+              gap: "12px",
+              justifyContent: "flex-end",
+              borderTop: "1px solid #E5E7EB",
+              paddingTop: "16px",
+            }}
           >
             <Button variant="secondary" onClick={() => setUploadModal(false)}>
               Annuler
             </Button>
             <Button onClick={handleUpload} loading={saving}>
-              <i className="ti ti-upload" style={{ marginRight: "4px" }} aria-hidden="true" /> Uploader
+              <i
+                className="ti ti-upload"
+                style={{ marginRight: "4px" }}
+                aria-hidden="true"
+              />{" "}
+              Uploader
             </Button>
           </div>
         </Modal>

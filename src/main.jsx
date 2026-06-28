@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import "./App.css";
 import App from "./App.jsx";
+import "@tabler/icons-webfont/dist/tabler-icons.min.css";
 
 
 // const style = document.createElement("style");

@@ -7,19 +7,19 @@ export function useGallery() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    galleryService.getImages()
+    galleryService
+      .getImages()
       .then((res) => {
         const raw = res.data.data || [];
-        // Normalisation : adapte la structure backend → structure attendue par GalleryItem
         const normalized = raw.map((item) => ({
-          id:       item._id,
-          title:    item.title || item.alt || "",
-          category: item.category || "Galerie",
-          src:      item.url,
-          thumb:    item.url,
-           fullImage: item.url,
-          full:     item.url,
-          aspect:   "normal",
+          id: item._id,
+          title: item.title || item.alt || item.caption || "",
+          category: item.category?.name || item.category || "Galerie",
+          src: item.image?.url || item.url || null, // ← fix
+          thumb: item.image?.url || item.url || null,
+          fullImage: item.image?.url || item.url || null,
+          full: item.image?.url || item.url || null,
+          aspect: "normal",
         }));
         setImages(normalized);
       })

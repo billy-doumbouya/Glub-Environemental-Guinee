@@ -272,12 +272,7 @@ export default function NewsPage() {
                           variant="danger"
                           onClick={() => setDeleteItem(item)}
                         >
-                          <Trash
-                            size={20}
-                            className="text-red-500"
-                            style={{ marginRight: "4px" }}
-                            aria-hidden="true"
-                          />{" "}
+                        <i className="ti ti-trash" aria-hidden="true" />
                         </Button>
                       </div>
                     </td>

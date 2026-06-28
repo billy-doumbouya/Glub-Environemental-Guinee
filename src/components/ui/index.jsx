@@ -28,16 +28,19 @@ export function Button({
     md: { padding: "9px 18px", fontSize: "14px" },
     lg: { padding: "12px 24px", fontSize: "15px" },
   };
+
+  const isDisabled = loading || props.disabled;
+
   return (
     <button
       {...props}
-      disabled={loading || props.disabled}
+      disabled={isDisabled}
       style={{
         ...styles[variant],
         ...sizes[size],
         borderRadius: "8px",
-        cursor: loading ? "not-allowed" : "pointer",
-        opacity: loading ? 0.7 : 1,
+        cursor: isDisabled ? "not-allowed" : "pointer",
+        opacity: isDisabled ? 0.5 : 1,
         fontWeight: "500",
         display: "inline-flex",
         alignItems: "center",
@@ -51,7 +54,6 @@ export function Button({
     </button>
   );
 }
-
 // ─── INPUT ───────────────────────────────────────────────────────────────────
 export function Input({ label, error, ...props }) {
   return (

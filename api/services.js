@@ -40,6 +40,7 @@ export const newsService = {
 };
 
 // ─── GALLERY ─────────────────────────────────────────────────────────────────
+// ─── GALLERY ─────────────────────────────────────────────────────────────────
 export const galleryService = {
   getCategories: () => api.get("/api/gallery/categories"),
   createCategory: (formData) =>
@@ -55,6 +56,10 @@ export const galleryService = {
   getImagesAdmin: (params) => api.get("/api/gallery/images/admin", { params }), // dashboard
   uploadImages: (formData) =>
     api.post("/api/gallery/images", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+  updateImage: (id, fd) =>
+    api.put(`/api/gallery/images/${id}`, fd, {
       headers: { "Content-Type": "multipart/form-data" },
     }),
   deleteImage: (id) => api.delete(`/api/gallery/images/${id}`),

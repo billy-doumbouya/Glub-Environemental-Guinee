@@ -27,7 +27,7 @@ function PartnerFullCard({ partner, index }) {
   return (
     <div
       id={partner.slug}
-      className={`py-20 ${isEven ? "bg-white" : "bg-gray-50"}`}
+      className={`py-20 scroll-mt-24 ${isEven ? "bg-white" : "bg-gray-50"}`} // Modification ici (scroll-mt-24)
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-w-0">
         <div
@@ -42,8 +42,12 @@ function PartnerFullCard({ partner, index }) {
           >
             <div className="flex items-center gap-5 mb-8">
               <div
-                className="h-20 w-40 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg"
-                style={{ backgroundColor: `${partner.logoColor}15` }}
+                className="h-20 w-40 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg bg-white" // Ajout de bg-white par défaut au cas où
+                style={{
+                  backgroundColor: partner.logoColor
+                    ? `${partner.logoColor}15`
+                    : undefined,
+                }}
               >
                 {logoUrl ? (
                   <img
@@ -102,7 +106,9 @@ function PartnerFullCard({ partner, index }) {
                   key={d}
                   className="text-sm px-4 py-1.5 rounded-full font-medium"
                   style={{
-                    backgroundColor: `${partner.logoColor}12`,
+                    backgroundColor: partner.logoColor
+                      ? `${partner.logoColor}12`
+                      : undefined,
                     color: partner.logoColor,
                   }}
                 >
@@ -111,13 +117,14 @@ function PartnerFullCard({ partner, index }) {
               ))}
             </div>
 
+            {/* CORRECTION ICI : Balise <a> corrigée (elle était tronquée / cassée) */}
             {partner.website && (
               <a
                 href={partner.website}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-white px-7 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 hover:scale-105 shadow-lg"
-                style={{ backgroundColor: partner.logoColor }}
+                style={{ backgroundColor: partner.logoColor || "#22c55e" }}
               >
                 <Globe className="w-4 h-4" />
                 Visiter le site officiel
@@ -141,7 +148,7 @@ function PartnerFullCard({ partner, index }) {
                   position: "absolute",
                   inset: 0,
                   clipPath: clip,
-                  background: partner.logoColor,
+                  background: partner.logoColor || "#22c55e",
                   opacity: 0.2,
                   transform: "translate(14px, 14px)",
                 }}
@@ -152,7 +159,7 @@ function PartnerFullCard({ partner, index }) {
                   position: "absolute",
                   inset: 0,
                   clipPath: clip,
-                  background: `linear-gradient(135deg, ${partner.logoColor}ee, ${partner.logoColor}88)`,
+                  background: `linear-gradient(135deg, ${partner.logoColor || "#22c55e"}ee, ${partner.logoColor || "#22c55e"}88)`,
                 }}
               >
                 {/* Motif */}
@@ -322,15 +329,19 @@ export default function PartnersPage() {
                     >
                       <div
                         className="h-1 w-full"
-                        style={{ backgroundColor: p.logoColor }}
+                        style={{ backgroundColor: p.logoColor || "#22c55e" }}
                       />
                       <div className="p-8 flex flex-col flex-1">
                         <div className="flex items-start justify-between mb-6">
                           <div
-                            className="w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden border"
+                            className="w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden border bg-white"
                             style={{
-                              backgroundColor: `${p.logoColor}10`,
-                              borderColor: `${p.logoColor}20`,
+                              backgroundColor: p.logoColor
+                                ? `${p.logoColor}10`
+                                : undefined,
+                              borderColor: p.logoColor
+                                ? `${p.logoColor}20`
+                                : undefined,
                             }}
                           >
                             {logoUrl ? (
@@ -351,7 +362,9 @@ export default function PartnersPage() {
                           <span
                             className="text-xs font-semibold px-3 py-1 rounded-full"
                             style={{
-                              backgroundColor: `${p.logoColor}10`,
+                              backgroundColor: p.logoColor
+                                ? `${p.logoColor}10`
+                                : undefined,
                               color: p.logoColor,
                             }}
                           >
@@ -370,7 +383,9 @@ export default function PartnersPage() {
                         <span
                           className="inline-block text-xs font-medium px-2.5 py-1 rounded-lg mb-4 w-fit"
                           style={{
-                            backgroundColor: `${p.logoColor}10`,
+                            backgroundColor: p.logoColor
+                              ? `${p.logoColor}10`
+                              : undefined,
                             color: p.logoColor,
                           }}
                         >
