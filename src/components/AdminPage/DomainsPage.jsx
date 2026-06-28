@@ -4,14 +4,9 @@ import { Leaf, Users, Heart, BookOpen, CheckCircle } from "lucide-react";
 import { SEO } from "../seo/SEO";
 import { MainLayout } from "../layouts/MainLayout";
 import { PageHero } from "../components/common/PageHero";
-import {
-  staggerContainer,
-  fadeUp,
-  fadeLeft,
-  fadeRight,
-  viewportConfig,
-} from "../animations/variants";
+
 import { domainsService } from "../../../api/services";
+import { fadeLeft, fadeRight, fadeUp, staggerContainer, viewportConfig } from "../../animations/variants";
 
 const iconMap = { leaf: Leaf, users: Users, heart: Heart, book: BookOpen };
 
