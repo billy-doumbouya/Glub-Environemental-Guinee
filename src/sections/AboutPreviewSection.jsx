@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { organization } from "../data/organization";
-import { SectionTitle } from "../components/common/SectionTitle";
 import { fadeLeft, fadeRight, viewportConfig } from "../animations/variants";
 
 const highlights = [

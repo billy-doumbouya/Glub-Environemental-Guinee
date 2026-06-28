@@ -1,15 +1,19 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { Leaf, Users, Heart, BookOpen, ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { domainsService } from '../../api/services' // ← adapte le chemin
-import { SectionTitle } from '../components/common/SectionTitle'
-import { staggerContainer, fadeUp, viewportConfig } from '../animations/variants'
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Leaf, Users, Heart, BookOpen, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { SectionTitle } from "../components/common/SectionTitle";
+import {
+  staggerContainer,
+  fadeUp,
+  viewportConfig,
+} from "../animations/variants";
+import { domainsService } from "../../api/services";
 
-const iconMap = { leaf: Leaf, users: Users, heart: Heart, book: BookOpen }
+const iconMap = { leaf: Leaf, users: Users, heart: Heart, book: BookOpen };
 
 function DomainCard({ domain, index }) {
-  const Icon = iconMap[domain.icon] || Leaf
+  const Icon = iconMap[domain.icon] || Leaf;
 
   return (
     <motion.div
@@ -18,7 +22,9 @@ function DomainCard({ domain, index }) {
     >
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl"
-        style={{ background: `linear-gradient(135deg, ${domain.bgColor}, white)` }}
+        style={{
+          background: `linear-gradient(135deg, ${domain.bgColor}, white)`,
+        }}
       />
 
       <div className="relative">
@@ -30,7 +36,7 @@ function DomainCard({ domain, index }) {
         </div>
 
         <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3 block">
-          Domaine {String(index + 1).padStart(2, '0')}
+          Domaine {String(index + 1).padStart(2, "0")}
         </span>
 
         <h3 className="font-poppins font-bold text-xl text-gray-900 mb-4 leading-tight">
@@ -62,19 +68,20 @@ function DomainCard({ domain, index }) {
         </Link>
       </div>
     </motion.div>
-  )
+  );
 }
 
 export function DomainsSection() {
-  const [domains, setDomains] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [domains, setDomains] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    domainsService.getAll()
+    domainsService
+      .getAll()
       .then((res) => setDomains(res.data.data || []))
-      .catch((err) => console.error('Erreur chargement domaines :', err))
-      .finally(() => setLoading(false))
-  }, [])
+      .catch((err) => console.error("Erreur chargement domaines :", err))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <section className="py-24 bg-gray-50">
@@ -88,7 +95,10 @@ export function DomainsSection() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-64 bg-gray-100 animate-pulse rounded-3xl" />
+              <div
+                key={i}
+                className="h-64 bg-gray-100 animate-pulse rounded-3xl"
+              />
             ))}
           </div>
         ) : (
@@ -123,5 +133,5 @@ export function DomainsSection() {
         )}
       </div>
     </section>
-  )
+  );
 }

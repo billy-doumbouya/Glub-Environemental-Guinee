@@ -31,7 +31,11 @@ function StatItem({ stat, isVisible, index }) {
       initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.55, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      transition={{
+        duration: 0.55,
+        delay: index * 0.08,
+        ease: [0.22, 1, 0.36, 1],
+      }}
       className="group relative flex flex-col items-center text-center px-4 py-10
                  border-r border-white/10 last:border-r-0
                  md:[&:nth-child(3)]:border-r-0 lg:[&:nth-child(3)]:border-r
@@ -45,26 +49,35 @@ function StatItem({ stat, isVisible, index }) {
         <span>{count.toLocaleString("fr-FR")}</span>
         <span className="text-green-400">{stat.suffix}</span>
       </p>
-      <p className="text-green-300/70 text-sm leading-snug max-w-[120px]">{stat.label}</p>
+      <p className="text-green-300/70 text-sm leading-snug max-w-[120px]">
+        {stat.label}
+      </p>
     </motion.div>
   );
 }
 
 export function StatisticsSection() {
   const [statistics, setStatistics] = useState([]);
-  const ref     = useRef(null);
+  const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   useEffect(() => {
-    statisticsService.getAll()
+    statisticsService
+      .getAll()
       .then((res) => setStatistics(res.data.data || []))
       .catch((err) => console.error("Erreur chargement statistiques :", err));
   }, []);
 
   return (
     <section ref={ref} className="relative bg-green-950 overflow-hidden py-6">
-      <div className="absolute inset-0 opacity-[0.035] pointer-events-none"
-        style={{ backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+      <div
+        className="absolute inset-0 opacity-[0.035] pointer-events-none"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, #ffffff 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+      />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-400/40 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-400/40 to-transparent" />
       <div className="absolute -left-24 top-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-green-400/5 blur-3xl pointer-events-none" />
@@ -84,7 +97,12 @@ export function StatisticsSection() {
         {statistics.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 divide-y divide-white/10 md:divide-y-0">
             {statistics.map((stat, i) => (
-              <StatItem key={stat._id} stat={stat} isVisible={isInView} index={i} />
+              <StatItem
+                key={stat._id}
+                stat={stat}
+                isVisible={isInView}
+                index={i}
+              />
             ))}
           </div>
         )}

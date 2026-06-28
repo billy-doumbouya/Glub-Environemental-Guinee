@@ -1,10 +1,10 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, Globe, Users, Target } from "lucide-react";
 import { SEO } from "../seo/SEO";
 import { MainLayout } from "../layouts/MainLayout";
 import { PageHero } from "../components/common/PageHero";
-import { SectionTitle } from "../components/common/SectionTitle";
-import { partners } from "../data/partners";
+import { partnersService } from "../../api/services";
 import {
   staggerContainer,
   fadeUp,
@@ -13,8 +13,17 @@ import {
   viewportConfig,
 } from "../animations/variants";
 
+const clipShapes = [
+  "polygon(0 0, 100% 0, 100% 75%, 50% 100%, 0 75%)",
+  "polygon(50% 0, 100% 25%, 100% 100%, 0 100%, 0 25%)",
+  "polygon(0 0, 100% 0, 100% 80%, 75% 100%, 25% 100%, 0 80%)",
+];
+
 function PartnerFullCard({ partner, index }) {
   const isEven = index % 2 === 0;
+  const clip = clipShapes[index % clipShapes.length];
+  const logoUrl = partner.logo?.url ?? partner.logo ?? null;
+
   return (
     <div
       id={partner.slug}
@@ -33,13 +42,23 @@ function PartnerFullCard({ partner, index }) {
           >
             <div className="flex items-center gap-5 mb-8">
               <div
-                className="h-20 w-40 rounded-2xl flex items-center justify-center text-4xl font-black font-poppins shadow-lg"
-                style={{
-                  backgroundColor: `${partner.logoColor}15`,
-                  color: partner.logoColor,
-                }}
+                className="h-20 w-40 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg"
+                style={{ backgroundColor: `${partner.logoColor}15` }}
               >
-                {partner.logoText}
+                {logoUrl ? (
+                  <img
+                    src={logoUrl}
+                    alt={partner.name}
+                    className="w-full h-full object-contain p-2"
+                  />
+                ) : (
+                  <span
+                    className="text-4xl font-black font-poppins"
+                    style={{ color: partner.logoColor }}
+                  >
+                    {partner.name}
+                  </span>
+                )}
               </div>
               <div>
                 <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">
@@ -78,7 +97,7 @@ function PartnerFullCard({ partner, index }) {
             </div>
 
             <div className="flex flex-wrap gap-2 mb-8">
-              {partner.domains.map((d) => (
+              {(partner.domains || []).map((d) => (
                 <span
                   key={d}
                   className="text-sm px-4 py-1.5 rounded-full font-medium"
@@ -92,19 +111,22 @@ function PartnerFullCard({ partner, index }) {
               ))}
             </div>
 
-            <a
-              href={partner.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-white px-7 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 hover:scale-105 shadow-lg"
-              style={{ backgroundColor: partner.logoColor }}
-            >
-              <Globe className="w-4 h-4" />
-              Visiter le site officiel
-              <ExternalLink className="w-4 h-4" />
-            </a>
+            {partner.website && (
+              <a
+                href={partner.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-white px-7 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 hover:scale-105 shadow-lg"
+                style={{ backgroundColor: partner.logoColor }}
+              >
+                <Globe className="w-4 h-4" />
+                Visiter le site officiel
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            )}
           </motion.div>
 
+          {/* Visuel clippé */}
           <motion.div
             variants={fadeRight}
             initial="hidden"
@@ -112,33 +134,126 @@ function PartnerFullCard({ partner, index }) {
             viewport={viewportConfig}
             className={!isEven ? "lg:col-start-1 lg:row-start-1" : ""}
           >
-            <div
-              className="rounded-3xl p-12 flex flex-col items-center justify-center h-80 shadow-2xl relative overflow-hidden"
-              style={{
-                background: `linear-gradient(135deg, ${partner.logoColor}ee, ${partner.logoColor}88)`,
-              }}
-            >
+            <div style={{ position: "relative", height: 360 }}>
+              {/* Ombre */}
               <div
-                className="absolute inset-0 opacity-10"
                 style={{
-                  backgroundImage:
-                    "radial-gradient(circle, #fff 1px, transparent 1px)",
-                  backgroundSize: "30px 30px",
+                  position: "absolute",
+                  inset: 0,
+                  clipPath: clip,
+                  background: partner.logoColor,
+                  opacity: 0.2,
+                  transform: "translate(14px, 14px)",
                 }}
               />
-              <p className="font-black text-8xl text-white/20 font-poppins absolute">
-                {partner.logoText}
-              </p>
-              <div className="relative text-center text-white">
-                <p className="font-poppins font-black text-5xl mb-3">
-                  {partner.logoText}
-                </p>
-                <p className="text-white/80 text-sm font-medium">
-                  {partner.fullName}
-                </p>
-                <div className="mt-6 bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-3 border border-white/30">
-                  <p className="font-bold text-lg">Depuis {partner.since}</p>
-                  <p className="text-white/70 text-xs">Partenariat actif</p>
+              {/* Bloc principal */}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  clipPath: clip,
+                  background: `linear-gradient(135deg, ${partner.logoColor}ee, ${partner.logoColor}88)`,
+                }}
+              >
+                {/* Motif */}
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    opacity: 0.1,
+                    backgroundImage:
+                      "radial-gradient(circle, white 1.5px, transparent 1.5px)",
+                    backgroundSize: "24px 24px",
+                  }}
+                />
+                {/* Orbes */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: -30,
+                    right: -30,
+                    width: 180,
+                    height: 180,
+                    borderRadius: "50%",
+                    background: "rgba(255,255,255,0.12)",
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: -20,
+                    left: -20,
+                    width: 120,
+                    height: 120,
+                    borderRadius: "50%",
+                    background: "rgba(255,255,255,0.08)",
+                  }}
+                />
+
+                {/* Contenu */}
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 40,
+                    textAlign: "center",
+                    color: "white",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "Poppins, sans-serif",
+                      fontWeight: 900,
+                      fontSize: 64,
+                      opacity: 0.15,
+                      position: "absolute",
+                    }}
+                  >
+                    {partner.name}
+                  </p>
+                  <div style={{ position: "relative" }}>
+                    <p
+                      style={{
+                        fontFamily: "Poppins, sans-serif",
+                        fontWeight: 900,
+                        fontSize: 52,
+                        lineHeight: 1,
+                      }}
+                    >
+                      {partner.name}
+                    </p>
+                    <p
+                      style={{
+                        opacity: 0.8,
+                        fontSize: 13,
+                        fontWeight: 500,
+                        marginTop: 8,
+                      }}
+                    >
+                      {partner.fullName}
+                    </p>
+                    <div
+                      style={{
+                        marginTop: 20,
+                        background: "rgba(255,255,255,0.2)",
+                        backdropFilter: "blur(8px)",
+                        borderRadius: 16,
+                        padding: "12px 24px",
+                        border: "1px solid rgba(255,255,255,0.3)",
+                      }}
+                    >
+                      <p style={{ fontWeight: 700, fontSize: 18 }}>
+                        Depuis {partner.since}
+                      </p>
+                      <p style={{ opacity: 0.7, fontSize: 11, marginTop: 2 }}>
+                        Partenariat actif
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -150,11 +265,22 @@ function PartnerFullCard({ partner, index }) {
 }
 
 export default function PartnersPage() {
+  const [partners, setPartners] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    partnersService
+      .getAll()
+      .then((res) => setPartners(res.data.data || []))
+      .catch((err) => console.error("Erreur chargement partenaires :", err))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <>
       <SEO
         title="Partenaires"
-        description="Les partenaires institutionnels de ONG C.E.G : GEF, PNUD-GUINEE, SGP/FEM. Découvrez nos collaborations internationales pour la protection de l'environnement en Guinée."
+        description="Les partenaires institutionnels de ONG C.E.G : GEF, PNUD-GUINEE, SGP/FEM."
         keywords="partenaires CEG Guinée, GEF Guinée, PNUD-Guinée, SGP FEM Guinée, partenariat ONG environnement"
       />
       <MainLayout>
@@ -166,126 +292,128 @@ export default function PartnersPage() {
           breadcrumb={["Accueil", "Partenaires"]}
         />
 
-        {/* Overview cards */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportConfig}
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
-            >
-              {partners.map((p) => (
-                <motion.a
-                  key={p.id}
-                  href={`#${p.slug}`}
-                  variants={fadeUp}
-                  className="group relative bg-white rounded-3xl border border-gray-100
-                             hover:shadow-2xl hover:border-transparent hover:-translate-y-1
-                             transition-all duration-300 overflow-hidden flex flex-col"
-                >
-                  {/* Accent bar top */}
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[...Array(3)].map((_, i) => (
                   <div
-                    className="h-1 w-full"
-                    style={{ backgroundColor: p.logoColor }}
+                    key={i}
+                    className="h-80 bg-gray-100 animate-pulse rounded-3xl"
                   />
-
-                  <div className="p-8 flex flex-col flex-1">
-                    {/* Logo + category */}
-                    <div className="flex items-start justify-between mb-6">
-                      {/* Logo container */}
+                ))}
+              </div>
+            ) : (
+              <motion.div
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewportConfig}
+                className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
+              >
+                {partners.map((p) => {
+                  const logoUrl = p.logo?.url ?? p.logo ?? null;
+                  return (
+                    <motion.a
+                      key={p._id}
+                      href={`#${p.slug}`}
+                      variants={fadeUp}
+                      className="group relative bg-white rounded-3xl border border-gray-100 hover:shadow-2xl hover:border-transparent hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col"
+                    >
                       <div
-                        className="w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden border"
-                        style={{
-                          backgroundColor: `${p.logoColor}10`,
-                          borderColor: `${p.logoColor}20`,
-                        }}
-                      >
-                        {p.logo ? (
-                          <img
-                            src={p.logo}
-                            alt={`${p.name} logo`}
-                            className="w-14 h-14 object-contain"
-                          />
-                        ) : (
-                          <span className="text-3xl">🌿</span>
-                        )}
-                      </div>
-
-                      {/* Since badge */}
-                      <span
-                        className="text-xs font-semibold px-3 py-1 rounded-full"
-                        style={{
-                          backgroundColor: `${p.logoColor}10`,
-                          color: p.logoColor,
-                        }}
-                      >
-                        Depuis {p.since}
-                      </span>
-                    </div>
-
-                    {/* Name & fullName */}
-                    <p
-                      className="font-poppins font-black text-2xl mb-1"
-                      style={{ color: p.logoColor }}
-                    >
-                      {p.name}
-                    </p>
-                    <p className="text-gray-700 font-semibold text-sm leading-snug mb-2">
-                      {p.fullName}
-                    </p>
-                    <span
-                      className="inline-block text-xs font-medium px-2.5 py-1 rounded-lg mb-4 w-fit"
-                      style={{
-                        backgroundColor: `${p.logoColor}10`,
-                        color: p.logoColor,
-                      }}
-                    >
-                      {p.category}
-                    </span>
-
-                    {/* Description */}
-                    <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 flex-1">
-                      {p.description}
-                    </p>
-
-                    {/* Domains */}
-                    <div className="flex flex-wrap gap-2 mt-5">
-                      {p.domains.map((d) => (
-                        <span
-                          key={d}
-                          className="text-xs px-2.5 py-1 rounded-lg bg-gray-50 text-gray-500 border border-gray-100"
+                        className="h-1 w-full"
+                        style={{ backgroundColor: p.logoColor }}
+                      />
+                      <div className="p-8 flex flex-col flex-1">
+                        <div className="flex items-start justify-between mb-6">
+                          <div
+                            className="w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden border"
+                            style={{
+                              backgroundColor: `${p.logoColor}10`,
+                              borderColor: `${p.logoColor}20`,
+                            }}
+                          >
+                            {logoUrl ? (
+                              <img
+                                src={logoUrl}
+                                alt={p.name}
+                                className="w-14 h-14 object-contain"
+                              />
+                            ) : (
+                              <span
+                                className="text-2xl font-black font-poppins"
+                                style={{ color: p.logoColor }}
+                              >
+                                {p.name}
+                              </span>
+                            )}
+                          </div>
+                          <span
+                            className="text-xs font-semibold px-3 py-1 rounded-full"
+                            style={{
+                              backgroundColor: `${p.logoColor}10`,
+                              color: p.logoColor,
+                            }}
+                          >
+                            Depuis {p.since}
+                          </span>
+                        </div>
+                        <p
+                          className="font-poppins font-black text-2xl mb-1"
+                          style={{ color: p.logoColor }}
                         >
-                          {d}
+                          {p.name}
+                        </p>
+                        <p className="text-gray-700 font-semibold text-sm leading-snug mb-2">
+                          {p.fullName}
+                        </p>
+                        <span
+                          className="inline-block text-xs font-medium px-2.5 py-1 rounded-lg mb-4 w-fit"
+                          style={{
+                            backgroundColor: `${p.logoColor}10`,
+                            color: p.logoColor,
+                          }}
+                        >
+                          {p.category}
                         </span>
-                      ))}
-                    </div>
-
-                    {/* Footer */}
-                    <div className="mt-6 pt-5 border-t border-gray-100 flex items-center justify-between">
-                      <span className="text-xs text-gray-400 font-medium">
-                        {p.partnership}
-                      </span>
-                      <span
-                        className="text-xs font-semibold flex items-center gap-1 group-hover:gap-2 transition-all"
-                        style={{ color: p.logoColor }}
-                      >
-                        Voir plus →
-                      </span>
-                    </div>
-                  </div>
-                </motion.a>
-              ))}
-            </motion.div>
+                        <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 flex-1">
+                          {p.description}
+                        </p>
+                        <div className="flex flex-wrap gap-2 mt-5">
+                          {(p.domains || []).map((d) => (
+                            <span
+                              key={d}
+                              className="text-xs px-2.5 py-1 rounded-lg bg-gray-50 text-gray-500 border border-gray-100"
+                            >
+                              {d}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="mt-6 pt-5 border-t border-gray-100 flex items-center justify-between">
+                          <span className="text-xs text-gray-400 font-medium">
+                            {p.partnership}
+                          </span>
+                          <span
+                            className="text-xs font-semibold"
+                            style={{ color: p.logoColor }}
+                          >
+                            Voir plus →
+                          </span>
+                        </div>
+                      </div>
+                    </motion.a>
+                  );
+                })}
+              </motion.div>
+            )}
           </div>
         </section>
 
-        {partners.map((partner, i) => (
-          <PartnerFullCard key={partner.id} partner={partner} index={i} />
-        ))}
+        {!loading &&
+          partners.map((partner, i) => (
+            <PartnerFullCard key={partner._id} partner={partner} index={i} />
+          ))}
 
-        {/* Become partner CTA */}
         <section className="py-24 bg-gradient-to-br from-green-900 to-green-950">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div

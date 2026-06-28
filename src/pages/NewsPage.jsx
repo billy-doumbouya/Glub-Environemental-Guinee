@@ -8,11 +8,31 @@ import { newsService } from "../../api/services"; // ← adapte si besoin
 import { staggerContainer, fadeUp } from "../animations/variants";
 
 const categoryColors = {
-  Événement:  { bg: "bg-green-500/10",  text: "text-green-300",  border: "border-green-500/30"  },
-  Formation:  { bg: "bg-blue-500/10",   text: "text-blue-300",   border: "border-blue-500/30"   },
-  Partenariat:{ bg: "bg-amber-500/10",  text: "text-amber-300",  border: "border-amber-500/30"  },
-  Publication:{ bg: "bg-purple-500/10", text: "text-purple-300", border: "border-purple-500/30" },
-  Default:    { bg: "bg-white/10",      text: "text-gray-300",   border: "border-white/20"      },
+  Événement: {
+    bg: "bg-green-500/10",
+    text: "text-green-300",
+    border: "border-green-500/30",
+  },
+  Formation: {
+    bg: "bg-blue-500/10",
+    text: "text-blue-300",
+    border: "border-blue-500/30",
+  },
+  Partenariat: {
+    bg: "bg-amber-500/10",
+    text: "text-amber-300",
+    border: "border-amber-500/30",
+  },
+  Publication: {
+    bg: "bg-purple-500/10",
+    text: "text-purple-300",
+    border: "border-purple-500/30",
+  },
+  Default: {
+    bg: "bg-white/10",
+    text: "text-gray-300",
+    border: "border-white/20",
+  },
 };
 
 function NewsCard({ article, featured = false, onReadMore }) {
@@ -29,15 +49,25 @@ function NewsCard({ article, featured = false, onReadMore }) {
       }`}
       style={{ boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.04)" }}
     >
-      <div className={`bg-gradient-to-br from-green-800/80 to-slate-900 relative overflow-hidden flex-stretch min-h-[200px] ${featured ? "md:w-96 shrink-0" : "w-full"}`}>
+      <div
+        className={`bg-gradient-to-br from-green-800/80 to-slate-900 relative overflow-hidden flex-stretch min-h-[200px] ${featured ? "md:w-96 shrink-0" : "w-full"}`}
+      >
         {imageUrl ? (
-          <img src={imageUrl} alt={article.title} className="w-full h-full object-cover" />
+          <img
+            src={imageUrl}
+            alt={article.title}
+            className="w-full h-full object-cover"
+          />
         ) : (
-          <span className="absolute inset-0 flex items-center justify-center text-7xl opacity-10 select-none pointer-events-none">🌿</span>
+          <span className="absolute inset-0 flex items-center justify-center text-7xl opacity-10 select-none pointer-events-none">
+            🌿
+          </span>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
         <div className="absolute top-4 left-4 z-10">
-          <span className={`text-xs font-semibold px-3 py-1.5 rounded-xl border backdrop-blur-md ${catColor.bg} ${catColor.text} ${catColor.border}`}>
+          <span
+            className={`text-xs font-semibold px-3 py-1.5 rounded-xl border backdrop-blur-md ${catColor.bg} ${catColor.text} ${catColor.border}`}
+          >
             {article.category}
           </span>
         </div>
@@ -73,8 +103,12 @@ function NewsCard({ article, featured = false, onReadMore }) {
         <div>
           <div className="flex flex-wrap gap-1.5 mb-5">
             {(article.tags || []).map((tag) => (
-              <span key={tag} className="flex items-center gap-1 text-[11px] bg-slate-50 text-slate-600 border border-slate-100 px-2.5 py-1 rounded-lg">
-                <Tag className="w-2.5 h-2.5 opacity-60" />{tag}
+              <span
+                key={tag}
+                className="flex items-center gap-1 text-[11px] bg-slate-50 text-slate-600 border border-slate-100 px-2.5 py-1 rounded-lg"
+              >
+                <Tag className="w-2.5 h-2.5 opacity-60" />
+                {tag}
               </span>
             ))}
           </div>
@@ -92,13 +126,14 @@ function NewsCard({ article, featured = false, onReadMore }) {
 }
 
 export default function NewsPage() {
-  const [news, setNews]               = useState([]);
-  const [loading, setLoading]         = useState(true);
+  const [news, setNews] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("Toutes");
   const [selectedArticle, setSelectedArticle] = useState(null);
 
   useEffect(() => {
-    newsService.getAll()
+    newsService
+      .getAll()
       .then((res) => setNews(res.data.data || []))
       .catch((err) => console.error("Erreur chargement actualités :", err))
       .finally(() => setLoading(false));
@@ -109,18 +144,26 @@ export default function NewsPage() {
     return ["Toutes", ...Array.from(new Set(news.map((n) => n.category)))];
   }, [news]);
 
-  const filteredNews = useMemo(() =>
-    activeFilter === "Toutes" ? news : news.filter((n) => n.category === activeFilter),
-    [news, activeFilter]
+  const filteredNews = useMemo(
+    () =>
+      activeFilter === "Toutes"
+        ? news
+        : news.filter((n) => n.category === activeFilter),
+    [news, activeFilter],
   );
 
-  const featuredArticle   = useMemo(() => filteredNews.find((n) => n.featured), [filteredNews]);
-  const secondaryArticles = useMemo(() =>
-    filteredNews.filter((n) => !n.featured || filteredNews.indexOf(n) > 0),
-    [filteredNews]
+  const featuredArticle = useMemo(
+    () => filteredNews.find((n) => n.featured),
+    [filteredNews],
+  );
+  const secondaryArticles = useMemo(
+    () =>
+      filteredNews.filter((n) => !n.featured || filteredNews.indexOf(n) > 0),
+    [filteredNews],
   );
 
-  const selectedImageUrl = selectedArticle?.image?.url ?? selectedArticle?.image ?? null;
+  const selectedImageUrl =
+    selectedArticle?.image?.url ?? selectedArticle?.image ?? null;
 
   return (
     <>
@@ -140,12 +183,14 @@ export default function NewsPage() {
 
         <section className="py-20 bg-gradient-to-tr from-slate-50 via-slate-100 to-green-50/40 min-h-screen relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
             {/* SKELETON */}
             {loading && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
                 {[...Array(6)].map((_, i) => (
-                  <div key={i} className="h-80 bg-white/40 animate-pulse rounded-3xl" />
+                  <div
+                    key={i}
+                    className="h-80 bg-white/40 animate-pulse rounded-3xl"
+                  />
                 ))}
               </div>
             )}
@@ -171,7 +216,11 @@ export default function NewsPage() {
 
                 {featuredArticle && (
                   <div className="mb-12">
-                    <NewsCard article={featuredArticle} featured onReadMore={setSelectedArticle} />
+                    <NewsCard
+                      article={featuredArticle}
+                      featured
+                      onReadMore={setSelectedArticle}
+                    />
                   </div>
                 )}
 
@@ -184,14 +233,20 @@ export default function NewsPage() {
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                   >
                     {secondaryArticles.map((article) => (
-                      <NewsCard key={article._id} article={article} onReadMore={setSelectedArticle} />
+                      <NewsCard
+                        key={article._id}
+                        article={article}
+                        onReadMore={setSelectedArticle}
+                      />
                     ))}
                   </motion.div>
                 </AnimatePresence>
 
                 {filteredNews.length === 0 && (
                   <div className="text-center py-20 text-gray-400 bg-white/20 backdrop-blur-md border border-white/20 rounded-2xl">
-                    <p className="text-lg font-medium">Aucune actualité disponible dans cette catégorie.</p>
+                    <p className="text-lg font-medium">
+                      Aucune actualité disponible dans cette catégorie.
+                    </p>
                   </div>
                 )}
               </>
@@ -203,7 +258,9 @@ export default function NewsPage() {
         <AnimatePresence>
           {selectedArticle && (
             <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={() => setSelectedArticle(null)}
               className="fixed inset-0 bg-slate-950/40 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto"
             >
@@ -215,11 +272,18 @@ export default function NewsPage() {
                 onClick={(e) => e.stopPropagation()}
                 className="bg-white/80 backdrop-blur-2xl border border-white/50 max-w-2xl w-full rounded-3xl p-6 md:p-8 shadow-2xl relative my-auto"
               >
-                <button onClick={() => setSelectedArticle(null)} className="absolute top-5 right-5 p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full transition-colors">
+                <button
+                  onClick={() => setSelectedArticle(null)}
+                  className="absolute top-5 right-5 p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full transition-colors"
+                >
                   <X className="w-4 h-4" />
                 </button>
                 {selectedImageUrl && (
-                  <img src={selectedImageUrl} alt={selectedArticle.title} className="w-full h-48 object-cover rounded-2xl mb-4" />
+                  <img
+                    src={selectedImageUrl}
+                    alt={selectedArticle.title}
+                    className="w-full h-48 object-cover rounded-2xl mb-4"
+                  />
                 )}
                 <div className="space-y-4">
                   <span className="text-xs font-bold uppercase tracking-wide text-green-600 bg-green-50 px-3 py-1 rounded-lg inline-block">
@@ -229,11 +293,15 @@ export default function NewsPage() {
                     {selectedArticle.title}
                   </h2>
                   <div className="flex items-center gap-4 text-xs text-slate-500 py-2 border-y border-slate-100">
-                    <span>📅 {selectedArticle.displayDate || selectedArticle.date}</span>
+                    <span>
+                      📅 {selectedArticle.displayDate || selectedArticle.date}
+                    </span>
                     <span>✍️ {selectedArticle.author}</span>
                   </div>
                   <div className="text-slate-700 text-sm md:text-base leading-relaxed space-y-4 pt-2">
-                    <p className="font-medium text-slate-900">{selectedArticle.excerpt}</p>
+                    <p className="font-medium text-slate-900">
+                      {selectedArticle.excerpt}
+                    </p>
                     <p>{selectedArticle.content}</p>
                   </div>
                 </div>

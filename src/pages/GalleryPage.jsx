@@ -6,11 +6,11 @@ import { SEO } from "../seo/SEO";
 import { MainLayout } from "../layouts/MainLayout";
 import { PageHero } from "../components/common/PageHero";
 import { staggerContainer } from "../animations/variants";
-import { useGallery } from "../hooks/useGallery";
 import { GallerySkeleton } from "../components/Gallery/imageSkeleton";
 import { GalleryItem } from "../components/Gallery/GalleryItem";
 import { Lightbox } from "../components/Gallery/Lightbox";
 import { useGalleryPagination } from "./usePagination";
+import { useGallery } from "../hooks/useGallery";
 
 // ─── Error state ──────────────────────────────────────────────────────────────
 function GalleryError({ message }) {

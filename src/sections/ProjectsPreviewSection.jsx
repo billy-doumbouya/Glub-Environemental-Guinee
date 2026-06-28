@@ -4,15 +4,22 @@ import { ArrowRight, Calendar, MapPin, Tag } from "lucide-react";
 import { Link } from "react-router-dom";
 import { projectsService } from "../../api/services"; // ← adapte le chemin
 import { SectionTitle } from "../components/common/SectionTitle";
-import { staggerContainer, fadeUp, viewportConfig } from "../animations/variants";
+import {
+  staggerContainer,
+  fadeUp,
+  viewportConfig,
+} from "../animations/variants";
 
 const statusConfig = {
   completed: { label: "Terminé", class: "bg-green-50 text-green-700" },
-  ongoing:   { label: "En cours", class: "bg-amber-50 text-amber-700" },
+  ongoing: { label: "En cours", class: "bg-amber-50 text-amber-700" },
 };
 
 function ProjectCard({ project }) {
-  const status = statusConfig[project.status] || { label: project.status, class: "bg-gray-50 text-gray-700" };
+  const status = statusConfig[project.status] || {
+    label: project.status,
+    class: "bg-gray-50 text-gray-700",
+  };
   const imageUrl = project.image?.url ?? project.image ?? null;
 
   return (
@@ -22,14 +29,22 @@ function ProjectCard({ project }) {
     >
       <div className="h-52 bg-gradient-to-br from-green-700 to-green-950 relative overflow-hidden">
         {imageUrl ? (
-          <img src={imageUrl} alt={project.title} className="w-full h-full object-cover" />
+          <img
+            src={imageUrl}
+            alt={project.title}
+            className="w-full h-full object-cover"
+          />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-20">🌿</div>
+          <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-20">
+            🌿
+          </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
         <div className="absolute top-4 left-4">
-          <span className={`text-xs font-semibold px-3 py-1 rounded-full ${status.class}`}>
+          <span
+            className={`text-xs font-semibold px-3 py-1 rounded-full ${status.class}`}
+          >
             {status.label}
           </span>
         </div>
@@ -72,7 +87,9 @@ function ProjectCard({ project }) {
 
         {(project.results || []).length > 0 && (
           <div className="bg-green-50 rounded-xl p-3 mb-5 border border-green-100">
-            <p className="text-green-700 text-xs font-medium">✓ {project.results[0]}</p>
+            <p className="text-green-700 text-xs font-medium">
+              ✓ {project.results[0]}
+            </p>
           </div>
         )}
 
@@ -90,10 +107,11 @@ function ProjectCard({ project }) {
 
 export function ProjectsPreviewSection() {
   const [projects, setProjects] = useState([]);
-  const [loading, setLoading]   = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    projectsService.getAll()
+    projectsService
+      .getAll()
       .then((res) => setProjects(res.data.data || []))
       .catch((err) => console.error("Erreur chargement projets :", err))
       .finally(() => setLoading(false));
@@ -111,7 +129,10 @@ export function ProjectsPreviewSection() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-80 bg-gray-100 animate-pulse rounded-3xl" />
+              <div
+                key={i}
+                className="h-80 bg-gray-100 animate-pulse rounded-3xl"
+              />
             ))}
           </div>
         ) : (

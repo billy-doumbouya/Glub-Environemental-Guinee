@@ -1,10 +1,14 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { Quote, Star } from 'lucide-react'
-import { FaYoutube } from 'react-icons/fa'
-import { testimonialsService } from '../../api/services' // ← adapte le chemin
-import { SectionTitle } from '../components/common/SectionTitle'
-import { staggerContainer, fadeUp, viewportConfig } from '../animations/variants'
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Quote, Star } from "lucide-react";
+import { FaYoutube } from "react-icons/fa";
+import { testimonialsService } from "../../api/services"; // ← adapte le chemin
+import { SectionTitle } from "../components/common/SectionTitle";
+import {
+  staggerContainer,
+  fadeUp,
+  viewportConfig,
+} from "../animations/variants";
 
 function TestimonialCard({ testimonial }) {
   const avatarUrl = testimonial.avatar?.url ?? testimonial.avatar ?? null;
@@ -20,8 +24,11 @@ function TestimonialCard({ testimonial }) {
       </p>
       <div className="flex items-center gap-4">
         {avatarUrl ? (
-          <img src={avatarUrl} alt={testimonial.name}
-            className="w-12 h-12 rounded-2xl object-cover" />
+          <img
+            src={avatarUrl}
+            alt={testimonial.name}
+            className="w-12 h-12 rounded-2xl object-cover"
+          />
         ) : (
           <div className="w-12 h-12 bg-green-600 rounded-2xl flex items-center justify-center text-white font-bold font-poppins text-lg">
             {testimonial.name?.charAt(0)}
@@ -38,21 +45,23 @@ function TestimonialCard({ testimonial }) {
         </div>
       </div>
     </motion.div>
-  )
+  );
 }
 
 export function TestimonialsSection() {
-  const [testimonials, setTestimonials] = useState([])
-  const [loading, setLoading]           = useState(true)
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    testimonialsService.getAll()
+    testimonialsService
+      .getAll()
       .then((res) => setTestimonials(res.data.data || []))
-      .catch((err) => console.error('Erreur chargement témoignages :', err))
-      .finally(() => setLoading(false))
-  }, [])
+      .catch((err) => console.error("Erreur chargement témoignages :", err))
+      .finally(() => setLoading(false));
+  }, []);
 
-  const videoSrc = "https://www.youtube.com/embed/4Aah5mnX5hM?autoplay=1&mute=1&loop=1&playlist=4Aah5mnX5hM&controls=0&modestbranding=1&rel=0"
+  const videoSrc =
+    "https://www.youtube.com/embed/4Aah5mnX5hM?autoplay=1&mute=1&loop=1&playlist=4Aah5mnX5hM&controls=0&modestbranding=1&rel=0";
 
   return (
     <section className="py-24 bg-gradient-to-br from-green-900 via-green-800 to-green-950 relative overflow-hidden">
@@ -100,7 +109,10 @@ export function TestimonialsSection() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-64 bg-white/10 animate-pulse rounded-3xl" />
+              <div
+                key={i}
+                className="h-64 bg-white/10 animate-pulse rounded-3xl"
+              />
             ))}
           </div>
         ) : (
@@ -118,5 +130,5 @@ export function TestimonialsSection() {
         )}
       </div>
     </section>
-  )
+  );
 }
