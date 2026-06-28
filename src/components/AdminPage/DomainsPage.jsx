@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Leaf, Users, Heart, BookOpen, CheckCircle } from "lucide-react";
-import { SEO } from "../seo/SEO";
-import { MainLayout } from "../layouts/MainLayout";
-import { PageHero } from "../components/common/PageHero";
 
 import { domainsService } from "../../../api/services";
 import { fadeLeft, fadeRight, fadeUp, staggerContainer, viewportConfig } from "../../animations/variants";
+import { PageHero } from "../common/PageHero";
+import { MainLayout } from "../../layouts/MainLayout";
+import { SEO } from "../../seo/SEO";
 
 const iconMap = { leaf: Leaf, users: Users, heart: Heart, book: BookOpen };
 
