@@ -68,7 +68,7 @@ export default function ProjectsPage() {
 
   const load = async () => {
     try {
-      const res = await projectsService.getAll();
+      const res = await projectsService.getAllAdmin();
       setProjects(res.data.data || []);
     } catch {
       toast.error("Erreur lors du chargement");

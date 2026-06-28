@@ -38,7 +38,7 @@ export default function TimelinePage() {
   const load = async () => {
     setLoading(true);
     try {
-      const res = await timelineService.getAll();
+      const res = await timelineService.getAllAdmin();
       setItems(res.data.data || []);
     } catch {
       toast.error("Erreur chargement");

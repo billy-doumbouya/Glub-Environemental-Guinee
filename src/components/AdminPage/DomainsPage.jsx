@@ -188,7 +188,7 @@ export default function DomainsPage() {
 
   useEffect(() => {
     domainsService
-      .getAll()
+      .getAllAdmin()
       .then((res) => setDomains(res.data.data || []))
       .catch((err) => console.error("Erreur chargement domaines :", err))
       .finally(() => setLoading(false));

@@ -387,7 +387,7 @@ export default function StatisticsPage() {
 
   const load = async () => {
     try {
-      const res = await statisticsService.getAll();
+      const res = await statisticsService.getAllAdmin();
       setItems(res.data.data);
     } catch {
       toast.error("Erreur chargement");

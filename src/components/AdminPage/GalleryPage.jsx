@@ -43,7 +43,7 @@ export default function GalleryPage() {
 
   const loadImages = async (catId) => {
     try {
-      const res = await galleryService.getImages({ category: catId });
+      const res = await galleryService.getImagesAdmin({ category: catId });
       setImages(res.data.data || []);
     } catch {
       toast.error("Erreur chargement images");

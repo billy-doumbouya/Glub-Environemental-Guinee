@@ -143,10 +143,10 @@ export default function DashboardPage() {
 
   useEffect(() => {
     Promise.allSettled([
-      projectsService.getAll(),
-      newsService.getAll(),
-      partnersService.getAll(),
-      statisticsService.getAll(),
+      projectsService.getAllAdmin(),
+      newsService.getAllAdmin(),
+      partnersService.getAllAdmin(),
+      statisticsService.getAllAdmin(),
     ]).then(([p, n, pa, s]) => {
       setCounts({
         projects: p.status === "fulfilled" ? p.value.data.total : 0,

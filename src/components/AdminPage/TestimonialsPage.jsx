@@ -500,7 +500,7 @@ export default function TestimonialsPage() {
 
   const load = async () => {
     try {
-      const res = await testimonialsService.getAll();
+      const res = await testimonialsService.getAllAdmin();
       setItems(res.data.data);
     } catch {
       toast.error("Erreur chargement");

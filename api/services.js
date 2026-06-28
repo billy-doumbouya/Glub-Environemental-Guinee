@@ -1,6 +1,3 @@
-// src/api/services.js
-// Services API — une fonction par action, utilise l'instance Axios centralisée
-
 import api from "./axios";
 
 // ─── AUTH ─────────────────────────────────────────────────────────────────────
@@ -12,14 +9,15 @@ export const authService = {
 
 // ─── PROJECTS ────────────────────────────────────────────────────────────────
 export const projectsService = {
-  getAll: (params) => api.get("/api/projects/admin", { params }),
+  getAll: (params) => api.get("/api/projects", { params }), // public
+  getAllAdmin: (params) => api.get("/api/projects/admin", { params }), // dashboard
   getOne: (slug) => api.get(`/api/projects/${slug}`),
   create: (formData) =>
     api.post("/api/projects", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     }),
-  update: (id, formData) =>
-    api.put(`/api/projects/${id}`, formData, {
+  update: (id, fd) =>
+    api.put(`/api/projects/${id}`, fd, {
       headers: { "Content-Type": "multipart/form-data" },
     }),
   remove: (id) => api.delete(`/api/projects/${id}`),
@@ -43,19 +41,18 @@ export const newsService = {
 
 // ─── GALLERY ─────────────────────────────────────────────────────────────────
 export const galleryService = {
-  // Catégories
   getCategories: () => api.get("/api/gallery/categories"),
   createCategory: (formData) =>
     api.post("/api/gallery/categories", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     }),
-  updateCategory: (id, formData) =>
-    api.put(`/api/gallery/categories/${id}`, formData, {
+  updateCategory: (id, fd) =>
+    api.put(`/api/gallery/categories/${id}`, fd, {
       headers: { "Content-Type": "multipart/form-data" },
     }),
   deleteCategory: (id) => api.delete(`/api/gallery/categories/${id}`),
-  // Images
-  getImages: (params) => api.get("/api/gallery/images/admin", { params }),
+  getImages: () => api.get("/api/gallery/images"), // public
+  getImagesAdmin: (params) => api.get("/api/gallery/images/admin", { params }), // dashboard
   uploadImages: (formData) =>
     api.post("/api/gallery/images", formData, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -65,13 +62,14 @@ export const galleryService = {
 
 // ─── PARTNERS ────────────────────────────────────────────────────────────────
 export const partnersService = {
-  getAll: () => api.get("/api/partners/admin"),
+  getAll: () => api.get("/api/partners"), // public
+  getAllAdmin: () => api.get("/api/partners/admin"), // dashboard
   create: (formData) =>
     api.post("/api/partners", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     }),
-  update: (id, formData) =>
-    api.put(`/api/partners/${id}`, formData, {
+  update: (id, fd) =>
+    api.put(`/api/partners/${id}`, fd, {
       headers: { "Content-Type": "multipart/form-data" },
     }),
   remove: (id) => api.delete(`/api/partners/${id}`),
@@ -79,13 +77,14 @@ export const partnersService = {
 
 // ─── TESTIMONIALS ─────────────────────────────────────────────────────────────
 export const testimonialsService = {
-  getAll: () => api.get("/api/testimonials/admin"),
+  getAll: () => api.get("/api/testimonials"), // public
+  getAllAdmin: () => api.get("/api/testimonials/admin"), // dashboard
   create: (formData) =>
     api.post("/api/testimonials", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     }),
-  update: (id, formData) =>
-    api.put(`/api/testimonials/${id}`, formData, {
+  update: (id, fd) =>
+    api.put(`/api/testimonials/${id}`, fd, {
       headers: { "Content-Type": "multipart/form-data" },
     }),
   remove: (id) => api.delete(`/api/testimonials/${id}`),
@@ -93,7 +92,8 @@ export const testimonialsService = {
 
 // ─── STATISTICS ──────────────────────────────────────────────────────────────
 export const statisticsService = {
-  getAll: () => api.get("/api/statistics/admin"),
+  getAll: () => api.get("/api/statistics"), // public
+  getAllAdmin: () => api.get("/api/statistics/admin"), // dashboard
   create: (data) => api.post("/api/statistics", data),
   update: (id, data) => api.put(`/api/statistics/${id}`, data),
   remove: (id) => api.delete(`/api/statistics/${id}`),
@@ -101,7 +101,8 @@ export const statisticsService = {
 
 // ─── DOMAINS ─────────────────────────────────────────────────────────────────
 export const domainsService = {
-  getAll: () => api.get("/api/domains/admin"),
+  getAll: () => api.get("/api/domains"), // public
+  getAllAdmin: () => api.get("/api/domains/admin"), // dashboard
   create: (data) => api.post("/api/domains", data),
   update: (id, data) => api.put(`/api/domains/${id}`, data),
   remove: (id) => api.delete(`/api/domains/${id}`),
@@ -109,7 +110,8 @@ export const domainsService = {
 
 // ─── TIMELINE ────────────────────────────────────────────────────────────────
 export const timelineService = {
-  getAll: () => api.get("/api/timeline/admin"),
+  getAll: () => api.get("/api/timeline"), // public
+  getAllAdmin: () => api.get("/api/timeline/admin"), // dashboard
   create: (data) => api.post("/api/timeline", data),
   update: (id, data) => api.put(`/api/timeline/${id}`, data),
   remove: (id) => api.delete(`/api/timeline/${id}`),

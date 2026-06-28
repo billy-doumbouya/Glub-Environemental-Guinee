@@ -13,7 +13,7 @@ NProgress.configure({ showSpinner: false, speed: 400, trickleSpeed: 200 });
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/",
   withCredentials: true, // Envoyer les cookies de session (crucial pour la prod)
-  timeout: 30000,
+  timeout: 120000,
   headers: { "Content-Type": "application/json" },
 });
 

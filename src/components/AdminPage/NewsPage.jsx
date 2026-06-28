@@ -17,6 +17,7 @@ import {
   ImagePreview,
   TogglePublished,
 } from "../ui";
+import { Trash } from "lucide-react";
 
 const CAT_OPTIONS = [
   { value: "Événement", label: "Événement" },
@@ -53,7 +54,7 @@ export default function NewsPage() {
 
   const load = async () => {
     try {
-      const res = await newsService.getAll();
+      const res = await newsService.getAllAdmin();
       setItems(res.data.data || []);
     } catch {
       toast.error("Erreur chargement");
@@ -271,7 +272,12 @@ export default function NewsPage() {
                           variant="danger"
                           onClick={() => setDeleteItem(item)}
                         >
-                          <i className="ti ti-trash" aria-hidden="true" />
+                          <Trash
+                            size={20}
+                            className="text-red-500"
+                            style={{ marginRight: "4px" }}
+                            aria-hidden="true"
+                          />{" "}
                         </Button>
                       </div>
                     </td>
