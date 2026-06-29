@@ -159,6 +159,8 @@ const S = {
     fontSize: 11,
     fontWeight: 700,
     color: "#4ade80",
+    overflow: "hidden"
+
   },
 
   btnLogout: {
@@ -484,7 +486,7 @@ export function DashboardLayout({ children }) {
           }}
         >
           <div style={S.sbUser}>
-            <div style={S.sbAvatar}>KD</div>
+            <div style={S.sbAvatar}><img src="/admin.jpg" alt="admin-image" className="w-full h-full object-cover"/></div>
             <div>
               <div
                 style={{
