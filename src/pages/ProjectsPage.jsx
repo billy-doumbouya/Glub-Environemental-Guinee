@@ -34,7 +34,7 @@ function ProjectCard({ project }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
         <div className="absolute top-4 left-4 flex gap-2">
           <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${status.class}`}>
-            {status.label}
+            {/* {status.label} */}
           </span>
         </div>
         {project.funder && (
