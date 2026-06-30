@@ -4,11 +4,15 @@ import { ArrowRight, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 import { newsService } from "../../api/services"; // ← adapte le chemin
 import { SectionTitle } from "../components/common/SectionTitle";
-import { staggerContainer, fadeUp, viewportConfig } from "../animations/variants";
+import {
+  staggerContainer,
+  fadeUp,
+  viewportConfig,
+} from "../animations/variants";
 
 const categoryColors = {
-  Événement:   "bg-green-50 text-green-700",
-  Formation:   "bg-blue-50 text-blue-700",
+  Événement: "bg-green-50 text-green-700",
+  Formation: "bg-blue-50 text-blue-700",
   Partenariat: "bg-amber-50 text-amber-700",
   Publication: "bg-purple-50 text-purple-700",
 };
@@ -21,15 +25,26 @@ function NewsCard({ article, featured = false }) {
       variants={fadeUp}
       className={`group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 ${featured ? "md:col-span-2" : ""}`}
     >
-      <div className={`bg-gradient-to-br from-green-700 to-green-950 relative ${featured ? "h-64" : "h-48"}`}>
+      <div
+        className={`bg-gradient-to-br from-green-700 to-green-950 relative ${featured ? "h-64" : "h-48"}`}
+      >
         {imageUrl ? (
-          <img src={imageUrl} alt={article.title} className="w-full h-full object-cover" />
+          <img
+            src={imageUrl}
+            loading="lazy"
+            alt={article.title}
+            className="w-full h-full object-cover"
+          />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-20">🌿</div>
+          <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-20">
+            🌿
+          </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         <div className="absolute top-4 left-4">
-          <span className={`text-xs font-semibold px-3 py-1 rounded-full ${categoryColors[article.category] || "bg-gray-50 text-gray-600"}`}>
+          <span
+            className={`text-xs font-semibold px-3 py-1 rounded-full ${categoryColors[article.category] || "bg-gray-50 text-gray-600"}`}
+          >
             {article.category}
           </span>
         </div>
@@ -44,8 +59,13 @@ function NewsCard({ article, featured = false }) {
         <h3 className="font-poppins font-bold text-gray-900 text-lg leading-tight mb-3 group-hover:text-green-700 transition-colors">
           {article.title}
         </h3>
-        <p className="text-gray-500 text-sm leading-relaxed mb-4 line-clamp-2">{article.excerpt}</p>
-        <Link to="/actualites" className="inline-flex items-center gap-1.5 text-green-600 text-sm font-semibold">
+        <p className="text-gray-500 text-sm leading-relaxed mb-4 line-clamp-2">
+          {article.excerpt}
+        </p>
+        <Link
+          to="/actualites"
+          className="inline-flex items-center gap-1.5 text-green-600 text-sm font-semibold"
+        >
           Lire la suite <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
@@ -54,18 +74,19 @@ function NewsCard({ article, featured = false }) {
 }
 
 export function NewsPreviewSection() {
-  const [news, setNews]     = useState([]);
+  const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    newsService.getAll()
+    newsService
+      .getAll()
       .then((res) => setNews(res.data.data || []))
       .catch((err) => console.error("Erreur chargement actualités :", err))
       .finally(() => setLoading(false));
   }, []);
 
   const featured = news.find((n) => n.featured);
-  const others   = news.filter((n) => !n.featured).slice(0, 2);
+  const others = news.filter((n) => !n.featured).slice(0, 2);
 
   return (
     <section className="py-24 bg-gray-50">
@@ -79,7 +100,10 @@ export function NewsPreviewSection() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className={`h-72 bg-gray-200 animate-pulse rounded-3xl ${i === 0 ? "md:col-span-2" : ""}`} />
+              <div
+                key={i}
+                className={`h-72 bg-gray-200 animate-pulse rounded-3xl ${i === 0 ? "md:col-span-2" : ""}`}
+              />
             ))}
           </div>
         ) : (
@@ -98,8 +122,10 @@ export function NewsPreviewSection() {
         )}
 
         <div className="text-center mt-10">
-          <Link to="/actualites"
-            className="inline-flex items-center gap-2 border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-200">
+          <Link
+            to="/actualites"
+            className="inline-flex items-center gap-2 border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-200"
+          >
             Toutes les actualités <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

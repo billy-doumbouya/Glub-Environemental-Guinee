@@ -159,8 +159,7 @@ const S = {
     fontSize: 11,
     fontWeight: 700,
     color: "#4ade80",
-    overflow: "hidden"
-
+    overflow: "hidden",
   },
 
   btnLogout: {
@@ -405,11 +404,16 @@ export function DashboardLayout({ children }) {
             <div style={S.logoBadge}>
               <img
                 src="/logo.png"
-                alt="logo"
-                className="w-full h-full object-cover"
+                decoding="async"
+                fetchPriority="high"
+                srcSet="/logo.png 1x, /logo@2x.png 2x"
+                alt="C.E.G Logo"
+                width="40"
+                height="40"
+                className="w-full h-full object-contain"
               />
             </div>
-            
+
             <div>
               <div style={{ fontSize: 14, fontWeight: 700, color: "#f0fdf4" }}>
                 ONG C.E.G
@@ -486,7 +490,13 @@ export function DashboardLayout({ children }) {
           }}
         >
           <div style={S.sbUser}>
-            <div style={S.sbAvatar}><img src="/admin.jpg" alt="admin-image" className="w-full h-full object-cover"/></div>
+            <div style={S.sbAvatar}>
+              <img
+                src="/admin.jpg"
+                alt="admin-image"
+                className="w-full h-full object-cover"
+              />
+            </div>
             <div>
               <div
                 style={{

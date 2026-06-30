@@ -31,6 +31,7 @@ function ProjectCard({ project }) {
         {imageUrl ? (
           <img
             src={imageUrl}
+            loading="lazy"
             alt={project.title}
             className="w-full h-full object-cover"
           />

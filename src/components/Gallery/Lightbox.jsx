@@ -62,6 +62,7 @@ export function Lightbox({ item, onClose }) {
                 <img
                   src={thumbSrc}
                   alt=""
+                  loading="lazy"
                   aria-hidden="true"
                   className={`absolute inset-0 w-full h-full object-contain blur-md scale-105 transition-opacity duration-300 ${
                     fullLoaded ? "opacity-0" : "opacity-100"
@@ -73,6 +74,7 @@ export function Lightbox({ item, onClose }) {
               <img
                 key={fullSrc}
                 src={fullSrc}
+                loading="lazy"
                 alt={item.alt || item.title || "Photo ONG C.E.G"}
                 className={`relative w-full max-h-[75vh] object-contain transition-opacity duration-300 ${
                   fullLoaded ? "opacity-100" : "opacity-0"

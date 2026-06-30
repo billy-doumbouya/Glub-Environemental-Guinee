@@ -52,6 +52,7 @@ function PartnerFullCard({ partner, index }) {
                 {logoUrl ? (
                   <img
                     src={logoUrl}
+                    loading="lazy"
                     alt={partner.name}
                     className="w-full h-full object-contain p-2"
                   />
@@ -347,6 +348,7 @@ export default function PartnersPage() {
                             {logoUrl ? (
                               <img
                                 src={logoUrl}
+                                loading="lazy"
                                 alt={p.name}
                                 className="w-14 h-14 object-contain"
                               />

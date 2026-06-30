@@ -26,6 +26,7 @@ function TestimonialCard({ testimonial }) {
         {avatarUrl ? (
           <img
             src={avatarUrl}
+            loading="lazy"
             alt={testimonial.name}
             className="w-12 h-12 rounded-2xl object-cover"
           />

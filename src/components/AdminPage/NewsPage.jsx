@@ -272,7 +272,7 @@ export default function NewsPage() {
                           variant="danger"
                           onClick={() => setDeleteItem(item)}
                         >
-                          <i className="ti ti-trash" aria-hidden="true" />
+                        <i className="ti ti-trash" aria-hidden="true" />
                         </Button>
                       </div>
                     </td>
@@ -382,21 +382,18 @@ export default function NewsPage() {
               Image
             </label>
             {imagePreview && (
-              <picture>
-                <source srcSet={imagePreview} type="image/webp" />
-                <img
-                  src={imagePreview.replace("?format=webp", "?format=jpeg")}
-                  decoding="async"
-                  alt="preview"
-                  style={{
-                    width: "120px",
-                    height: "80px",
-                    objectFit: "cover",
-                    borderRadius: "8px",
-                    marginBottom: "8px",
-                  }}
-                />
-              </picture>
+              <img
+                src={imagePreview}
+                loading="lazy"
+                alt="preview"
+                style={{
+                  width: "120px",
+                  height: "80px",
+                  objectFit: "cover",
+                  borderRadius: "8px",
+                  marginBottom: "8px",
+                }}
+              />
             )}
             <input
               ref={fileRef}

@@ -44,6 +44,9 @@ export function LogoutModal({ isOpen, onClose, onConfirm, isMobile }) {
           <img
             src="/logo.png" // Remplace par le nom exact de ton fichier dans public/ (ex: logo-ong.png)
             alt="Logo ONG C.E.G"
+            decoding="async"
+            loading="lazy"
+            srcSet="/logo.png 1x, /logo@2x.png 2x"
             style={{
               height: "64px",
               objectFit: "contain",
