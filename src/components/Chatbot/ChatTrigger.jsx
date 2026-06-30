@@ -13,7 +13,6 @@ export function ChatTrigger({ isOpen, unread, onClick }) {
   const [autoShow, setAutoShow] = useState(false)
   const hideTimeoutRef = useRef(null)
 
-  // Affichage automatique une seule fois par session, au chargement
   useEffect(() => {
     if (isOpen) return
     const alreadyShown = sessionStorage.getItem(SESSION_KEY)
@@ -35,7 +34,6 @@ export function ChatTrigger({ isOpen, unread, onClick }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Si le chat s'ouvre, on coupe immédiatement tout affichage auto
   useEffect(() => {
     if (isOpen) {
       setAutoShow(false)
@@ -46,25 +44,44 @@ export function ChatTrigger({ isOpen, unread, onClick }) {
   const showTooltip = !isOpen && (isHovered || autoShow)
 
   return (
-    <div className="fixed bottom-5 right-4 sm:right-6 z-50 flex items-center gap-3">
-      {/* Tooltip */}
+    <div className="fixed bottom-5 right-4 sm:right-6 z-50">
+      {/* Bulle de présentation — positionnée au-dessus du bouton, légèrement décalée à gauche */}
       <AnimatePresence>
         {showTooltip && (
           <motion.div
-            initial={{ opacity: 0, x: 10, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 10, scale: 0.95 }}
-            transition={{ duration: 0.15, ease: 'easeOut' }}
-            className="relative bg-white text-green-900 text-sm font-medium px-4 py-2 rounded-xl shadow-lg border border-green-100 whitespace-nowrap"
+            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.96 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+            className="absolute bottom-[68px] right-0 w-[260px]"
           >
-            Comment puis-je vous aider ?
-            {/* Petite flèche pointant vers le bouton */}
-            <span className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-white border-r border-b border-green-100 rotate-[-45deg]" />
+            <div className="relative bg-emerald-50 border-2 border-slate-700 rounded-2xl px-4 py-3 shadow-lg">
+              <p className="text-slate-800 text-[15px] font-semibold leading-snug">
+                Bonjour ! Je suis votre Doré, assistant ONG C.E.G. Besoin d'aide ?
+                Je suis là pour vous.
+              </p>
+              {/* Queue de la bulle, pointant vers l'avatar en bas à droite */}
+              <svg
+                className="absolute -bottom-[10px] right-5"
+                width="24"
+                height="12"
+                viewBox="0 0 24 12"
+              >
+                <path
+                  d="M0 0 L12 12 L24 0 Z"
+                  fill="#ecfdf5"
+                  stroke="#334155"
+                  strokeWidth="2"
+                />
+                {/* masque pour cacher la bordure supérieure du triangle */}
+                <path d="M2 0 L22 0 L12 9 Z" fill="#ecfdf5" />
+              </svg>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Bouton */}
+      {/* Bouton / avatar */}
       <motion.button
         onClick={onClick}
         onMouseEnter={() => setIsHovered(true)}
@@ -74,9 +91,8 @@ export function ChatTrigger({ isOpen, unread, onClick }) {
         aria-label={isOpen ? 'Fermer le chat' : 'Ouvrir l\'assistant ONG C.E.G'}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
-        className="w-14 h-14 bg-gradient-to-br from-green-600 to-green-800 rounded-2xl shadow-xl shadow-green-900/40 flex items-center justify-center border border-green-500/30 overflow-hidden shrink-0"
+        className="relative w-14 h-14 bg-gradient-to-br from-green-600 to-green-800 rounded-full shadow-xl shadow-green-900/40 flex items-center justify-center border border-green-500/30 overflow-hidden"
       >
-        {/* Icon transition */}
         <AnimatePresence mode="wait">
           {isOpen ? (
             <motion.span
@@ -98,22 +114,29 @@ export function ChatTrigger({ isOpen, unread, onClick }) {
               className="relative"
             >
               <AnimatedAvatar className="w-9 h-9" />
-              {/* Unread dot */}
-              {unread && (
-                <span className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-amber-400 rounded-full border-2 border-green-700" />
-              )}
             </motion.span>
           )}
         </AnimatePresence>
+
         {/* Pulse ring — only when closed */}
         {!isOpen && (
           <motion.span
-            className="absolute inset-0 rounded-2xl border-2 border-green-400"
+            className="absolute inset-0 rounded-full border-2 border-green-400"
             animate={{ scale: [1, 1.25, 1], opacity: [0.6, 0, 0.6] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
           />
         )}
       </motion.button>
+
+      {/* Pastille "en ligne" — verte, en haut à droite de l'avatar, comme sur la maquette */}
+      {!isOpen && (
+        <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white" />
+      )}
+
+      {/* Unread dot (séparé, si tu veux le garder en plus du indicateur "en ligne") */}
+      {!isOpen && unread && (
+        <span className="absolute top-0 right-3.5 w-3 h-3 bg-amber-400 rounded-full border-2 border-white" />
+      )}
     </div>
   )
 }
