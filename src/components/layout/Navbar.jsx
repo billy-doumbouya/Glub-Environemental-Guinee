@@ -35,12 +35,8 @@ export function Navbar() {
             <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg group-hover:shadow-green-200 transition-shadow">
               <img
                 src="/logo.png"
-                decoding="async"
                 fetchPriority="high"
-                srcSet="/logo.png 1x, /logo@2x.png 2x"
                 alt="C.E.G Logo"
-                width="40"
-                height="40"
                 className="w-full h-full object-contain"
               />
             </div>
