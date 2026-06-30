@@ -5,17 +5,14 @@ import { Menu, Phone, X } from "lucide-react";
 import { NAV_LINKS } from "../../constants";
 import { useNProgress } from "../../utils/useNProgress ";
 
-
 export function Navbar() {
-  useNProgress()
-  const [isOpen, setIsOpen]   = useState(false);
+  useNProgress();
+  const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { pathname } = useLocation();
 
-  const isHome        = pathname === "/";
+  const isHome = pathname === "/";
   const isTransparent = !scrolled && isHome;
-
-
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -36,7 +33,14 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg group-hover:shadow-green-200 transition-shadow">
-              <img src="/logo.png" alt="C.E.G Logo" className="w-full h-full object-contain" />
+              <img
+                src="/logo.png"
+                loading="lazy"
+                decoding="async"
+                srcSet="/logo.png 1x, /logo@2x.png 2x"
+                alt="C.E.G Logo"
+                className="w-full h-full object-contain"
+              />
             </div>
             <div className="hidden sm:block">
               <p
@@ -47,7 +51,9 @@ export function Navbar() {
               </p>
               <p
                 className="text-xs leading-tight transition-colors duration-300"
-                style={{ color: isTransparent ? "rgba(255,255,255,0.70)" : "#6b7280" }}
+                style={{
+                  color: isTransparent ? "rgba(255,255,255,0.70)" : "#6b7280",
+                }}
               >
                 Club Environnemental de Guinée
               </p>
@@ -96,8 +102,15 @@ export function Navbar() {
               aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
               aria-expanded={isOpen}
             >
-              <motion.div animate={{ rotate: isOpen ? 90 : 0 }} transition={{ duration: 0.2 }}>
-                {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              <motion.div
+                animate={{ rotate: isOpen ? 90 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {isOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
               </motion.div>
             </button>
           </div>
@@ -131,7 +144,10 @@ export function Navbar() {
                 </NavLink>
               ))}
               <div className="block w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-xl text-sm font-semibold mt-2 transition-colors duration-200">
-                <Link to="/contact" className="flex items-center justify-center gap-4">
+                <Link
+                  to="/contact"
+                  className="flex items-center justify-center gap-4"
+                >
                   <Phone /> Nous contacter
                 </Link>
               </div>
