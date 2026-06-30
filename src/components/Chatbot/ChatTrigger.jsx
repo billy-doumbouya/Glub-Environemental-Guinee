@@ -55,7 +55,7 @@ export function ChatTrigger({ isOpen, unread, onClick }) {
             transition={{ duration: 0.18, ease: "easeOut" }}
             className="absolute bottom-[68px] right-0 w-[260px]"
           >
-            <div className="relative bg-emerald-50/50 border border-emerald-600/40 rounded-2xl px-4 py-3 shadow-lg shadow-emerald-900/10 backdrop-blur-md">
+            <div className="relative bg-emerald-50/60 border border-emerald-600/40 rounded-2xl px-4 py-3 shadow-lg shadow-emerald-900/10 backdrop-blur-md">
               <p className="text-emerald-950 text-[15px] font-semibold leading-snug drop-shadow-sm">
                 Bonjour ! Je suis Doré, assistant ONG C.E.G. Besoin d'aide ? Je
                 suis là pour vous.
