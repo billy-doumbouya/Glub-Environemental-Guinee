@@ -4,17 +4,51 @@ import { Calendar, MapPin, Tag, Filter, CheckCircle } from "lucide-react";
 import { SEO } from "../seo/SEO";
 import { MainLayout } from "../layouts/MainLayout";
 import { PageHero } from "../components/common/PageHero";
-import { projectsService } from "../../api/services"; // ← adapte le chemin
+import { projectsService } from "../../api/services";
 import { staggerContainer, fadeUp } from "../animations/variants";
+import { optimizeCloudinaryUrl } from "../utils/optimizeCloudinaryUrl";
 
 const statuses = {
   completed: { label: "Terminé",  class: "bg-green-50 text-green-700 border-green-100" },
   ongoing:   { label: "En cours", class: "bg-amber-50 text-amber-700 border-amber-100" },
 };
 
+function ProjectImage({ src, alt }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  if (!src || hasError) {
+    return (
+      <div className="absolute inset-0 flex items-center justify-center text-7xl opacity-20">🌿</div>
+    );
+  }
+
+  return (
+    <>
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-gray-200 overflow-hidden">
+          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+        </div>
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setHasError(true)}
+        className={`w-full h-full object-cover transition-opacity duration-500 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
+      />
+    </>
+  );
+}
+
 function ProjectCard({ project }) {
   const status = statuses[project.status] || { label: "Inconnu", class: "bg-gray-50 text-gray-600 border-gray-100" };
-  const imageUrl = project.image?.url ?? project.image ?? null;
+  const rawUrl = project.image?.url ?? project.image ?? null;
+  const imageUrl = optimizeCloudinaryUrl(rawUrl, { width: 600 });
 
   return (
     <motion.article
@@ -26,11 +60,8 @@ function ProjectCard({ project }) {
       className="bg-white rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 group"
     >
       <div className="h-56 bg-gradient-to-br from-green-700 to-green-950 relative overflow-hidden">
-        {imageUrl ? (
-          <img src={imageUrl} alt={project.title} className="w-full h-full object-cover" />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-7xl opacity-20">🌿</div>
-        )}
+        <ProjectImage src={imageUrl} alt={project.title} />
+
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
         <div className="absolute top-4 left-4 flex gap-2">
           <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${status.class}`}>
@@ -133,7 +164,9 @@ export default function ProjectsPage() {
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {[...Array(4)].map((_, i) => (
-                  <div key={i} className="h-80 bg-gray-100 animate-pulse rounded-3xl" />
+                  <div key={i} className="relative h-80 bg-gray-200 rounded-3xl overflow-hidden">
+                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+                  </div>
                 ))}
               </div>
             ) : (

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { galleryService } from "../../api/services";
+import { optimizeCloudinaryUrl } from "../utils/optimizeCloudinaryUrl";
 
 export function useGallery() {
   const [images, setImages] = useState([]);
@@ -11,16 +12,17 @@ export function useGallery() {
       .getImages()
       .then((res) => {
         const raw = res.data.data || [];
-        const normalized = raw.map((item) => ({
-          id: item._id,
-          title: item.title || item.alt || item.caption || "",
-          category: item.category?.name || item.category || "Galerie",
-          src: item.image?.url || item.url || null, // ← fix
-          thumb: item.image?.url || item.url || null,
-          fullImage: item.image?.url || item.url || null,
-          full: item.image?.url || item.url || null,
-          aspect: "normal",
-        }));
+        const normalized = raw.map((item) => {
+          const baseUrl = item.image?.url || item.url || null;
+          return {
+            id: item._id,
+            title: item.title || item.alt || item.caption || "",
+            category: item.category?.name || item.category || "Galerie",
+            thumb: optimizeCloudinaryUrl(baseUrl, { width: 300 }),
+            full: optimizeCloudinaryUrl(baseUrl, { width: 1200 }),
+            aspect: "normal",
+          };
+        });
         setImages(normalized);
       })
       .catch((err) => {

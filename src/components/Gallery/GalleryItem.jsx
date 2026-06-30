@@ -1,13 +1,8 @@
-// src/components/Gallery/GalleryItem.jsx
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ZoomIn, ImageOff } from "lucide-react";
 import { fadeUp } from "../../animations/variants";
 
-/**
- * Placeholder propre (fallback final)
- */
 function ImagePlaceholder({ title, category }) {
   return (
     <div className="w-full h-full bg-gradient-to-br from-green-900 to-green-950 flex flex-col items-center justify-center gap-2 p-4">
@@ -20,24 +15,13 @@ function ImagePlaceholder({ title, category }) {
 }
 
 export function GalleryItem({ item, onOpen }) {
-  /**
-   * FIX IMPORTANT :
-   * ton service utilise `src` + `thumb`, PAS `url`
-   */
   const primarySrc = item.thumb || item.src;
-  const fallbackSrc = item.thumbnailFallback || null;
 
   const [src, setSrc] = useState(primarySrc);
   const [hasError, setHasError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const handleError = () => {
-    // 1er fallback → Drive thumbnailLink si dispo
-    if (src !== fallbackSrc && fallbackSrc) {
-      setSrc(fallbackSrc);
-      return;
-    }
-
-    // 2e fallback → placeholder
     setHasError(true);
   };
 
@@ -53,13 +37,24 @@ export function GalleryItem({ item, onOpen }) {
         className="w-full relative overflow-hidden bg-gray-100"
         style={{ height }}
       >
+        {/* SHIMMER tant que l'image n'est pas chargée */}
+        {!hasError && !isLoaded && (
+          <div className="absolute inset-0 bg-gray-200">
+            <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+          </div>
+        )}
+
         {/* IMAGE / PLACEHOLDER */}
         {!hasError && src ? (
           <img
             src={src}
             alt={item.alt || item.title || "Photo  ONG C.E.G"}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ${
+              isLoaded ? "opacity-100" : "opacity-0"
+            }`}
             loading="lazy"
+            decoding="async"
+            onLoad={() => setIsLoaded(true)}
             onError={handleError}
           />
         ) : (
@@ -79,7 +74,6 @@ export function GalleryItem({ item, onOpen }) {
           <span className="text-xs bg-white/20 text-white px-2.5 py-1 rounded-full backdrop-blur-sm border border-white/20">
             {item.category}
           </span>
-
           <p className="text-white font-semibold text-sm mt-2 leading-tight">
             {item.title}
           </p>

@@ -4,41 +4,54 @@ import { Calendar, User, Tag, ArrowRight, X } from "lucide-react";
 import { SEO } from "../seo/SEO";
 import { MainLayout } from "../layouts/MainLayout";
 import { PageHero } from "../components/common/PageHero";
-import { newsService } from "../../api/services"; // ← adapte si besoin
+import { newsService } from "../../api/services";
 import { staggerContainer, fadeUp } from "../animations/variants";
+import { optimizeCloudinaryUrl } from "../utils/optimizeCloudinaryUrl";
 
 const categoryColors = {
-  Événement: {
-    bg: "bg-green-500/10",
-    text: "text-green-300",
-    border: "border-green-500/30",
-  },
-  Formation: {
-    bg: "bg-blue-500/10",
-    text: "text-blue-300",
-    border: "border-blue-500/30",
-  },
-  Partenariat: {
-    bg: "bg-amber-500/10",
-    text: "text-amber-300",
-    border: "border-amber-500/30",
-  },
-  Publication: {
-    bg: "bg-purple-500/10",
-    text: "text-purple-300",
-    border: "border-purple-500/30",
-  },
-  Default: {
-    bg: "bg-white/10",
-    text: "text-gray-300",
-    border: "border-white/20",
-  },
+  Événement: { bg: "bg-green-500/10", text: "text-green-300", border: "border-green-500/30" },
+  Formation: { bg: "bg-blue-500/10", text: "text-blue-300", border: "border-blue-500/30" },
+  Partenariat: { bg: "bg-amber-500/10", text: "text-amber-300", border: "border-amber-500/30" },
+  Publication: { bg: "bg-purple-500/10", text: "text-purple-300", border: "border-purple-500/30" },
+  Default: { bg: "bg-white/10", text: "text-gray-300", border: "border-white/20" },
 };
+
+function NewsImage({ src, alt, className = "" }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  if (!src || hasError) {
+    return (
+      <span className="absolute inset-0 flex items-center justify-center text-7xl opacity-10 select-none pointer-events-none">
+        🌿
+      </span>
+    );
+  }
+
+  return (
+    <>
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-slate-700/30 overflow-hidden">
+          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+        </div>
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setHasError(true)}
+        className={`${className} transition-opacity duration-500 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+      />
+    </>
+  );
+}
 
 function NewsCard({ article, featured = false, onReadMore }) {
   const catColor = categoryColors[article.category] || categoryColors.Default;
-  // image peut être { url, publicId } (MongoDB) ou une string (ancien data)
-  const imageUrl = article.image?.url ?? article.image ?? null;
+  const rawUrl = article.image?.url ?? article.image ?? null;
+  const imageUrl = optimizeCloudinaryUrl(rawUrl, { width: featured ? 800 : 500 });
 
   return (
     <motion.article
@@ -52,17 +65,8 @@ function NewsCard({ article, featured = false, onReadMore }) {
       <div
         className={`bg-gradient-to-br from-green-800/80 to-slate-900 relative overflow-hidden flex-stretch min-h-[200px] ${featured ? "md:w-96 shrink-0" : "w-full"}`}
       >
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={article.title}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <span className="absolute inset-0 flex items-center justify-center text-7xl opacity-10 select-none pointer-events-none">
-            🌿
-          </span>
-        )}
+        <NewsImage src={imageUrl} alt={article.title} className="w-full h-full object-cover" />
+
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
         <div className="absolute top-4 left-4 z-10">
           <span
@@ -162,8 +166,9 @@ export default function NewsPage() {
     [filteredNews],
   );
 
-  const selectedImageUrl =
+  const selectedRawUrl =
     selectedArticle?.image?.url ?? selectedArticle?.image ?? null;
+  const selectedImageUrl = optimizeCloudinaryUrl(selectedRawUrl, { width: 800 });
 
   return (
     <>
@@ -183,21 +188,18 @@ export default function NewsPage() {
 
         <section className="py-20 bg-gradient-to-tr from-slate-50 via-slate-100 to-green-50/40 min-h-screen relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            {/* SKELETON */}
             {loading && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
                 {[...Array(6)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-80 bg-white/40 animate-pulse rounded-3xl"
-                  />
+                  <div key={i} className="relative h-80 bg-white/40 rounded-3xl overflow-hidden">
+                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+                  </div>
                 ))}
               </div>
             )}
 
             {!loading && (
               <>
-                {/* FILTRES */}
                 <div className="flex flex-wrap gap-2.5 justify-center mb-16 p-3 bg-white/30 backdrop-blur-xl border border-white/40 rounded-2xl shadow-sm max-w-3xl mx-auto">
                   {computedCategories.map((cat) => (
                     <button
@@ -254,7 +256,6 @@ export default function NewsPage() {
           </div>
         </section>
 
-        {/* MODAL */}
         <AnimatePresence>
           {selectedArticle && (
             <motion.div
@@ -279,11 +280,13 @@ export default function NewsPage() {
                   <X className="w-4 h-4" />
                 </button>
                 {selectedImageUrl && (
-                  <img
-                    src={selectedImageUrl}
-                    alt={selectedArticle.title}
-                    className="w-full h-48 object-cover rounded-2xl mb-4"
-                  />
+                  <div className="relative w-full h-48 rounded-2xl mb-4 overflow-hidden">
+                    <NewsImage
+                      src={selectedImageUrl}
+                      alt={selectedArticle.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 )}
                 <div className="space-y-4">
                   <span className="text-xs font-bold uppercase tracking-wide text-green-600 bg-green-50 px-3 py-1 rounded-lg inline-block">
