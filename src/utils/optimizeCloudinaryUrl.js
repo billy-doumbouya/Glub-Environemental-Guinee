@@ -1,5 +1,7 @@
 export function optimizeCloudinaryUrl(url, { width, quality = "auto", format = "auto" } = {}) {
-  if (!url || !url.includes("res.cloudinary.com")) return url;
+  if (typeof url !== "string" || !url.includes("res.cloudinary.com")) {
+    return typeof url === "string" ? url : null;
+  }
 
   const transformations = [`f_${format}`, `q_${quality}`];
   if (width) transformations.push(`w_${width}`);
