@@ -1,9 +1,67 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Phone, X } from "lucide-react";
 import { NAV_LINKS } from "../../constants";
 import { useNProgress } from "../../utils/useNProgress ";
+
+// Son UI léger via Web Audio API — zéro fichier, zéro lib
+function playMenuSound(type = "open") {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Bruit blanc = son de tissu/drap
+    const bufferSize = ctx.sampleRate * 0.25; // 250ms de bruit
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1; // bruit blanc pur
+    }
+
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+
+    // Filtre passe-bande → donne la texture "tissu" (ni trop aigu ni trop grave)
+    const filter = ctx.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.value = type === "open" ? 1800 : 1200;
+    filter.Q.value = 0.8;
+
+    // Enveloppe : attaque rapide, extinction progressive
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.03); // attaque
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22); // extinction
+
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+
+    source.start(ctx.currentTime);
+    source.stop(ctx.currentTime + 0.25);
+  } catch (_) {
+    // Navigateur sans AudioContext : silence
+  }
+}
+// Variants stagger pour les items du menu mobile
+const menuVariants = {
+  hidden: { opacity: 0, height: 0 },
+  visible: {
+    opacity: 1,
+    height: "auto",
+    transition: { duration: 0.22, ease: "easeOut", staggerChildren: 0.055 },
+  },
+  exit: { opacity: 0, height: 0, transition: { duration: 0.18 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -16 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { type: "spring", stiffness: 320, damping: 24 },
+  },
+};
 
 export function Navbar() {
   useNProgress();
@@ -14,10 +72,23 @@ export function Navbar() {
   const isHome = pathname === "/";
   const isTransparent = !scrolled && isHome;
 
+  // FIX 1 — Fermeture automatique au changement de route
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // FIX 2 — onPointerDown : réponse instantanée sans attendre le tap delay
+  const handleToggle = useCallback(() => {
+    setIsOpen((prev) => {
+      playMenuSound(prev ? "close" : "open");
+      return !prev;
+    });
   }, []);
 
   return (
@@ -90,65 +161,82 @@ export function Navbar() {
               Nous contacter
             </Link>
 
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className={`lg:hidden p-2 rounded-xl transition-all duration-200 ${
+            {/* FIX 2 — onPointerDown au lieu de onClick */}
+            <motion.button
+              onPointerDown={handleToggle}
+              className={`lg:hidden p-2 rounded-xl transition-all duration-200 touch-manipulation ${
                 isTransparent
                   ? "text-white hover:bg-white/10"
                   : "text-gray-700 hover:bg-gray-100"
               }`}
+              whileTap={{ scale: 0.88 }}
               aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
               aria-expanded={isOpen}
             >
-              <motion.div
-                animate={{ rotate: isOpen ? 90 : 0 }}
-                transition={{ duration: 0.2 }}
-              >
+              <AnimatePresence mode="wait" initial={false}>
                 {isOpen ? (
-                  <X className="w-6 h-6" />
+                  <motion.span
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <X className="w-6 h-6" />
+                  </motion.span>
                 ) : (
-                  <Menu className="w-6 h-6" />
+                  <motion.span
+                    key="open"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <Menu className="w-6 h-6" />
+                  </motion.span>
                 )}
-              </motion.div>
-            </button>
+              </AnimatePresence>
+            </motion.button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu — FIX 3 : stagger + son */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
+            variants={menuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             className="lg:hidden bg-white border-t border-gray-100 shadow-xl overflow-hidden"
           >
             <div className="px-4 py-4 space-y-1">
               {NAV_LINKS.map((link) => (
-                <NavLink
-                  key={link.path}
-                  to={link.path}
-                  className={({ isActive }) =>
-                    `block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                      isActive
-                        ? "bg-green-50 text-green-700 font-semibold"
-                        : "text-gray-700 hover:bg-gray-50"
-                    }`
-                  }
-                >
-                  {link.label}
-                </NavLink>
+                <motion.div key={link.path} variants={itemVariants}>
+                  <NavLink
+                    to={link.path}
+                    className={({ isActive }) =>
+                      `block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+                        isActive
+                          ? "bg-green-50 text-green-700 font-semibold"
+                          : "text-gray-700 hover:bg-gray-50"
+                      }`
+                    }
+                  >
+                    {link.label}
+                  </NavLink>
+                </motion.div>
               ))}
-              <div className="block w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-xl text-sm font-semibold mt-2 transition-colors duration-200">
+
+              <motion.div variants={itemVariants}>
                 <Link
                   to="/contact"
-                  className="flex items-center justify-center gap-4"
+                  className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-xl text-sm font-semibold mt-2 transition-colors duration-200"
                 >
-                  <Phone /> Nous contacter
+                  <Phone className="w-4 h-4" /> Nous contacter
                 </Link>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         )}

@@ -120,9 +120,6 @@ export default function LoginPage() {
             <img
               src="/logo.png"
               alt="ONG C.E.G"
-              decoding="async"
-              loading="lazy"
-              srcSet="/logo.png 1x, /logo@2x.png 2x"
               className="w-full h-full object-cover"
             />
           </div>

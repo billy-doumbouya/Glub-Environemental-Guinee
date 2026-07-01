@@ -118,12 +118,13 @@ export function ChatTrigger({ isOpen, unread, onClick }) {
       </motion.button>
 
       {!isOpen && (
-        <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white" />
+        <span
+          className={`absolute top-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white ${
+            unread ? "bg-amber-400 right-3.5 w-3 h-3" : "bg-green-500"
+          }`}
+        />
       )}
-
-      {!isOpen && unread && (
-        <span className="absolute top-0 right-3.5 w-3 h-3 bg-amber-400 rounded-full border-2 border-white" />
-      )}
+   
     </div>
   );
 }
