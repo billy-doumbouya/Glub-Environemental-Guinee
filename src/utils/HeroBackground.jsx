@@ -1,6 +1,8 @@
 // src/components/home/HeroBackground.jsx
 
-export function HeroBackground() {
+export function HeroBackground({ bgImage }) {
+  const src = bgImage || "/ceg-bg.jpg"; // fallback sur l'image statique existante
+
   return (
     <>
       {/* ─────────────────────────────────────────
@@ -10,12 +12,11 @@ export function HeroBackground() {
         {/* Photo haut */}
         <div className="absolute top-0 left-0 right-0 h-[50vh]">
           <img
-            src="/ceg-bg.jpg"
+            src={src}
             alt=""
             fetchPriority="high"
             className="w-full h-full object-cover object-center"
           />
-          {/* Overlay mobile plus dense → texte lisible sur photo */}
           <div
             className="absolute inset-0"
             style={{
@@ -29,10 +30,8 @@ export function HeroBackground() {
           />
         </div>
 
-        {/* Fond sombre bas */}
         <div className="absolute bottom-0 left-0 right-0 h-[50vh] bg-[#03160e]" />
 
-        {/* Orb de jointure */}
         <div
           className="absolute left-1/2 -translate-x-1/2 w-[260px] h-[60px] pointer-events-none"
           style={{
@@ -48,7 +47,7 @@ export function HeroBackground() {
           ───────────────────────────────────────── */}
       <div className="absolute inset-0 hidden lg:block" aria-hidden="true">
         <img
-          src="/ceg-bg.jpg"
+          src={src}
           alt=""
           fetchPriority="high"
           className="w-full h-full object-cover object-center"

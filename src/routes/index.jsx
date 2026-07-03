@@ -15,6 +15,15 @@ const NewsPage = lazy(() => import("../pages/NewsPage"));
 const GalleryPage = lazy(() => import("../pages/GalleryPage"));
 const ContactPage = lazy(() => import("../pages/ContactPage"));
 const DonatePage = lazy(() => import("../pages/DonatePage"));
+const AdminMessages = lazy(
+  () => import("../components/AdminPage/MessagesPage"),
+);
+const AdminDonations = lazy(
+  () => import("../components/AdminPage/DonationsPage"),
+);
+const AdminBackgrounds = lazy(
+  () => import("../components/AdminPage/BackgroundsPage"),
+);
 
 // ─── Pages admin ─────────────────────────────────────────────────────────────
 const AdminLogin = lazy(() => import("../components/AdminPage/LoginPage"));
@@ -125,6 +134,30 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <AdminTimeline />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/messages",
+    element: (
+      <ProtectedRoute>
+        <AdminMessages />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/dons",
+    element: (
+      <ProtectedRoute>
+        <AdminDonations />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/apparence/backgrounds",
+    element: (
+      <ProtectedRoute>
+        <AdminBackgrounds />
       </ProtectedRoute>
     ),
   },

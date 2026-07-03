@@ -7,6 +7,7 @@ import { PageHero } from "../components/common/PageHero";
 import { projectsService } from "../../api/services";
 import { staggerContainer, fadeUp } from "../animations/variants";
 import { optimizeCloudinaryUrl } from "../utils/optimizeCloudinaryUrl";
+import { usePageBackgrounds } from "../hooks/usePageBackgrounds ";
 
 const statuses = {
   completed: { label: "Terminé",  class: "bg-green-50 text-green-700 border-green-100" },
@@ -121,6 +122,7 @@ function ProjectCard({ project }) {
 }
 
 export default function ProjectsPage() {
+  const { backgrounds } = usePageBackgrounds();
   const [projects, setProjects]       = useState([]);
   const [loading, setLoading]         = useState(true);
   const [activeFilter, setActiveFilter] = useState("Tous");
@@ -152,7 +154,7 @@ export default function ProjectsPage() {
       <MainLayout>
         <PageHero
           badge={`${projects.length} projets réalisés`}
-          bgImage="/ceg-bg-projets.jpg"
+          bgImage={backgrounds["projects-hero"] || "/ceg-bg-projets.jpg"}
           title="Nos Projets"
           subtitle="Des actions concrètes, mesurables et documentées pour l'environnement et les communautés de Guinée."
           breadcrumb={["Accueil", "Projets"]}

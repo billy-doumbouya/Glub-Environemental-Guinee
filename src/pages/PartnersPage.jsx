@@ -12,6 +12,7 @@ import {
   fadeRight,
   viewportConfig,
 } from "../animations/variants";
+import { usePageBackgrounds } from "../hooks/usePageBackgrounds ";
 
 const clipShapes = [
   "polygon(0 0, 100% 0, 100% 75%, 50% 100%, 0 75%)",
@@ -273,6 +274,7 @@ function PartnerFullCard({ partner, index }) {
 }
 
 export default function PartnersPage() {
+  const { backgrounds } = usePageBackgrounds();
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -294,7 +296,7 @@ export default function PartnersPage() {
       <MainLayout>
         <PageHero
           badge="Partenaires de confiance"
-          bgImage="/ceg-bg-partenaires.jpg"
+          bgImage={backgrounds["partners-hero"] || "/ceg-bg-partenaires.jpg"}
           title="Nos Partenaires Financiers"
           subtitle="ONG C.E.G collabore avec des organisations internationales reconnues qui garantissent la qualité, la transparence et l'impact de nos interventions."
           breadcrumb={["Accueil", "Partenaires"]}

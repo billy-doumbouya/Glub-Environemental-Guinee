@@ -5,9 +5,11 @@ import { PageHero } from "../components/common/PageHero";
 import { domainsService } from "../../api/services";
 import { DomainsIntroGrid } from "../components/DomainComponents/DomainsIntroGrid";
 import { DomainDetailSection } from "../components/DomainComponents/DomainDetailSection";
+import { usePageBackgrounds } from "../hooks/usePageBackgrounds ";
 
 
 export default function DomainsPage() {
+  const { backgrounds } = usePageBackgrounds();
   const [domains, setDomains] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +31,7 @@ export default function DomainsPage() {
       <MainLayout>
         <PageHero
           badge="4 piliers d'action stratégique"
-          bgImage="/ceg-bg-domaines.jpg"
+          bgImage={backgrounds["domains-hero"] || "/ceg-bg-domaines.jpg"}
           title="Domaines d'intervention"
           subtitle="C.E.G intervient sur quatre axes complémentaires pour un impact durable, mesurable et pérenne sur les communautés et l'environnement guinéen."
           breadcrumb={["Accueil", "Domaines"]}

@@ -23,6 +23,7 @@ import {
   scaleIn,
   viewportConfig,
 } from "../animations/variants";
+import { usePageBackgrounds } from "../hooks/usePageBackgrounds ";
 
 function ImpactCard({ item }) {
   return (
@@ -67,6 +68,7 @@ function TierCard({ tier, onDonate }) {
 }
 
 export default function DonatePage() {
+  const { backgrounds } = usePageBackgrounds();
   const [modalOpen, setModalOpen] = useState(false);
   const [searchParams] = useSearchParams();
 
@@ -89,7 +91,7 @@ export default function DonatePage() {
         <PageHero
           badge="Chaque don compte"
           title="Soutenez C.E.G"
-          bgImage="https://media.istockphoto.com/id/2220525007/photo/online-donation-support.jpg?s=1024x1024&w=is&k=20&c=Ma3aXg66-p2V98LEQawPtHuKJvtbQ-nIeJVtIv8fS_8="
+          bgImage={backgrounds["donate-hero"] || "https://media.istockphoto.com/id/2220525007/photo/online-donation-support.jpg?s=1024x1024&w=is&k=20&c=Ma3aXg66-p2V98LEQawPtHuKJvtbQ-nIeJVtIv8fS_8="}
           subtitle="Votre générosité contribue directement à la préservation de l'environnement et à l'amélioration des conditions de vie des communautés guinéennes."
           breadcrumb={["Accueil", "Faire un don"]}
         />

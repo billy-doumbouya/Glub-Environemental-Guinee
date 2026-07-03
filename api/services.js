@@ -121,3 +121,28 @@ export const timelineService = {
   update: (id, data) => api.put(`/api/timeline/${id}`, data),
   remove: (id) => api.delete(`/api/timeline/${id}`),
 };
+
+// ─── BACKGROUNDS ─────────────────────────────────────────────────────────────
+export const backgroundsService = {
+  getAll: () => api.get("/api/backgrounds"), // public
+  getOne: (pageKey) => api.get(`/api/backgrounds/${pageKey}`),
+  update: (pageKey, formData) =>
+    api.put(`/api/backgrounds/${pageKey}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+  reset: (pageKey) => api.delete(`/api/backgrounds/${pageKey}`),
+};
+
+// ─── CONTACT ─────────────────────────────────────────────────────────────────
+export const contactService = {
+  getAllAdmin: () => api.get("/api/contact/admin"),
+  markAsRead: (id) => api.patch(`/api/contact/${id}/read`),
+  remove: (id) => api.delete(`/api/contact/${id}`),
+};
+
+// ─── DONATIONS ───────────────────────────────────────────────────────────────
+export const donationsService = {
+  getAllAdmin: () => api.get("/api/donations/admin"),
+  markAsRead: (id) => api.patch(`/api/donations/${id}/read`),
+  remove: (id) => api.delete(`/api/donations/${id}`),
+};

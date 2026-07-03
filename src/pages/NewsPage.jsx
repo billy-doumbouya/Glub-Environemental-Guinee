@@ -7,13 +7,34 @@ import { PageHero } from "../components/common/PageHero";
 import { newsService } from "../../api/services";
 import { staggerContainer, fadeUp } from "../animations/variants";
 import { optimizeCloudinaryUrl } from "../utils/optimizeCloudinaryUrl";
+import { usePageBackgrounds } from "../hooks/usePageBackgrounds ";
 
 const categoryColors = {
-  Événement: { bg: "bg-green-500/10", text: "text-green-300", border: "border-green-500/30" },
-  Formation: { bg: "bg-blue-500/10", text: "text-blue-300", border: "border-blue-500/30" },
-  Partenariat: { bg: "bg-amber-500/10", text: "text-amber-300", border: "border-amber-500/30" },
-  Publication: { bg: "bg-purple-500/10", text: "text-purple-300", border: "border-purple-500/30" },
-  Default: { bg: "bg-white/10", text: "text-gray-300", border: "border-white/20" },
+  Événement: {
+    bg: "bg-green-500/10",
+    text: "text-green-300",
+    border: "border-green-500/30",
+  },
+  Formation: {
+    bg: "bg-blue-500/10",
+    text: "text-blue-300",
+    border: "border-blue-500/30",
+  },
+  Partenariat: {
+    bg: "bg-amber-500/10",
+    text: "text-amber-300",
+    border: "border-amber-500/30",
+  },
+  Publication: {
+    bg: "bg-purple-500/10",
+    text: "text-purple-300",
+    border: "border-purple-500/30",
+  },
+  Default: {
+    bg: "bg-white/10",
+    text: "text-gray-300",
+    border: "border-white/20",
+  },
 };
 
 function NewsImage({ src, alt, className = "" }) {
@@ -51,7 +72,9 @@ function NewsImage({ src, alt, className = "" }) {
 function NewsCard({ article, featured = false, onReadMore }) {
   const catColor = categoryColors[article.category] || categoryColors.Default;
   const rawUrl = article.image?.url ?? article.image ?? null;
-  const imageUrl = optimizeCloudinaryUrl(rawUrl, { width: featured ? 800 : 500 });
+  const imageUrl = optimizeCloudinaryUrl(rawUrl, {
+    width: featured ? 800 : 500,
+  });
 
   return (
     <motion.article
@@ -65,7 +88,11 @@ function NewsCard({ article, featured = false, onReadMore }) {
       <div
         className={`bg-gradient-to-br from-green-800/80 to-slate-900 relative overflow-hidden flex-stretch min-h-[200px] ${featured ? "md:w-96 shrink-0" : "w-full"}`}
       >
-        <NewsImage src={imageUrl} alt={article.title} className="w-full h-full object-cover" />
+        <NewsImage
+          src={imageUrl}
+          alt={article.title}
+          className="w-full h-full object-cover"
+        />
 
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
         <div className="absolute top-4 left-4 z-10">
@@ -130,6 +157,7 @@ function NewsCard({ article, featured = false, onReadMore }) {
 }
 
 export default function NewsPage() {
+  const { backgrounds } = usePageBackgrounds();
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("Toutes");
@@ -168,7 +196,9 @@ export default function NewsPage() {
 
   const selectedRawUrl =
     selectedArticle?.image?.url ?? selectedArticle?.image ?? null;
-  const selectedImageUrl = optimizeCloudinaryUrl(selectedRawUrl, { width: 800 });
+  const selectedImageUrl = optimizeCloudinaryUrl(selectedRawUrl, {
+    width: 800,
+  });
 
   return (
     <>
@@ -180,7 +210,7 @@ export default function NewsPage() {
       <MainLayout>
         <PageHero
           badge="Restez informé"
-          bgImage="/ceg-bg-news.jpg"
+          bgImage={backgrounds["news-hero"] || "/ceg-bg-news.jpg"}
           title="Actualités"
           subtitle="Découvrez les dernières nouvelles, événements et publications de l'ONG C.E.G."
           breadcrumb={["Accueil", "Actualités"]}
@@ -191,7 +221,10 @@ export default function NewsPage() {
             {loading && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
                 {[...Array(6)].map((_, i) => (
-                  <div key={i} className="relative h-80 bg-white/40 rounded-3xl overflow-hidden">
+                  <div
+                    key={i}
+                    className="relative h-80 bg-white/40 rounded-3xl overflow-hidden"
+                  >
                     <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent" />
                   </div>
                 ))}

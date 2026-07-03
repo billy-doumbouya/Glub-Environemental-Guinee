@@ -8,6 +8,7 @@ import { SectionTitle } from "../components/common/SectionTitle";
 import { organization } from "../data/organization"; // ← conservé (données statiques fixes)
 import { timelineService } from "../../api/services"; // ← adapte le chemin
 import { staggerContainer, fadeUp, fadeLeft, fadeRight, viewportConfig } from "../animations/variants";
+import { usePageBackgrounds } from "../hooks/usePageBackgrounds ";
 
 const iconMap = {
   flag: Flag, check: CheckCircle, handshake: Heart,
@@ -39,6 +40,7 @@ function TimelineItem({ item, index }) {
 }
 
 export default function AboutPage() {
+  const { backgrounds } = usePageBackgrounds();
   const [timeline, setTimeline] = useState([]);
 
   useEffect(() => {
@@ -57,7 +59,7 @@ export default function AboutPage() {
       <MainLayout>
         <PageHero
           badge="Notre histoire depuis 2016"
-          bgImage="/ceg-bg-about.jpg"
+          bgImage={backgrounds["about-hero"] || "/ceg-bg-about.jpg"}
           title="À Propos de C.E.G"
           subtitle="Découvrez l'organisation, ses valeurs et son engagement pour l'environnement et le développement durable en Guinée."
           breadcrumb={["Accueil", "À Propos"]}

@@ -11,6 +11,7 @@ import { GalleryItem } from "../components/Gallery/GalleryItem";
 import { Lightbox } from "../components/Gallery/Lightbox";
 import { useGalleryPagination } from "./usePagination";
 import { useGallery } from "../hooks/useGallery";
+import { usePageBackgrounds } from "../hooks/usePageBackgrounds ";
 
 // ─── Error state ──────────────────────────────────────────────────────────────
 function GalleryError({ message }) {
@@ -48,6 +49,7 @@ function EmptyState({ filter }) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function GalleryPage() {
+  const { backgrounds } = usePageBackgrounds();
   const [activeFilter, setActiveFilter] = useState("Toutes");
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -84,7 +86,7 @@ export default function GalleryPage() {
       <MainLayout>
         <PageHero
           badge="Nos actions en images"
-          bgImage="/ceg-bg-gallery.jpg"
+          bgImage={backgrounds["gallery-hero"] || "/ceg-bg-gallery.jpg"}
           title="Galerie Photos"
           subtitle="Découvrez nos actions terrain à travers ces moments capturés."
           breadcrumb={["Accueil", "Galerie"]}
