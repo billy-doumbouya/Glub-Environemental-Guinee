@@ -10,6 +10,7 @@ import {
   generateTransactionId,
   initiatePayment,
 } from "../services/geniusPayService"; // ← nom mis à jour
+import api from "../../api/axios";
 
 const schema = yup.object({
   donorName: yup
@@ -103,6 +104,21 @@ export function useDonation({ onSuccess } = {}) {
 
           // GeniusPay retourne toujours une checkoutUrl → redirection
           if (result.paymentUrl) {
+            await api
+              .post("/api/donations", {
+                donorName: data.donorName,
+                donorEmail: data.donorEmail,
+                phone: data.phone,
+                amount,
+                transactionId: txId,
+              })
+              .catch((err) =>
+                console.error(
+                  "[Donation] Erreur enregistrement DB:",
+                  err.message,
+                ),
+              );
+
             // Envoi reçu email avant de quitter la page
             await sendDonationReceipt({
               donorName: data.donorName,

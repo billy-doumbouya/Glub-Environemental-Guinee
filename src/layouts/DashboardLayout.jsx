@@ -404,9 +404,7 @@ export function DashboardLayout({ children }) {
             <div style={S.logoBadge}>
               <img
                 src="/logo.png"
-                decoding="async"
                 fetchPriority="high"
-                srcSet="/logo.png 1x, /logo@2x.png 2x"
                 alt="C.E.G Logo"
                 width="40"
                 height="40"
