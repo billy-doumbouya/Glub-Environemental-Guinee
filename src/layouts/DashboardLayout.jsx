@@ -7,7 +7,7 @@ import { useNProgress } from "../utils/useNProgress ";
 import { LogoutModal } from "../components/ui/modalLogout";
 import { useUnreadNotifications } from "../hooks/useUnreadNotifications";
 import { NotificationDropdown } from "../components/ui/NotificationDropdown";
-import { Sidebar } from "../components/ui/sidebar";
+import { Sidebar } from "../components/ui/Sidebar";
 
 // Importations des sous-composants
 
