@@ -4,13 +4,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "../hooks/useAuth";
 import { useNProgress } from "../utils/useNProgress ";
-import { Sidebar } from "../components/ui/sidebar";
 import { LogoutModal } from "../components/ui/modalLogout";
 import { useUnreadNotifications } from "../hooks/useUnreadNotifications";
 import { NotificationDropdown } from "../components/ui/NotificationDropdown";
+import { Sidebar } from "../components/ui/sidebar";
 
 // Importations des sous-composants
-
 
 const NAV_ITEMS = [
   {
