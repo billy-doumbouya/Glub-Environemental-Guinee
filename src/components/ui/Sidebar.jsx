@@ -1,4 +1,4 @@
-// src/components/dashboard/Sidebar.jsx
+// src/components/dashboard/sidebar.jsx
 import { Link } from "react-router-dom";
 
 export function Sidebar({
