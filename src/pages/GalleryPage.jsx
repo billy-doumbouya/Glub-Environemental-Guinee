@@ -12,6 +12,7 @@ import { Lightbox } from "../components/Gallery/Lightbox";
 import { useGallery } from "../hooks/useGallery";
 import { usePageBackgrounds } from "../hooks/usePageBackgrounds ";
 import { galleryService } from "../../api/services";
+import { extractArray } from "../helpers/Apihelpers";
 
 // ─── Error state ──────────────────────────────────────────────────────────────
 function GalleryError({ message }) {
@@ -58,27 +59,64 @@ export default function GalleryPage() {
 
   // Charger les catégories une seule fois
   useEffect(() => {
+    let isMounted = true;
+
     galleryService
       .getCategories()
       .then((res) => {
-        const cats = res.data || [];
+        if (!isMounted) return;
+
+        const cats = extractArray(res);
+
+        if (!Array.isArray(cats) || cats.length === 0) {
+          // On log pour debug mais on ne casse jamais le rendu
+          if (!Array.isArray(cats)) {
+            console.error(
+              "Format de réponse inattendu pour getCategories():",
+              res,
+            );
+          }
+          setAllCategories([]);
+          setCategoryMap({});
+          return;
+        }
+
         setAllCategories(cats);
+
         const map = {};
         cats.forEach((cat) => {
-          map[cat.name] = cat._id;
+          if (cat?.name) map[cat.name] = cat._id;
         });
         setCategoryMap(map);
       })
-      .catch((err) => console.error("Erreur chargement catégories:", err));
+      .catch((err) => {
+        console.error("Erreur chargement catégories:", err);
+        if (isMounted) {
+          setAllCategories([]);
+          setCategoryMap({});
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // Obtenir l'ID de la catégorie active
-  const activeCategoryId = activeFilter === "Toutes" ? null : categoryMap[activeFilter];
+  const activeCategoryId =
+    activeFilter === "Toutes" ? null : categoryMap[activeFilter];
 
-  const { images, loading, error, totalPages, total } = useGallery(page, activeCategoryId);
+  const { images, loading, error, totalPages, total } = useGallery(
+    page,
+    activeCategoryId,
+  );
+
+  // useGallery garantit déjà un tableau, mais on garde un filet de sécurité minimal
+  const safeImages = Array.isArray(images) ? images : [];
 
   const categories = useMemo(() => {
-    return ["Toutes", ...allCategories.map((c) => c.name)];
+    const safeCategories = Array.isArray(allCategories) ? allCategories : [];
+    return ["Toutes", ...safeCategories.map((c) => c.name)];
   }, [allCategories]);
 
   const handleCategoryChange = (category) => {
@@ -131,9 +169,9 @@ export default function GalleryPage() {
                 </div>
                 <span className="text-sm font-semibold text-gray-600">
                   <span className="text-gray-900 font-bold">
-                    {total}
+                    {total ?? safeImages.length}
                   </span>{" "}
-                  {total > 1 ? "photos" : "photo"}
+                  {(total ?? safeImages.length) > 1 ? "photos" : "photo"}
                   {activeFilter !== "Toutes" && (
                     <span className="text-gray-400 font-normal">
                       {" "}
@@ -191,7 +229,7 @@ export default function GalleryPage() {
             </div>
 
             {/* ── GRID ── */}
-            {images.length === 0 && !loading ? (
+            {safeImages.length === 0 && !loading ? (
               <EmptyState filter={activeFilter} />
             ) : (
               <AnimatePresence mode="wait">
@@ -203,7 +241,7 @@ export default function GalleryPage() {
                   exit={{ opacity: 0, transition: { duration: 0.15 } }}
                   className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 auto-rows-[11rem] sm:auto-rows-[13rem]"
                 >
-                  {images.map((item) => (
+                  {safeImages.map((item) => (
                     <GalleryItem
                       key={item.id}
                       item={item}
