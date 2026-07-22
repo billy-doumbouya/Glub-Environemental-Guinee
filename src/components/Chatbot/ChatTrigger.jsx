@@ -1,45 +1,82 @@
 // src/components/chatbot/ChatTrigger.jsx
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { AnimatedAvatar } from "./AnimatedAvatar";
 
 const AUTO_SHOW_DELAY = 2500;
 const AUTO_HIDE_DELAY = 6000;
-const SESSION_KEY = "ceg-chat-tooltip-shown";
+// localStorage (et non sessionStorage) : le nudge ne doit s'afficher
+// qu'une seule fois par utilisateur, pas à chaque nouvel onglet/session.
+const STORAGE_KEY = "ceg-chat-tooltip-dismissed";
 
 export function ChatTrigger({ isOpen, unread, onClick }) {
   const [isHovered, setIsHovered] = useState(false);
   const [autoShow, setAutoShow] = useState(false);
+
+  // Miroir toujours à jour de isOpen, lisible depuis le setTimeout
+  // sans dépendre d'une closure figée au montage.
+  const isOpenRef = useRef(isOpen);
+  // Une fois true, plus jamais de tooltip auto pour ce cycle de vie du composant.
+  const suppressedRef = useRef(false);
+  const showTimeoutRef = useRef(null);
   const hideTimeoutRef = useRef(null);
 
-  useEffect(() => {
-    if (isOpen) return;
-    const alreadyShown = sessionStorage.getItem(SESSION_KEY);
-    if (alreadyShown) return;
+  const clearTimers = useCallback(() => {
+    clearTimeout(showTimeoutRef.current);
+    clearTimeout(hideTimeoutRef.current);
+  }, []);
 
-    const showTimer = setTimeout(() => {
+  const dismissForGood = useCallback(() => {
+    suppressedRef.current = true;
+    clearTimers();
+    setAutoShow(false);
+    try {
+      localStorage.setItem(STORAGE_KEY, "1");
+    } catch {
+      // localStorage indisponible (mode privé, etc.) — on ignore, le ref suffit pour la session en cours.
+    }
+  }, [clearTimers]);
+
+  // Dès que le chat s'ouvre, on tue le nudge définitivement,
+  // qu'un timer soit en attente ou déjà déclenché.
+  useEffect(() => {
+    isOpenRef.current = isOpen;
+    if (isOpen) dismissForGood();
+  }, [isOpen, dismissForGood]);
+
+  // Programme l'affichage auto, une seule fois, si l'utilisateur
+  // n'a jamais ouvert le chat ni fermé la bulle auparavant.
+  useEffect(() => {
+    if (suppressedRef.current) return;
+
+    let alreadyDismissed = false;
+    try {
+      alreadyDismissed = !!localStorage.getItem(STORAGE_KEY);
+    } catch {
+      alreadyDismissed = false;
+    }
+    if (alreadyDismissed) {
+      suppressedRef.current = true;
+      return;
+    }
+
+    showTimeoutRef.current = setTimeout(() => {
+      // Re-vérification au moment du déclenchement : l'état a pu changer
+      // pendant les 2.5s d'attente (chat ouvert entretemps, dismiss, etc.).
+      if (suppressedRef.current || isOpenRef.current) return;
       setAutoShow(true);
-      sessionStorage.setItem(SESSION_KEY, "1");
       hideTimeoutRef.current = setTimeout(
         () => setAutoShow(false),
         AUTO_HIDE_DELAY,
       );
     }, AUTO_SHOW_DELAY);
 
-    return () => {
-      clearTimeout(showTimer);
-      clearTimeout(hideTimeoutRef.current);
-    };
+    return () => clearTimeout(showTimeoutRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (isOpen) {
-      setAutoShow(false);
-      clearTimeout(hideTimeoutRef.current);
-    }
-  }, [isOpen]);
+  useEffect(() => clearTimers, [clearTimers]);
 
   const showTooltip = !isOpen && (isHovered || autoShow);
 
@@ -55,11 +92,24 @@ export function ChatTrigger({ isOpen, unread, onClick }) {
             transition={{ duration: 0.18, ease: "easeOut" }}
             className="absolute bottom-[68px] right-0 w-[260px]"
           >
-            <div className="relative bg-emerald-50/60 border border-emerald-600/40 rounded-2xl px-4 py-3 shadow-lg shadow-emerald-900/10 backdrop-blur-md">
+            <div className="relative bg-emerald-50/60 border border-emerald-600/40 rounded-2xl px-4 py-3 pr-8 shadow-lg shadow-emerald-900/10 backdrop-blur-md">
               <p className="text-emerald-950 text-[15px] font-semibold leading-snug drop-shadow-sm">
                 Bonjour ! Je suis Doré, assistant ONG C.E.G. Besoin d'aide ? Je
                 suis là pour vous.
               </p>
+
+              {/* Fermeture explicite : dismiss permanent (standard onboarding tooltip) */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  dismissForGood();
+                }}
+                aria-label="Fermer la suggestion"
+                className="absolute top-2 right-2 w-5 h-5 flex items-center justify-center rounded-full text-emerald-900/60 hover:text-emerald-950 hover:bg-emerald-900/10 transition-colors"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
 
               {/* Queue — même surface (bg + blur + bordure) que la bulle, pivotée à 45° */}
               <span
@@ -124,7 +174,6 @@ export function ChatTrigger({ isOpen, unread, onClick }) {
           }`}
         />
       )}
-   
     </div>
   );
 }

@@ -9,9 +9,9 @@ import { staggerContainer } from "../animations/variants";
 import { GallerySkeleton } from "../components/Gallery/imageSkeleton";
 import { GalleryItem } from "../components/Gallery/GalleryItem";
 import { Lightbox } from "../components/Gallery/Lightbox";
-import { useGalleryPagination } from "./usePagination";
 import { useGallery } from "../hooks/useGallery";
 import { usePageBackgrounds } from "../hooks/usePageBackgrounds ";
+import { galleryService } from "../../api/services";
 
 // ─── Error state ──────────────────────────────────────────────────────────────
 function GalleryError({ message }) {
@@ -52,26 +52,52 @@ export default function GalleryPage() {
   const { backgrounds } = usePageBackgrounds();
   const [activeFilter, setActiveFilter] = useState("Toutes");
   const [selectedItem, setSelectedItem] = useState(null);
+  const [page, setPage] = useState(1);
+  const [allCategories, setAllCategories] = useState([]);
+  const [categoryMap, setCategoryMap] = useState({});
 
-  const { images, loading, error } = useGallery();
+  // Charger les catégories une seule fois
+  useEffect(() => {
+    galleryService
+      .getCategories()
+      .then((res) => {
+        const cats = res.data || [];
+        setAllCategories(cats);
+        const map = {};
+        cats.forEach((cat) => {
+          map[cat.name] = cat._id;
+        });
+        setCategoryMap(map);
+      })
+      .catch((err) => console.error("Erreur chargement catégories:", err));
+  }, []);
+
+  // Obtenir l'ID de la catégorie active
+  const activeCategoryId = activeFilter === "Toutes" ? null : categoryMap[activeFilter];
+
+  const { images, loading, error, totalPages, total } = useGallery(page, activeCategoryId);
 
   const categories = useMemo(() => {
-    if (!images?.length) return ["Toutes"];
-    const unique = [...new Set(images.map((i) => i.category))];
-    return ["Toutes", ...unique];
-  }, [images]);
+    return ["Toutes", ...allCategories.map((c) => c.name)];
+  }, [allCategories]);
 
-  const filtered = useMemo(() => {
-    if (activeFilter === "Toutes") return images || [];
-    return (images || []).filter((img) => img.category === activeFilter);
-  }, [images, activeFilter]);
+  const handleCategoryChange = (category) => {
+    setActiveFilter(category);
+    setPage(1); // Retour à la première page
+  };
 
-  const { page, totalPages, paginatedImages, nextPage, prevPage, resetPage } =
-    useGalleryPagination(filtered, 24);
+  const nextPage = () => {
+    if (page < totalPages) setPage((p) => p + 1);
+  };
 
-  useEffect(() => {
-    resetPage();
-  }, [activeFilter]);
+  const prevPage = () => {
+    if (page > 1) setPage((p) => p - 1);
+  };
+
+  const goToPage = (p) => {
+    const pageNum = Math.max(1, Math.min(p, totalPages));
+    setPage(pageNum);
+  };
 
   if (loading) return <GallerySkeleton />;
   if (error) return <GalleryError message={error} />;
@@ -105,9 +131,9 @@ export default function GalleryPage() {
                 </div>
                 <span className="text-sm font-semibold text-gray-600">
                   <span className="text-gray-900 font-bold">
-                    {filtered.length}
+                    {total}
                   </span>{" "}
-                  {filtered.length > 1 ? "photos" : "photo"}
+                  {total > 1 ? "photos" : "photo"}
                   {activeFilter !== "Toutes" && (
                     <span className="text-gray-400 font-normal">
                       {" "}
@@ -139,7 +165,7 @@ export default function GalleryPage() {
                   return (
                     <button
                       key={cat}
-                      onClick={() => setActiveFilter(cat)}
+                      onClick={() => handleCategoryChange(cat)}
                       className="flex-shrink-0 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap border transition-all duration-200"
                       style={
                         isActive
@@ -165,7 +191,7 @@ export default function GalleryPage() {
             </div>
 
             {/* ── GRID ── */}
-            {paginatedImages.length === 0 ? (
+            {images.length === 0 && !loading ? (
               <EmptyState filter={activeFilter} />
             ) : (
               <AnimatePresence mode="wait">
@@ -177,7 +203,7 @@ export default function GalleryPage() {
                   exit={{ opacity: 0, transition: { duration: 0.15 } }}
                   className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 auto-rows-[11rem] sm:auto-rows-[13rem]"
                 >
-                  {paginatedImages.map((item) => (
+                  {images.map((item) => (
                     <GalleryItem
                       key={item.id}
                       item={item}
@@ -227,15 +253,7 @@ export default function GalleryPage() {
                       ) : (
                         <button
                           key={p}
-                          onClick={() => {
-                            // navigate to page p via nextPage/prevPage cascade or expose setPage from hook
-                            const diff = p - page;
-                            if (diff > 0)
-                              for (let i = 0; i < diff; i++) nextPage();
-                            else
-                              for (let i = 0; i < Math.abs(diff); i++)
-                                prevPage();
-                          }}
+                          onClick={() => goToPage(p)}
                           className="w-9 h-9 rounded-xl text-sm font-semibold border transition-all duration-150"
                           style={
                             p === page

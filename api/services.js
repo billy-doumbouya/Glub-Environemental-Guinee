@@ -52,7 +52,7 @@ export const galleryService = {
       headers: { "Content-Type": "multipart/form-data" },
     }),
   deleteCategory: (id) => api.delete(`/api/gallery/categories/${id}`),
-  getImages: () => api.get("/api/gallery/images"), // public
+  getImages: (params) => api.get("/api/gallery/images", { params }), // public
   getImagesAdmin: (params) => api.get("/api/gallery/images/admin", { params }), // dashboard
   uploadImages: (formData) =>
     api.post("/api/gallery/images", formData, {
