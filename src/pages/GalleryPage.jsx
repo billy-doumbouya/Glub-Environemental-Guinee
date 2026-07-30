@@ -69,7 +69,6 @@ export default function GalleryPage() {
         const cats = extractArray(res);
 
         if (!Array.isArray(cats) || cats.length === 0) {
-          // On log pour debug mais on ne casse jamais le rendu
           if (!Array.isArray(cats)) {
             console.error(
               "Format de réponse inattendu pour getCategories():",
@@ -111,7 +110,6 @@ export default function GalleryPage() {
     activeCategoryId,
   );
 
-  // useGallery garantit déjà un tableau, mais on garde un filet de sécurité minimal
   const safeImages = Array.isArray(images) ? images : [];
 
   const categories = useMemo(() => {
@@ -137,7 +135,7 @@ export default function GalleryPage() {
     setPage(pageNum);
   };
 
-  if (loading) return <GallerySkeleton />;
+  // N.B. L'early-return du skeleton a été supprimé d'ici !
   if (error) return <GalleryError message={error} />;
 
   return (
@@ -169,7 +167,7 @@ export default function GalleryPage() {
                 </div>
                 <span className="text-sm font-semibold text-gray-600">
                   <span className="text-gray-900 font-bold">
-                    {total ?? safeImages.length}
+                    {loading ? "..." : (total ?? safeImages.length)}
                   </span>{" "}
                   {(total ?? safeImages.length) > 1 ? "photos" : "photo"}
                   {activeFilter !== "Toutes" && (
@@ -228,8 +226,11 @@ export default function GalleryPage() {
               </div>
             </div>
 
-            {/* ── GRID ── */}
-            {safeImages.length === 0 && !loading ? (
+            {/* ── GRID / SKELETON / EMPTY STATE ── */}
+            {loading ? (
+              /* Affichage du Skeleton à l'intérieur du layout */
+              <GallerySkeleton />
+            ) : safeImages.length === 0 ? (
               <EmptyState filter={activeFilter} />
             ) : (
               <AnimatePresence mode="wait">
@@ -252,8 +253,8 @@ export default function GalleryPage() {
               </AnimatePresence>
             )}
 
-            {/* ── PAGINATION ── */}
-            {totalPages > 1 && (
+            {/* ── PAGINATION (Masquée pendant le chargement) ── */}
+            {!loading && totalPages > 1 && (
               <div className="flex items-center justify-center gap-3 mt-12">
                 <button
                   onClick={prevPage}
@@ -268,7 +269,6 @@ export default function GalleryPage() {
                 <div className="flex items-center gap-1.5">
                   {Array.from({ length: totalPages }, (_, i) => i + 1)
                     .filter((p) => {
-                      // Show: first, last, current ±1
                       return (
                         p === 1 || p === totalPages || Math.abs(p - page) <= 1
                       );
@@ -329,7 +329,7 @@ export default function GalleryPage() {
         </section>
       </MainLayout>
 
-      {/* Lightbox — hors layout, portal vers body */}
+      {/* Lightbox */}
       <AnimatePresence>
         {selectedItem && (
           <Lightbox item={selectedItem} onClose={() => setSelectedItem(null)} />

@@ -146,3 +146,8 @@ export const donationsService = {
   markAsRead: (id) => api.patch(`/api/donations/${id}/read`),
   remove: (id) => api.delete(`/api/donations/${id}`),
 };
+
+// ─── CHATBOT ─────────────────────────────────────────────────────────────────
+export const chatbotService = {
+  sendMessage: (history) => api.post("/api/chatbot", { history }),
+};
