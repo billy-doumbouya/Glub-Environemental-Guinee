@@ -100,7 +100,9 @@ export default function AboutPage() {
         {/* Infos institutionnelles */}
         <section className="relative py-24 overflow-hidden">
           <div className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80')" }} aria-hidden="true" />
+            style={{ backgroundImage: "url('/aboutpage-section.png')" }}
+            aria-hidden="true"
+          />
           <div className="absolute inset-0 bg-white/88" aria-hidden="true" />
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
