@@ -86,10 +86,15 @@ async function prerender() {
       await new Promise((r) => setTimeout(r, 500));
 
       const html = await page.content();
-      const outDir =
-        route === "/" ? DIST : path.join(DIST, route.replace(/^\//, ""));
-      fs.mkdirSync(outDir, { recursive: true });
-      fs.writeFileSync(path.join(outDir, "index.html"), html);
+
+      // Fichiers plats (route.html) pour matcher cleanUrls: true dans vercel.json
+      // au lieu de dossiers avec index.html à l'intérieur
+      const outFile =
+        route === "/"
+          ? path.join(DIST, "index.html")
+          : path.join(DIST, `${route.replace(/^\//, "")}.html`);
+
+      fs.writeFileSync(outFile, html);
 
       console.log(`✔ Pré-rendu : ${route}`);
     } catch (err) {
