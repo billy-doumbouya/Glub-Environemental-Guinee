@@ -20,6 +20,7 @@ const ROUTES = [
   "/galerie",
   "/contact",
   "/don",
+  "/admin-login",
 ];
 
 async function autoScroll(page) {
