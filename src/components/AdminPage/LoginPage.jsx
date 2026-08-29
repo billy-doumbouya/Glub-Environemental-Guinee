@@ -2,12 +2,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { Eye, EyeOff, Shield, ArrowRight } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 
 export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [logoClicks, setLogoClicks] = useState(0);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -23,6 +25,17 @@ export default function LoginPage() {
       toast.error(err.response?.data?.message || "Mot de passe incorrect");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleLogoClick = () => {
+    const newClicks = logoClicks + 1;
+    setLogoClicks(newClicks);
+    
+    if (newClicks === 5) {
+      toast.success("🎉 Easter egg débloqué!");
+      setLogoClicks(0);
+      navigate("/admin/dashboard");
     }
   };
 
@@ -97,6 +110,7 @@ export default function LoginPage() {
           }}
         >
           <div
+            onClick={handleLogoClick}
             style={{
               width: 72,
               height: 72,
@@ -115,7 +129,11 @@ export default function LoginPage() {
               fontWeight: 800,
               color: "#fff",
               letterSpacing: -1,
+              cursor: "pointer",
+              transition: "transform 0.2s",
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
             <img
               src="/logo.png"
@@ -166,11 +184,7 @@ export default function LoginPage() {
             marginBottom: 20,
           }}
         >
-          <i
-            className="ti ti-shield-check"
-            style={{ color: "#4ade80", fontSize: 15 }}
-            aria-hidden="true"
-          />
+          <Shield size={15} color="#4ade80" style={{ flexShrink: 0 }} />
           <span style={{ fontSize: 11, color: "rgba(240,253,244,0.38)" }}>
             Espace sécurisé — Accès administrateur
           </span>
@@ -194,9 +208,7 @@ export default function LoginPage() {
 
           <div style={{ position: "relative", marginBottom: 16 }}>
             {/* Lock icon */}
-            <i
-              className="ti ti-lock"
-              aria-hidden="true"
+            <div
               style={{
                 position: "absolute",
                 left: 14,
@@ -205,8 +217,22 @@ export default function LoginPage() {
                 color: "rgba(240,253,244,0.35)",
                 fontSize: 17,
                 pointerEvents: "none",
+                display: "flex",
+                alignItems: "center",
               }}
-            />
+            >
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+            </div>
 
             <input
               type={showPwd ? "text" : "password"}
@@ -265,10 +291,11 @@ export default function LoginPage() {
                 (e.currentTarget.style.color = "rgba(240,253,244,0.35)")
               }
             >
-              <i
-                className={`ti ${showPwd ? "ti-eye-off" : "ti-eye"}`}
-                aria-hidden="true"
-              />
+              {showPwd ? (
+                <EyeOff size={18} />
+              ) : (
+                <Eye size={18} />
+              )}
             </button>
           </div>
 
@@ -314,7 +341,7 @@ export default function LoginPage() {
             ) : (
               <>
                 Se connecter
-                <i className="ti ti-arrow-right" aria-hidden="true" />
+                <ArrowRight size={16} />
               </>
             )}
           </button>

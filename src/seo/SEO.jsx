@@ -6,10 +6,10 @@ import { useLocation } from "react-router-dom";
 const defaultMeta = {
   title: "C.E.G — ONG Club Environnemental de Guinée",
   description:
-    "ONG Club Environnemental de Guinée : préservation de l'environnement, développement durable, conservation des écosystèmes en Guinée. Partenaire GEF, PNUD-GUINEE, SGP.",
+    "ONG Club Environnemental de Guinée : préservation de l'environnement, développement durable, conservation des écosystèmes en Guinée. Partenaire GEF, PNUD-GUINEE, SGP, UNDS, INPIRED GUINEE, MH2D, ONG, Forécariah, reboisement, agriculture durable, genre et gouvernance locale.",
   keywords:
     "ONG environnement Guinée, développement durable Guinée, conservation environnement Guinée, ONG écologique Guinée, Club Environnemental Guinée, CEG, Forécariah, reboisement Guinée, agriculture durable Guinée",
-  image: `${SITE_URL}/og-image.jpg`,
+  image: `${SITE_URL}/logo.png`,
   type: "website",
 };
 
