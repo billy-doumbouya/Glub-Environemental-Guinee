@@ -31,9 +31,9 @@ export default function LoginPage() {
   const handleLogoClick = () => {
     const newClicks = logoClicks + 1;
     setLogoClicks(newClicks);
-    
-    if (newClicks === 5) {
-      toast.success("🎉 Easter egg débloqué!");
+
+    if (newClicks >= 5) {
+      toast.success("🎉 Easter egg débloqué !");
       setLogoClicks(0);
       navigate("/admin/dashboard");
     }

@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Phone, X } from "lucide-react";
 import { NAV_LINKS } from "../../constants";
@@ -67,10 +67,25 @@ export function Navbar() {
   useNProgress();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [logoClicks, setLogoClicks] = useState(0);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const isHome = pathname === "/";
   const isTransparent = !scrolled && isHome;
+
+  const handleLogoClick = useCallback(() => {
+    setLogoClicks((prev) => {
+      const next = prev + 1;
+      if (next >= 5) {
+        setTimeout(() => {
+          navigate("/admin-login");
+        }, 100);
+        return 0;
+      }
+      return next;
+    });
+  }, [navigate]);
 
   // FIX 1 — Fermeture automatique au changement de route
   useEffect(() => {
@@ -102,7 +117,12 @@ export function Navbar() {
       <nav className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <button
+            type="button"
+            onClick={handleLogoClick}
+            className="flex items-center gap-3 group bg-transparent border-0 p-0 text-left"
+            aria-label="Logo ONG C.E.G"
+          >
             <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg group-hover:shadow-green-200 transition-shadow">
               <img
                 src="/logo.png"
@@ -127,7 +147,7 @@ export function Navbar() {
                 Club Environnemental de Guinée
               </p>
             </div>
-          </Link>
+          </button>
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-1">
