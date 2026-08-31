@@ -21,6 +21,18 @@ const ROUTES = [
   "/contact",
   "/don",
   "/admin-login",
+  "/admin/dashboard",
+  "/admin/projets",
+  "/admin/actualites",
+  "/admin/galerie",
+  "/admin/partenaires",
+  "/admin/temoignages",
+  "/admin/statistiques",
+  "/admin/domaines",
+  "/admin/timeline",
+  "/admin/messages",
+  "/admin/dons",
+  "/admin/apparence/backgrounds",
 ];
 
 async function autoScroll(page) {
