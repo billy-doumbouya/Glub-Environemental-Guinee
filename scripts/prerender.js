@@ -20,7 +20,6 @@ const ROUTES = [
   "/galerie",
   "/contact",
   "/don",
-  "/admin-login",
 ];
 
 const PROTECTED_PREFIXES = ["/admin"];
