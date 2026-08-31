@@ -1,6 +1,5 @@
 // src/pages/LoginPage.jsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Eye, EyeOff, Shield, ArrowRight } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
@@ -11,7 +10,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [logoClicks, setLogoClicks] = useState(0);
   const { login } = useAuth();
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +18,6 @@ export default function LoginPage() {
     try {
       await login(password);
       toast.success("Connexion réussie !");
-      navigate("/admin/dashboard");
     } catch (err) {
       toast.error(err.response?.data?.message || "Mot de passe incorrect");
     } finally {
