@@ -21,19 +21,9 @@ const ROUTES = [
   "/contact",
   "/don",
   "/admin-login",
-  "/admin/dashboard",
-  "/admin/projets",
-  "/admin/actualites",
-  "/admin/galerie",
-  "/admin/partenaires",
-  "/admin/temoignages",
-  "/admin/statistiques",
-  "/admin/domaines",
-  "/admin/timeline",
-  "/admin/messages",
-  "/admin/dons",
-  "/admin/apparence/backgrounds",
 ];
+
+const PROTECTED_PREFIXES = ["/admin"];
 
 async function autoScroll(page) {
   await page.evaluate(async () => {
@@ -64,6 +54,11 @@ async function prerender() {
   });
 
   for (const route of ROUTES) {
+    if (PROTECTED_PREFIXES.some((prefix) => route.startsWith(prefix))) {
+      console.log(`⏭ Ignoré (route protégée) : ${route}`);
+      continue;
+    }
+
     const page = await browser.newPage();
 
     page.on("requestfailed", (req) =>
