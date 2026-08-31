@@ -128,7 +128,7 @@ export function DashboardLayout({ children }) {
       >
         {/* Topbar Mobile */}
         {isMobile && (
-          <header className="h-[62px] flex-shrink-0 bg-gradient-to-r from-[#0a2e1a] via-[#14532d] to-[#166534] border-b border-white/10 flex items-center px-4 gap-3 shadow-[0_18px_45px_rgba(20,83,45,0.18)]">
+          <header className="fixed top-0 left-0 right-0 z-40 h-[62px] flex-shrink-0 bg-gradient-to-r from-[#0a2e1a] via-[#14532d] to-[#166534] border-b border-white/10 flex items-center px-4 gap-3 shadow-[0_18px_45px_rgba(20,83,45,0.18)]">
             <button
               className="w-10 h-10 rounded-2xl bg-white/8 border border-white/12 flex items-center justify-center cursor-pointer text-[#f0fdf4] text-lg shadow-md"
               onClick={() => setMenuOpen(true)}
@@ -152,7 +152,7 @@ export function DashboardLayout({ children }) {
 
         {/* Topbar Desktop */}
         {!isMobile && (
-          <header className="h-20 flex-shrink-0 border-b border-green-100 bg-white/90 backdrop-blur-md shadow-[0_12px_30px_rgba(15,118,110,0.05)]">
+          <header className="fixed top-0 right-0 z-40 h-20 border-b border-green-100 bg-white/90 backdrop-blur-md shadow-[0_12px_30px_rgba(15,118,110,0.05)]" style={{ left: "230px", width: "calc(100% - 230px)" }}>
             <div className="flex h-full items-center justify-between gap-4 px-6 lg:px-8">
               <div className="flex min-w-0 items-center gap-3 text-sm">
                 <div className="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-green-700">
@@ -211,7 +211,7 @@ export function DashboardLayout({ children }) {
         )}
 
         {/* Corps de la page */}
-        <main className="flex-1 bg-[#f3f8f4] min-h-[calc(100vh-52px)]">
+        <main className={`flex-1 bg-[#f3f8f4] min-h-screen ${isMobile ? "pt-[62px]" : "pt-[80px]"}`}>
           {children}
         </main>
       </div>
