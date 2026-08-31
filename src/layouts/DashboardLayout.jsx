@@ -128,14 +128,14 @@ export function DashboardLayout({ children }) {
       >
         {/* Topbar Mobile */}
         {isMobile && (
-          <header className="h-[54px] flex-shrink-0 bg-gradient-to-r from-[#0a2e1a] to-[#0d3d22] border-b border-white/8 flex items-center px-4 gap-3">
+          <header className="h-[62px] flex-shrink-0 bg-gradient-to-r from-[#0a2e1a] via-[#14532d] to-[#166534] border-b border-white/10 flex items-center px-4 gap-3 shadow-[0_18px_45px_rgba(20,83,45,0.18)]">
             <button
-              className="w-9 h-9 rounded-[9px] bg-white/8 border border-white/12 flex items-center justify-center cursor-pointer text-[#f0fdf4] text-lg"
+              className="w-10 h-10 rounded-2xl bg-white/8 border border-white/12 flex items-center justify-center cursor-pointer text-[#f0fdf4] text-lg shadow-md"
               onClick={() => setMenuOpen(true)}
             >
               <i className="ti ti-menu-2" aria-hidden="true" />
             </button>
-            <div className="font-bold text-[#f0fdf4] flex-1 text-sm">
+            <div className="font-bold text-[#f0fdf4] flex-1 text-sm tracking-wide">
               ONG C.E.G
             </div>
 
@@ -152,39 +152,59 @@ export function DashboardLayout({ children }) {
 
         {/* Topbar Desktop */}
         {!isMobile && (
-          <header className="h-13 flex-shrink-0 bg-white border-b border-black/6 flex items-center px-5 gap-3">
-            <div className="flex items-center gap-1.5 flex-1 text-xs text-gray-500">
-              <i className="ti ti-home text-[14px]" aria-hidden="true" />
-              <span className="text-gray-300">/</span>
-              <span className="text-gray-900 font-medium">{currentLabel}</span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              {/* Notification Dropdown Desktop */}
-              <NotificationDropdown
-                isOpen={notifOpen}
-                setIsOpen={setNotifOpen}
-                total={total}
-                messages={messages}
-                donations={donations}
-              />
-
-              <Link
-                to="/admin/apparence/backgrounds"
-                className="w-8.5 h-8.5 rounded-[9px] bg-gray-50 border border-gray-200 flex items-center justify-center cursor-pointer text-gray-500 text-[15px] hover:bg-gray-100 transition-colors"
-              >
-                <i className="ti ti-settings" aria-hidden="true" />
-              </Link>
-
-              <div className="h-8.5 rounded-[9px] bg-gray-50 border border-gray-200 flex items-center text-gray-700 text-xs px-2.5 gap-1.5 select-none">
-                <div className="w-5.5 h-5.5 rounded-md overflow-hidden bg-green-100 flex items-center justify-center">
-                  <img
-                    src="/admin.jpg"
-                    alt="admin"
-                    className="w-full h-full object-cover"
-                  />
+          <header className="h-20 flex-shrink-0 border-b border-green-100 bg-white/90 backdrop-blur-md shadow-[0_12px_30px_rgba(15,118,110,0.05)]">
+            <div className="flex h-full items-center justify-between gap-4 px-6 lg:px-8">
+              <div className="flex min-w-0 items-center gap-3 text-sm">
+                <div className="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-green-700">
+                  <span className="h-2 w-2 rounded-full bg-green-500 shadow-[0_0_0_4px_rgba(34,197,94,0.15)]" />
+                  Admin
                 </div>
-                M. Koly Doré
+
+                <div className="flex items-center gap-2 text-slate-400">
+                  <i className="ti ti-home text-[14px] text-green-700" aria-hidden="true" />
+                  <span className="text-slate-300">/</span>
+                  <span className="inline-flex items-center rounded-full border border-green-100 bg-green-50 px-2.5 py-1 text-xs font-medium text-green-800">
+                    {currentLabel}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <NotificationDropdown
+                  isOpen={notifOpen}
+                  setIsOpen={setNotifOpen}
+                  total={total}
+                  messages={messages}
+                  donations={donations}
+                  className="shrink-0"
+                />
+
+                <Link
+                  to="/admin/apparence/backgrounds"
+                  className="flex h-11 w-11 items-center justify-center rounded-2xl border border-green-200 bg-gradient-to-br from-[#f0fdf4] to-white text-green-700 shadow-sm transition-all duration-200 hover:translate-y-[-1px] hover:shadow-md"
+                  aria-label="Réglages"
+                >
+                  <i className="ti ti-settings text-[16px]" aria-hidden="true" />
+                </Link>
+
+                <div className="flex items-center gap-3 rounded-2xl border border-green-100 bg-gradient-to-r from-[#f0fdf4] via-white to-[#f8fafc] px-3 py-2 shadow-sm">
+                  <div className="h-10 w-10 overflow-hidden rounded-xl border border-green-200 bg-green-100 shadow-inner">
+                    <img
+                      src="/admin.jpg"
+                      alt="admin"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+
+                  <div className="text-left leading-tight">
+                    <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-green-700">
+                      Admin
+                    </span>
+                    <span className="block text-sm font-semibold text-slate-800">
+                      M. Koly Doré
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </header>
