@@ -1,75 +1,42 @@
-import { lazy } from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { ProtectedRoute } from "../components/shared/ProtectedRoute";
-import NotFoundPage from "../pages/NotFoundPage";
-import DonationSuccessPage from "../pages/DonationSuccessPage";
-import DonationFailPage from "../pages/DonationFailPage";
-
-// ─── Pages publiques ──────────────────────────────────────────────────────────
-const HomePage = lazy(() => import("../pages/HomePage"));
-const AboutPage = lazy(() => import("../pages/AboutPage"));
-const DomainsPage = lazy(() => import("../pages/DomainsPage"));
-const ProjectsPage = lazy(() => import("../pages/ProjectsPage"));
-const PartnersPage = lazy(() => import("../pages/PartnersPage"));
-const NewsPage = lazy(() => import("../pages/NewsPage"));
-const GalleryPage = lazy(() => import("../pages/GalleryPage"));
-const ContactPage = lazy(() => import("../pages/ContactPage"));
-const DonatePage = lazy(() => import("../pages/DonatePage"));
-const AdminMessages = lazy(
-  () => import("../components/AdminPage/MessagesPage"),
-);
-const AdminDonations = lazy(
-  () => import("../components/AdminPage/DonationsPage"),
-);
-const AdminBackgrounds = lazy(
-  () => import("../components/AdminPage/BackgroundsPage"),
-);
-
-// ─── Pages admin ─────────────────────────────────────────────────────────────
-const AdminLogin = lazy(() => import("../components/AdminPage/LoginPage"));
-const AdminDashboard = lazy(
-  () => import("../components/AdminPage/DashboardPage"),
-);
-const AdminProjects = lazy(
-  () => import("../components/AdminPage/ProjectsPage"),
-);
-const AdminNews = lazy(() => import("../components/AdminPage/NewsPage"));
-const AdminGallery = lazy(() => import("../components/AdminPage/GalleryPage"));
-const AdminPartners = lazy(
-  () => import("../components/AdminPage/PartnersPage"),
-);
-const AdminTestimonials = lazy(
-  () => import("../components/AdminPage/TestimonialsPage"),
-);
-const AdminStatistics = lazy(
-  () => import("../components/AdminPage/StatisticsPage"),
-);
-const AdminDomains = lazy(() => import("../components/AdminPage/DomainsPage"));
-const AdminTimeline = lazy(
-  () => import("../components/AdminPage/TimelinePage"),
-);
+import LoginPage from "../components/AdminPage/LoginPage";
+import AdminDashboardPage from "../components/AdminPage/DashboardPage";
+import BackgroundsPage from "../components/AdminPage/BackgroundsPage";
+import DomainsPage from "../components/AdminPage/DomainsPage";
+import DonationsPage from "../components/AdminPage/DonationsPage";
+import GalleryPage from "../components/AdminPage/GalleryPage";
+import MessagesPage from "../components/AdminPage/MessagesPage";
+import NewsPage from "../components/AdminPage/NewsPage";
+import PartnersPage from "../components/AdminPage/PartnersPage";
+import ProjectsPage from "../components/AdminPage/ProjectsPage";
+import StatisticsPage from "../components/AdminPage/StatisticsPage";
+import TestimonialsPage from "../components/AdminPage/TestimonialsPage";
+import TimelinePage from "../components/AdminPage/TimelinePage";
+import FundingDashboardPage from "../components/AdminPage/FundingPage/DashboardPage";
+import FundingOpportunitiesPage from "../components/AdminPage/FundingPage/OpportunitiesListPage";
+import FundingOpportunityDetailPage from "../components/AdminPage/FundingPage/OpportunityDetailPage";
+import FundingSourcesPage from "../components/AdminPage/FundingPage/SourcesPage";
+import FundingProfilePage from "../components/AdminPage/FundingPage/NgoProfilePage";
 
 export const router = createBrowserRouter([
-  // ─── Routes publiques ───────────────────────────────────────────────────────
-  { path: "/", element: <HomePage /> },
-  { path: "/a-propos", element: <AboutPage /> },
-  { path: "/domaines", element: <DomainsPage /> },
-  { path: "/projets", element: <ProjectsPage /> },
-  { path: "/partenaires", element: <PartnersPage /> },
-  { path: "/actualites", element: <NewsPage /> },
-  { path: "/galerie", element: <GalleryPage /> },
-  { path: "/contact", element: <ContactPage /> },
-  { path: "/don", element: <DonatePage /> },
-  { path: "/don/succes", element: <DonationSuccessPage /> },
-  { path: "/don/echec", element: <DonationFailPage /> },
-
-  // ─── Routes admin ────────────────────────────────────────────────────────────
-  { path: "/admin-login", element: <AdminLogin /> },
+  {
+    path: "/admin-login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute>
+        <AdminDashboardPage />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/admin/dashboard",
     element: (
       <ProtectedRoute>
-        <AdminDashboard />
+        <AdminDashboardPage />
       </ProtectedRoute>
     ),
   },
@@ -77,7 +44,7 @@ export const router = createBrowserRouter([
     path: "/admin/projets",
     element: (
       <ProtectedRoute>
-        <AdminProjects />
+        <ProjectsPage />
       </ProtectedRoute>
     ),
   },
@@ -85,7 +52,7 @@ export const router = createBrowserRouter([
     path: "/admin/actualites",
     element: (
       <ProtectedRoute>
-        <AdminNews />
+        <NewsPage />
       </ProtectedRoute>
     ),
   },
@@ -93,7 +60,7 @@ export const router = createBrowserRouter([
     path: "/admin/galerie",
     element: (
       <ProtectedRoute>
-        <AdminGallery />
+        <GalleryPage />
       </ProtectedRoute>
     ),
   },
@@ -101,7 +68,7 @@ export const router = createBrowserRouter([
     path: "/admin/partenaires",
     element: (
       <ProtectedRoute>
-        <AdminPartners />
+        <PartnersPage />
       </ProtectedRoute>
     ),
   },
@@ -109,31 +76,7 @@ export const router = createBrowserRouter([
     path: "/admin/temoignages",
     element: (
       <ProtectedRoute>
-        <AdminTestimonials />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/admin/statistiques",
-    element: (
-      <ProtectedRoute>
-        <AdminStatistics />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/admin/domaines",
-    element: (
-      <ProtectedRoute>
-        <AdminDomains />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/admin/timeline",
-    element: (
-      <ProtectedRoute>
-        <AdminTimeline />
+        <TestimonialsPage />
       </ProtectedRoute>
     ),
   },
@@ -141,7 +84,7 @@ export const router = createBrowserRouter([
     path: "/admin/messages",
     element: (
       <ProtectedRoute>
-        <AdminMessages />
+        <MessagesPage />
       </ProtectedRoute>
     ),
   },
@@ -149,7 +92,7 @@ export const router = createBrowserRouter([
     path: "/admin/dons",
     element: (
       <ProtectedRoute>
-        <AdminDonations />
+        <DonationsPage />
       </ProtectedRoute>
     ),
   },
@@ -157,10 +100,80 @@ export const router = createBrowserRouter([
     path: "/admin/apparence/backgrounds",
     element: (
       <ProtectedRoute>
-        <AdminBackgrounds />
+        <BackgroundsPage />
       </ProtectedRoute>
     ),
   },
-
-  { path: "*", element: <NotFoundPage /> },
+  {
+    path: "/admin/statistiques",
+    element: (
+      <ProtectedRoute>
+        <StatisticsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/domaines",
+    element: (
+      <ProtectedRoute>
+        <DomainsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/timeline",
+    element: (
+      <ProtectedRoute>
+        <TimelinePage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/veille",
+    element: (
+      <ProtectedRoute>
+        <FundingDashboardPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/veille/opportunites",
+    element: (
+      <ProtectedRoute>
+        <FundingOpportunitiesPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/veille/opportunites/:id",
+    element: (
+      <ProtectedRoute>
+        <FundingOpportunityDetailPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/veille/sources",
+    element: (
+      <ProtectedRoute>
+        <FundingSourcesPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/veille/profil",
+    element: (
+      <ProtectedRoute>
+        <FundingProfilePage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/",
+    element: <Navigate to="/admin/dashboard" replace />,
+  },
+  {
+    path: "*",
+    element: <Navigate to="/admin/dashboard" replace />,
+  },
 ]);

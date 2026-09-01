@@ -46,11 +46,26 @@ async function prerender() {
   const server = exec(`npx vite preview --port ${PORT} --strictPort`);
   await new Promise((r) => setTimeout(r, 2000));
 
-  const browser = await puppeteer.launch({
-    args: chromium.args,
-    executablePath: await chromium.executablePath(),
-    headless: "shell",
-  });
+  let browser;
+  try {
+    const executablePath = await chromium.executablePath();
+    if (!executablePath) {
+      throw new Error("Aucun binaire Chromium détecté");
+    }
+
+    browser = await puppeteer.launch({
+      args: chromium.args,
+      executablePath,
+      headless: "shell",
+    });
+  } catch (error) {
+    console.warn(
+      "⚠ Prerender ignoré : aucun binaire Chromium disponible dans cet environnement.",
+      error.message,
+    );
+    server.kill();
+    return;
+  }
 
   for (const route of ROUTES) {
     if (PROTECTED_PREFIXES.some((prefix) => route.startsWith(prefix))) {

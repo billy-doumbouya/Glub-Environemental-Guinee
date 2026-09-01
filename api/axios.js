@@ -17,6 +17,24 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+const AUTH_REDIRECT_KEY = "ongceg_auth_redirected";
+const clearAuthRedirectLock = () => {
+  if (typeof window !== "undefined") {
+    sessionStorage.removeItem(AUTH_REDIRECT_KEY);
+  }
+};
+
+const triggerAuthRedirectOnce = () => {
+  if (typeof window === "undefined") return false;
+  if (window.location.pathname.includes("/admin-login")) return false;
+
+  const alreadyRedirected = sessionStorage.getItem(AUTH_REDIRECT_KEY) === "1";
+  if (alreadyRedirected) return false;
+
+  sessionStorage.setItem(AUTH_REDIRECT_KEY, "1");
+  return true;
+};
+
 // ─── Intercepteur de requête ──────────────────────────────────────────────────
 api.interceptors.request.use(
   (config) => {
@@ -47,11 +65,11 @@ api.interceptors.response.use(
       const isTryingToAccessAdmin = currentPath.startsWith("/admin");
       const isAlreadyOnLogin = currentPath.includes("/admin-login");
 
-      if (isTryingToAccessAdmin && !isAlreadyOnLogin) {
+      if (isTryingToAccessAdmin && !isAlreadyOnLogin && triggerAuthRedirectOnce()) {
         toast.error("Session expirée — veuillez vous reconnecter");
-        setTimeout(() => { 
-          window.location.href = "/admin-login"; 
-        }, 1500);
+        setTimeout(() => {
+          window.location.href = "/admin-login";
+        }, 1200);
       }
     } else if (status === 404) {
       toast.error("Ressource non trouvée");

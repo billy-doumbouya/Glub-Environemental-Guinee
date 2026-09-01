@@ -43,6 +43,19 @@ const NAV_ITEMS = [
     ],
   },
   {
+    section: "Veille & financement",
+    items: [
+      { path: "/admin/veille", label: "Vue synthétique", icon: "ti-chart-dots" },
+      {
+        path: "/admin/veille/opportunites",
+        label: "Appels à projets",
+        icon: "ti-file-search",
+      },
+      { path: "/admin/veille/sources", label: "Sources", icon: "ti-database" },
+      { path: "/admin/veille/profil", label: "Profil ONG", icon: "ti-user-circle" },
+    ],
+  },
+  {
     section: "Apparence",
     items: [
       {

@@ -20,12 +20,18 @@ export function AuthProvider({ children }) {
 
   const login = async (password) => {
     const res = await authService.login(password);
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem("ongceg_auth_redirected");
+    }
     setIsAdmin(true);
     return res;
   };
 
   const logout = async () => {
     await authService.logout();
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem("ongceg_auth_redirected");
+    }
     setIsAdmin(false);
   };
 
