@@ -1,17 +1,31 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
+
+// Components
 import { ProtectedRoute } from "../components/shared/ProtectedRoute";
-import { useAuth } from "../hooks/useAuth";
+
+// Auth pages
 import LoginPage from "../components/AdminPage/LoginPage";
+
+// Public pages
 import HomePage from "../pages/HomePage";
+import AboutPage from "../pages/AboutPage";
+import ProjectsPublicPage from "../pages/ProjectsPage";
+import NewsPublicPage from "../pages/NewsPage";
+import ContactPage from "../pages/ContactPage";
+import PartnersPublicPage from "../pages/PartnersPage";
+import GalleryPublicPage from "../pages/GalleryPage";
+import DomainsPublicPage from "../pages/DomainsPage";
+
+// Admin pages
 import AdminDashboardPage from "../components/AdminPage/DashboardPage";
 import BackgroundsPage from "../components/AdminPage/BackgroundsPage";
-import DomainsPage from "../components/AdminPage/DomainsPage";
+import AdminDomainsPage from "../components/AdminPage/DomainsPage";
 import DonationsPage from "../components/AdminPage/DonationsPage";
-import GalleryPage from "../components/AdminPage/GalleryPage";
+import AdminGalleryPage from "../components/AdminPage/GalleryPage";
 import MessagesPage from "../components/AdminPage/MessagesPage";
-import NewsPage from "../components/AdminPage/NewsPage";
-import PartnersPage from "../components/AdminPage/PartnersPage";
-import ProjectsPage from "../components/AdminPage/ProjectsPage";
+import AdminNewsPage from "../components/AdminPage/NewsPage";
+import AdminPartnersPage from "../components/AdminPage/PartnersPage";
+import AdminProjectsPage from "../components/AdminPage/ProjectsPage";
 import StatisticsPage from "../components/AdminPage/StatisticsPage";
 import TestimonialsPage from "../components/AdminPage/TestimonialsPage";
 import TimelinePage from "../components/AdminPage/TimelinePage";
@@ -21,32 +35,14 @@ import FundingOpportunityDetailPage from "../components/AdminPage/FundingPage/Op
 import FundingSourcesPage from "../components/AdminPage/FundingPage/SourcesPage";
 import FundingProfilePage from "../components/AdminPage/FundingPage/NgoProfilePage";
 
-function RootRouteRedirect() {
-  const { isAdmin, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
-        color: "#15803D",
-        fontSize: 16,
-      }}>
-        Chargement...
-      </div>
-    );
-  }
-
-  return <Navigate to={isAdmin ? "/admin/dashboard" : "/admin-login"} replace />;
-}
-
 export const router = createBrowserRouter([
+  // ─── Auth ──────────────────────────────────────────────────────────────
   {
     path: "/admin-login",
     element: <LoginPage />,
   },
+
+  // ─── Admin (protégées) ─────────────────────────────────────────────────
   {
     path: "/admin",
     element: (
@@ -67,7 +63,7 @@ export const router = createBrowserRouter([
     path: "/admin/projets",
     element: (
       <ProtectedRoute>
-        <ProjectsPage />
+        <AdminProjectsPage />
       </ProtectedRoute>
     ),
   },
@@ -75,7 +71,7 @@ export const router = createBrowserRouter([
     path: "/admin/actualites",
     element: (
       <ProtectedRoute>
-        <NewsPage />
+        <AdminNewsPage />
       </ProtectedRoute>
     ),
   },
@@ -83,7 +79,7 @@ export const router = createBrowserRouter([
     path: "/admin/galerie",
     element: (
       <ProtectedRoute>
-        <GalleryPage />
+        <AdminGalleryPage />
       </ProtectedRoute>
     ),
   },
@@ -91,7 +87,7 @@ export const router = createBrowserRouter([
     path: "/admin/partenaires",
     element: (
       <ProtectedRoute>
-        <PartnersPage />
+        <AdminPartnersPage />
       </ProtectedRoute>
     ),
   },
@@ -139,7 +135,7 @@ export const router = createBrowserRouter([
     path: "/admin/domaines",
     element: (
       <ProtectedRoute>
-        <DomainsPage />
+        <AdminDomainsPage />
       </ProtectedRoute>
     ),
   },
@@ -191,10 +187,42 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+
+  // ─── Public ────────────────────────────────────────────────────────────
   {
     path: "/",
     element: <HomePage />,
   },
+  {
+    path: "/a-propos",
+    element: <AboutPage />,
+  },
+  {
+    path: "/projets",
+    element: <ProjectsPublicPage />,
+  },
+  {
+    path: "/actualites",
+    element: <NewsPublicPage />,
+  },
+  {
+    path: "/contact",
+    element: <ContactPage />,
+  },
+  {
+    path: "/partenaires",
+    element: <PartnersPublicPage />,
+  },
+  {
+    path: "/galerie",
+    element: <GalleryPublicPage />,
+  },
+  {
+    path: "/domaines",
+    element: <DomainsPublicPage />,
+  },
+
+  // ─── Fallback ──────────────────────────────────────────────────────────
   {
     path: "*",
     element: <Navigate to="/" replace />,
