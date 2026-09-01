@@ -101,19 +101,39 @@ export function DashboardLayout({ children }) {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
+
+  const activeNavPath = NAV_ITEMS.flatMap((group) => group.items).reduce(
+    (best, item) => {
+      const current = location.pathname;
+      const isExactMatch = current === item.path;
+      const isChildMatch =
+        item.path !== "/" &&
+        current.startsWith(`${item.path}/`);
+
+      if (!best && (isExactMatch || isChildMatch)) return item.path;
+      if (best && (isExactMatch || isChildMatch) && item.path.length > best.length) {
+        return item.path;
+      }
+      return best;
+    },
+    null,
+  );
+
   const handleConfirmLogout = async () => {
     setLogoutModal(false);
     await logout();
-    toast.success("Déconnecté avec succès");
+    toast.success("Vous êtes déconnecté du site.");
     navigate("/admin-login");
   };
 
   const currentLabel =
-    NAV_ITEMS.flatMap((s) => s.items).find(
-      (i) =>
-        location.pathname === i.path ||
-        location.pathname.startsWith(i.path + "/"),
-    )?.label ?? "Dashboard";
+    NAV_ITEMS.flatMap((s) => s.items).find((i) => i.path === activeNavPath)?.label ??
+    "Dashboard";
 
   return (
     <div className="flex min-h-screen bg-[#f3f8f4] font-sans antialiased select-none">
@@ -131,6 +151,7 @@ export function DashboardLayout({ children }) {
         visible={!isMobile || menuOpen}
         setMenuOpen={setMenuOpen}
         location={location}
+        activePath={activeNavPath}
         navItems={NAV_ITEMS}
         onLogoutClick={() => setLogoutModal(true)}
       />

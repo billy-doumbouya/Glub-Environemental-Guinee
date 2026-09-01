@@ -1,6 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { ProtectedRoute } from "../components/shared/ProtectedRoute";
+import { useAuth } from "../hooks/useAuth";
 import LoginPage from "../components/AdminPage/LoginPage";
+import HomePage from "../pages/HomePage";
 import AdminDashboardPage from "../components/AdminPage/DashboardPage";
 import BackgroundsPage from "../components/AdminPage/BackgroundsPage";
 import DomainsPage from "../components/AdminPage/DomainsPage";
@@ -18,6 +20,27 @@ import FundingOpportunitiesPage from "../components/AdminPage/FundingPage/Opport
 import FundingOpportunityDetailPage from "../components/AdminPage/FundingPage/OpportunityDetailPage";
 import FundingSourcesPage from "../components/AdminPage/FundingPage/SourcesPage";
 import FundingProfilePage from "../components/AdminPage/FundingPage/NgoProfilePage";
+
+function RootRouteRedirect() {
+  const { isAdmin, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+        color: "#15803D",
+        fontSize: 16,
+      }}>
+        Chargement...
+      </div>
+    );
+  }
+
+  return <Navigate to={isAdmin ? "/admin/dashboard" : "/admin-login"} replace />;
+}
 
 export const router = createBrowserRouter([
   {
@@ -170,10 +193,10 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <Navigate to="/admin/dashboard" replace />,
+    element: <HomePage />,
   },
   {
     path: "*",
-    element: <Navigate to="/admin/dashboard" replace />,
+    element: <Navigate to="/" replace />,
   },
 ]);

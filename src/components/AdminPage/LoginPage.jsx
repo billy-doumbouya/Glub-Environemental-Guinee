@@ -1,6 +1,6 @@
 // src/pages/LoginPage.jsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Eye, EyeOff, Shield, ArrowRight } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
@@ -10,8 +10,12 @@ export default function LoginPage() {
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [logoClicks, setLogoClicks] = useState(0);
-  const { login } = useAuth();
+  const { login, isAdmin, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+
+  if (!authLoading && isAdmin) {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

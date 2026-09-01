@@ -6,6 +6,7 @@ export function Sidebar({
   visible,
   setMenuOpen,
   location,
+  activePath,
   navItems,
   onLogoutClick,
 }) {
@@ -51,10 +52,7 @@ export function Sidebar({
               {group.section}
             </span>
             {group.items.map((item) => {
-              const active =
-                location.pathname === item.path ||
-                (item.path !== "/admin/dashboard" &&
-                  location.pathname.startsWith(item.path));
+              const active = item.path === activePath;
               return (
                 <Link
                   key={item.path}
