@@ -4,11 +4,6 @@
   "rewrites": [
     {
       "source": "/((?!assets/|robots.txt|sitemap.xml|favicon.ico).*)",
-      "missing": [
-        {
-          "type": "file"
-        }
-      ],
       "destination": "/index.html"
     }
   ],
