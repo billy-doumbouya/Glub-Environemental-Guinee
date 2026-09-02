@@ -11,7 +11,7 @@ export function LoadingFallback() {
             <Leaf className="w-6 h-6 text-green-600" />
           </div>
         </div>
-        <p className="font-poppins font-semibold text-gray-700">Chargement...</p>
+        <p className="font-poppins font-semibold text-gray-700">Chargement de la page...</p>
         <p className="text-gray-400 text-sm mt-1">C.E.G — Club Environnemental de Guinée</p>
       </div>
     </div>

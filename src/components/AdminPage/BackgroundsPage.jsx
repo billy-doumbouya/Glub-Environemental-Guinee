@@ -4,7 +4,14 @@
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { backgroundsService } from "../../../api/services";
-import { Button, Card, ConfirmDialog, ImagePreview, PageHeader } from "../ui";
+import {
+  Button,
+  Card,
+  ConfirmDialog,
+  DashboardLoadingScreen,
+  ImagePreview,
+  PageHeader,
+} from "../ui";
 import { DashboardLayout } from "../../layouts/DashboardLayout";
 
 const PAGE_SLOTS = [
@@ -209,7 +216,7 @@ export default function BackgroundsPage() {
         />
 
         {loading ? (
-          <p>Chargement...</p>
+          <DashboardLoadingScreen />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
             {PAGE_SLOTS.map((slot) => (

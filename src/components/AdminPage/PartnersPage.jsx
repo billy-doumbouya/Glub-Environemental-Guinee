@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   ConfirmDialog,
+  DashboardLoadingScreen,
   ImagePreview,
   Input,
   Modal,
@@ -178,7 +179,7 @@ export default function PartnersPage() {
         />
 
         {loading ? (
-          <p>Chargement...</p>
+          <DashboardLoadingScreen />
         ) : (
           <Card>
             <table style={{ width: "100%", borderCollapse: "collapse" }}>

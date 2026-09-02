@@ -10,6 +10,7 @@ import {
   ConfirmDialog,
   PageHeader,
   Card,
+  DashboardLoadingScreen,
   TogglePublished,
 } from "../ui";
 import { DashboardLayout } from "../../layouts/DashboardLayout";
@@ -162,7 +163,7 @@ export default function DomainsPage() {
         />
 
         {loading ? (
-          <p>Chargement...</p>
+          <DashboardLoadingScreen />
         ) : (
           <Card>
             <table style={{ width: "100%", borderCollapse: "collapse" }}>

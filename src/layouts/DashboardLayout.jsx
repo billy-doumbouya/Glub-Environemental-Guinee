@@ -8,6 +8,7 @@ import { LogoutModal } from "../components/ui/modalLogout";
 import { useUnreadNotifications } from "../hooks/useUnreadNotifications";
 import { NotificationDropdown } from "../components/ui/NotificationDropdown";
 import { Sidebar } from "../components/ui/sidebar";
+import { DashboardLoadingScreen } from "../components/ui/DashboardLoadingScreen";
 
 // Importations des sous-composants
 
@@ -90,6 +91,7 @@ export function DashboardLayout({ children }) {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoutModal, setLogoutModal] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   useEffect(() => {
     const onResize = () => {
@@ -106,6 +108,12 @@ export function DashboardLayout({ children }) {
       window.history.scrollRestoration = "manual";
     }
   }, []);
+
+  useEffect(() => {
+    setIsNavigating(true);
+    const timer = window.setTimeout(() => setIsNavigating(false), 300);
+    return () => window.clearTimeout(timer);
+  }, [location.pathname]);
 
   const activeNavPath = NAV_ITEMS.flatMap((group) => group.items).reduce(
     (best, item) => {
@@ -246,7 +254,7 @@ export function DashboardLayout({ children }) {
 
         {/* Corps de la page */}
         <main className={`flex-1 bg-[#f3f8f4] min-h-screen ${isMobile ? "pt-[62px]" : "pt-[80px]"}`}>
-          {children}
+          {isNavigating ? <DashboardLoadingScreen /> : children}
         </main>
       </div>
 

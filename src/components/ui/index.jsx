@@ -1,6 +1,8 @@
 // src/components/ui/index.jsx
 // Composants UI réutilisables — Button, Input, Modal, Table, Badge
 
+export { DashboardLoadingScreen } from "./DashboardLoadingScreen";
+
 // ─── BUTTON ──────────────────────────────────────────────────────────────────
 export function Button({
   children,

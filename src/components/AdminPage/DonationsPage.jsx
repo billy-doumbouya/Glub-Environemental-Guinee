@@ -4,7 +4,14 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { donationsService } from "../../../api/services";
-import { Badge, Button, Card, ConfirmDialog, PageHeader } from "../ui";
+import {
+  Badge,
+  Button,
+  Card,
+  ConfirmDialog,
+  DashboardLoadingScreen,
+  PageHeader,
+} from "../ui";
 import { DashboardLayout } from "../../layouts/DashboardLayout";
 
 const STATUS_LABEL = {
@@ -83,7 +90,7 @@ export default function DonationsPage() {
         />
 
         {loading ? (
-          <p>Chargement...</p>
+          <DashboardLoadingScreen />
         ) : (
           <Card>
             <table className="w-full border-collapse">

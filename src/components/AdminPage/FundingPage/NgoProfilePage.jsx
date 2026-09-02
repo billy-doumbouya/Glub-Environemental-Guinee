@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DashboardLayout } from '../../../layouts/DashboardLayout';
 import { fundingRadarApi } from '../../../../api/fundingRadarApi';
+import { DashboardLoadingScreen } from '../../ui';
 
 function listToText(list) { return (list || []).join(', '); }
 function textToList(text) { return text.split(',').map((s) => s.trim()).filter(Boolean); }
@@ -45,7 +46,7 @@ export default function NgoProfilePage() {
   if (loading || !profile) {
     return (
       <DashboardLayout>
-        <div className="p-6 text-sm text-slate-500">Chargement...</div>
+        <DashboardLoadingScreen />
       </DashboardLayout>
     );
   }

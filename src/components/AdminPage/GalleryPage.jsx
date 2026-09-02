@@ -1,7 +1,15 @@
 // src/pages/GalleryPage.jsx
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
-import { Button, Card, ConfirmDialog, Input, Modal, PageHeader } from "../ui";
+import {
+  Button,
+  Card,
+  ConfirmDialog,
+  DashboardLoadingScreen,
+  Input,
+  Modal,
+  PageHeader,
+} from "../ui";
 import { galleryService } from "../../../api/services";
 import { DashboardLayout } from "../../layouts/DashboardLayout";
 
@@ -298,7 +306,7 @@ export default function GalleryPage() {
 
         {/* Grille d'images */}
         {loading ? (
-          <p>Chargement...</p>
+          <DashboardLoadingScreen />
         ) : activeCategory ? (
           <div
             style={{

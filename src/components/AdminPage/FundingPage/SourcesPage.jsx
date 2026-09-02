@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DashboardLayout } from '../../../layouts/DashboardLayout';
 import { fundingRadarApi } from '../../../../api/fundingRadarApi';
+import { DashboardLoadingScreen } from '../../ui';
 
 const EMPTY_FORM = { name: '', type: 'rss', url: '', isActive: true, selectors: { itemSelector: '', titleSelector: '', linkSelector: '', dateSelector: '' } };
 
@@ -119,7 +120,7 @@ export default function SourcesPage() {
         )}
 
         {loading ? (
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-500">Chargement...</div>
+          <DashboardLoadingScreen />
         ) : sources.length === 0 ? (
           <div className="rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-500">Aucune source configurée. Ajoutez-en une pour démarrer la veille.</div>
         ) : (

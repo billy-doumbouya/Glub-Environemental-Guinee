@@ -11,6 +11,7 @@ import {
   ConfirmDialog,
   PageHeader,
   Card,
+  DashboardLoadingScreen,
   TogglePublished,
 } from "../ui";
 import { DashboardLayout } from "../../layouts/DashboardLayout";
@@ -142,7 +143,7 @@ export default function TimelinePage() {
         />
 
         {loading ? (
-          <p>Chargement...</p>
+          <DashboardLoadingScreen />
         ) : (
           <div style={{ position: "relative", marginTop: "24px" }}>
             {/* Ligne centrale */}

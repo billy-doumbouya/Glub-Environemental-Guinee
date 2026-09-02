@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '../../../layouts/DashboardLayout';
 import { fundingRadarApi } from '../../../../api/fundingRadarApi';
 import { formatDeadline } from '../../shared';
+import { DashboardLoadingScreen } from '../../ui';
 
 const STATUS_LABELS = {
   nouveau: 'Nouveau',
@@ -83,7 +84,7 @@ export default function OpportunitiesListPage() {
         </div>
 
         {loading ? (
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-500">Chargement...</div>
+          <DashboardLoadingScreen />
         ) : opportunities.length === 0 ? (
           <div className="rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-500">Aucun appel à projets ne correspond à ces filtres.</div>
         ) : (

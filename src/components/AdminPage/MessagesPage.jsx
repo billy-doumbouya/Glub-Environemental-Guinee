@@ -4,7 +4,15 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { contactService } from "../../../api/services";
-import { Badge, Button, Card, ConfirmDialog, Modal, PageHeader } from "../ui";
+import {
+  Badge,
+  Button,
+  Card,
+  ConfirmDialog,
+  DashboardLoadingScreen,
+  Modal,
+  PageHeader,
+} from "../ui";
 import { DashboardLayout } from "../../layouts/DashboardLayout";
 
 export default function MessagesPage() {
@@ -72,7 +80,7 @@ export default function MessagesPage() {
         />
 
         {loading ? (
-          <p>Chargement...</p>
+          <DashboardLoadingScreen />
         ) : (
           <Card>
             <table className="w-full border-collapse">

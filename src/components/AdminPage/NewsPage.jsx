@@ -14,6 +14,7 @@ import {
   ConfirmDialog,
   Card,
   Badge,
+  DashboardLoadingScreen,
   ImagePreview,
   TogglePublished,
 } from "../ui";
@@ -171,7 +172,7 @@ export default function NewsPage() {
           }
         />
         {loading ? (
-          <p>Chargement...</p>
+          <DashboardLoadingScreen />
         ) : (
           <Card>
             <table style={{ width: "100%", borderCollapse: "collapse" }}>

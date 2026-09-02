@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '../../../layouts/DashboardLayout';
 import { fundingRadarApi } from '../../../../api/fundingRadarApi';
 import { EligibilityBadge, formatDeadline } from '../../shared';
+import { DashboardLoadingScreen } from '../../ui';
 
 export default function OpportunityDetailPage() {
   const { id: opportunityId } = useParams();
@@ -30,7 +31,7 @@ export default function OpportunityDetailPage() {
   if (loading) {
     return (
       <DashboardLayout>
-        <div className="p-6 text-sm text-slate-500">Chargement...</div>
+        <DashboardLoadingScreen />
       </DashboardLayout>
     );
   }

@@ -52,14 +52,6 @@ export default function DashboardPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <DashboardLayout>
-        <div className="p-6 text-sm text-slate-500">Chargement...</div>
-      </DashboardLayout>
-    );
-  }
-
   return (
     <DashboardLayout>
       <div className="space-y-6 p-4 sm:p-6 lg:p-8">
