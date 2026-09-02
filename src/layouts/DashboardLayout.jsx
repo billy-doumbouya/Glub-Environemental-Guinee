@@ -136,7 +136,7 @@ export function DashboardLayout({ children }) {
     setLogoutModal(false);
     await logout();
     toast.success("Vous êtes déconnecté du site.");
-    navigate("/admin-login");
+    navigate("/admin/login");
   };
 
   const currentLabel =

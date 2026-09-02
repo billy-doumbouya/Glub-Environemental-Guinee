@@ -79,7 +79,7 @@ export function Navbar() {
       const next = prev + 1;
       if (next >= 5) {
         setTimeout(() => {
-          navigate("/admin-login");
+          navigate("/admin/login");
         }, 100);
         return 0;
       }

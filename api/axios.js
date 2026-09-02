@@ -63,12 +63,12 @@ api.interceptors.response.use(
     // Session expirée — rediriger vers login UNIQUEMENT si on tente d'accéder à l'admin
     if (status === 401) {
       const isTryingToAccessAdmin = currentPath.startsWith("/admin");
-      const isAlreadyOnLogin = currentPath.includes("/admin-login");
+      const isAlreadyOnLogin = currentPath.includes("/admin/login");
 
       if (isTryingToAccessAdmin && !isAlreadyOnLogin && triggerAuthRedirectOnce()) {
         toast.error("Session expirée — veuillez vous reconnecter");
         setTimeout(() => {
-          window.location.href = "/admin-login";
+          window.location.href = "/admin/login";
         }, 1200);
       }
     } else if (status === 404) {
