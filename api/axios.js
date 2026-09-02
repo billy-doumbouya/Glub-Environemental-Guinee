@@ -26,7 +26,7 @@ const clearAuthRedirectLock = () => {
 
 const triggerAuthRedirectOnce = () => {
   if (typeof window === "undefined") return false;
-  if (window.location.pathname.includes("/admin-login")) return false;
+  if (window.location.pathname.includes("/admin/login")) return false;
 
   const alreadyRedirected = sessionStorage.getItem(AUTH_REDIRECT_KEY) === "1";
   if (alreadyRedirected) return false;
