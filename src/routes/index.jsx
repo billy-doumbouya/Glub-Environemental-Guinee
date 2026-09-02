@@ -38,7 +38,7 @@ import FundingProfilePage from "../components/AdminPage/FundingPage/NgoProfilePa
 export const router = createBrowserRouter([
   // ─── Auth ──────────────────────────────────────────────────────────────
   {
-    path: "/admin-login",
+    path: "/admin/login",
     element: <LoginPage />,
   },
 
